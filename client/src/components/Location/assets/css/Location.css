@@ -1,0 +1,55 @@
+.divFlex{
+    margin-top: 80px;
+  
+    
+  }
+
+  .currencyconvertor_main {
+    font-family: "aspira-regular";
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    background-color: #10122b !important;
+    border-radius: 10px;
+    margin-top:10px;
+      position: relative;
+      background: #e5f3ff;
+      border-radius: 8px;
+      box-shadow: 0px 3px 9px rgb(33 47 88 / 10%);
+    color:#fff;
+    padding:20px 0px;
+    
+  }
+
+  .displayFlxDiv {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+  }
+  
+  .displayFlxDiv ul {
+    display: flex;
+    list-style-type: none;
+  }
+  .displayFlxDiv ul li {
+    
+  margin: 10px;
+  text-align: center;
+  cursor: pointer;
+  
+  }
+  
+  
+  
+  .displayFlxDiv ul li img{
+  width: 80px;
+  border-radius: 50%;
+  }
+  
+  
+  .displayFlxDiv ul li:hover{
+    transform: scale(1.1);
+    
+    }
+  

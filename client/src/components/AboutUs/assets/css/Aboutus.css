@@ -1,0 +1,41 @@
+.about-us-container {
+   
+    margin: 50px auto;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  /* Styling about us content */
+  .about-us-content {
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    padding: 30px;
+  }
+  
+  /* Styling about us heading */
+  .about-us-content h2 {
+  
+    margin-top:30%;
+    font-size: 3rem;
+    text-transform: uppercase;
+    font-weight: 100;
+    letter-spacing: 8px;
+    
+    
+  }
+  
+  /* Styling about us paragraphs */
+  .about-us-content p {
+    color: #666;
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 15px;
+    text-align: left;
+  }
+
+  .socialicons{
+    
+    margin-top: 20px;
+    cursor: pointer;
+    
+  }

@@ -1,0 +1,590 @@
+.homemoneytranfer {
+  /* background-image: url("https://media.istockphoto.com/id/1257153929/photo/indian-rupee-sign-  ith-stock-market-graph-background.jpg?s=2048x2048&w=is&k=20&c=nPhr-XHh9lmZ5CEKil1rqX7JFspsMPfoDS8cwmtecUY="); */
+  background-size: cover;
+  position: relative;
+  height: 100vh;
+}
+
+.home-banner-img {
+  width: 100%;
+  transform: scale(101%);
+}
+
+.moneytrans {
+  text-align: left;
+  color: #fff;
+  /* position: absolute; */
+  /* top:50%; */
+}
+
+.show-grid {
+  position: absolute;
+  top: 20%;
+  left: 10%;
+}
+
+.sendmoneyform {
+  background-color: #fbfbfb;
+  border-radius: 8px;
+  box-shadow: 1px 2px 8px rgba(0, 0, 0, 0.65);
+}
+
+.inputdiv {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+select {
+  appearance: none; /* Remove default styling */
+  -webkit-appearance: none; /* For older versions of Chrome and Safari */
+  -moz-appearance: none; /* For older versions of Firefox */
+  background-color: white;
+  border: 1px solid #ccc;
+  padding: 8px 32px 8px 8px; /* Adjust padding as needed */
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+/* Style the arrow icon */
+.dropdown::after {
+  content: "\25BC"; /* Unicode for down arrow */
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.child {
+  position: absolute;
+  border: 1px solid #fff;
+  width: 80%;
+  height: 300px;
+  margin: 0 auto;
+  border-radius: 25px;
+  margin-top: -130px;
+  margin-left: 100px;
+  box-shadow: 0px 3px 9px rgb(33 47 88 / 10%);
+  background-color: #fff;
+}
+
+.converbtn {
+  background-color: rgb(240, 245, 250);
+  text-align: center;
+  padding: 20px 0px;
+  cursor: pointer;
+}
+
+.converbtn:hover {
+  background-color: rgb(250, 250, 250);
+}
+
+.inputpickerdiv {
+  margin: 5px;
+}
+
+.Sendbtn {
+  background-color: rgb(240, 245, 250);
+  text-align: center;
+  padding: 20px 0px;
+  cursor: pointer;
+}
+
+.Sendbtn:hover {
+  background-color: rgb(250, 250, 250);
+}
+
+.Chartsbtn {
+  background-color: rgb(240, 245, 250);
+  text-align: center;
+  padding: 20px 0px;
+  cursor: pointer;
+}
+
+.Chartsbtn:hover {
+  background-color: rgb(250, 250, 250);
+}
+
+.Alertsbtn {
+  background-color: rgb(240, 245, 250);
+  text-align: center;
+  padding: 20px 0px;
+  cursor: pointer;
+  border-top-right-radius: 25px;
+}
+
+.Alertsbtn:hover {
+  background-color: rgb(250, 250, 250);
+}
+
+.amountcheck {
+  margin-top: 50px;
+}
+
+.conbtn {
+  margin: 20px 40%;
+  padding: 10px 30px;
+}
+
+.divFlex h3 {
+  text-align: center;
+  font-size: 3rem;
+  font-weight: 200;
+  margin-bottom: 20px;
+}
+
+.moneytranspara {
+  text-align: left;
+  color: #fff;
+  margin-left: 10%;
+}
+
+.whyremiwire {
+  margin-top: 60px;
+}
+
+.iconContent {
+  padding-top: 20px;
+  border-left: 1px solid #fff;
+  padding-left: 10px;
+}
+
+.whyremhead {
+  color: #fff;
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.whyremiwire {
+  background-color: #10122b;
+  display: cover;
+  height: 700px;
+  width: 100%;
+  background-repeat: no-repeat;
+  background-size: 100% 100% !important;
+  color: #fff;
+}
+
+.estimatefees {
+  font-family: "Poppins", sans-serif;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+
+  color: #333;
+}
+
+.containername {
+  width: 100%;
+  max-width: 400px;
+}
+
+/* .trackreceive{
+    display:none;
+} */
+
+.raatesandfees {
+  cursor: pointer;
+  margin-bottom: 9px;
+}
+
+.trackandreceive {
+  cursor: pointer;
+  margin-bottom: 9px;
+  padding: 8px;
+}
+
+.refauth {
+  margin-bottom: 8px;
+  font-size: 1rem;
+}
+
+.card {
+  background-color: #fff;
+  padding: 0px 20px 20px 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  height: 300px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+.inputarea {
+  padding: 10px;
+  margin-bottom: 12px;
+  border: 0;
+  border-bottom: 1px solid #555;
+
+  transition: border-color 0.3s ease-in-out;
+  outline: none;
+  color: #333;
+}
+
+input::placeholder {
+  font-size: 1rem;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 300;
+  letter-spacing: 0.1rem;
+  color: #ccc;
+}
+
+button {
+  background-color: #3498db;
+  color: #fff;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+}
+
+button:hover {
+  background-color: #2980b9;
+}
+
+.activeBtn {
+  background: #d4d1d1;
+}
+
+.savemoneyhead {
+  text-align: center;
+  color: #000;
+  margin-top: 50px;
+}
+
+.savemoneypara {
+  text-align: center;
+  color: #000;
+  font-size: large;
+}
+
+.moneytrneasy {
+  text-align: left;
+  margin-top: 70px;
+  margin-bottom: 20px;
+}
+
+.moneytrncol {
+  background-image: url("https://img.freepik.com/free-photo/close-up-hand-holding-smartphone_23-2149148857.jpg");
+
+  height: 300px;
+  width: 100%;
+  margin-top: 70px;
+}
+
+.sendmnystep {
+  background-color: #d4d1d1;
+  margin-top: 50px;
+}
+
+.regdiv {
+  height: 300px;
+  width: 100%;
+  background-color: #fff;
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+
+.carousel-wrap {
+  margin: 90px auto;
+
+  width: 80%;
+  position: relative;
+}
+
+/* fix blank or flashing items on carousel */
+
+.slider-container {
+  margin-top: 20%;
+}
+
+.fcnextlogo {
+  font-size: xx-large;
+  margin-top: 6%;
+}
+
+.fcprelogo {
+  font-size: xx-large;
+  margin-top: 6%;
+}
+
+/* Some Cool Stuff */
+.demo-card:nth-child(1) {
+  order: 1;
+}
+
+.demo-card:nth-child(2) {
+  order: 4;
+}
+
+.demo-card:nth-child(3) {
+  order: 2;
+}
+
+.demo-card:nth-child(4) {
+  order: 5;
+}
+
+.demo-card:nth-child(5) {
+  order: 3;
+}
+
+.demo-card:nth-child(6) {
+  order: 6;
+}
+
+.demo-card:nth-child(7) {
+  order: 7;
+}
+
+.demo-card:nth-child(8) {
+  order: 8;
+}
+
+/* Border Box */
+* {
+  box-sizing: border-box;
+}
+
+/* Fonts */
+
+/* near location */
+
+.location-row {
+  margin-bottom: 20px;
+}
+
+.image-column {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.country-image {
+  width: 100px;
+}
+
+.search-container {
+  margin-bottom: 10px;
+}
+
+.location-list ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.location-list ul li {
+  margin-bottom: 10px;
+}
+
+.location-list ul li img {
+  width: 50px;
+  height: 50px;
+  margin-right: 10px;
+}
+
+/* end */
+
+.footer_part {
+  margin-top: 10%;
+}
+
+.mainconverter {
+  position: absolute;
+  margin-top: -12%;
+
+  width: 100%;
+}
+
+.input-container {
+  background-color: #fff;
+  align-items: center;
+  border-radius: 8px;
+  background-color: rgb(255, 255, 255);
+  box-shadow: rgba(35, 55, 80, 0.3) 0px 6px 12px;
+  margin-top: 20px;
+  height: auto;
+  margin-bottom: 10%;
+}
+
+.dPdXSB {
+  font-size: 1rem;
+  font-weight: 300;
+  color: rgb(46, 60, 87);
+  padding: 20px;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td,
+th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+.tablerow {
+  padding: 40px 0px;
+}
+
+.tablerow Button {
+  background-color: #10122b;
+}
+
+.body img {
+  height: 230px;
+}
+.maindivconter {
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+.convertdiv {
+  height: 50px;
+  border: 1px solid #ccc;
+  text-align: center;
+  background-color: rgb(240, 245, 250);
+  font-size: 1.2rem;
+  align-items: center;
+  padding-top: 8px;
+  cursor: pointer;
+  /* box-shadow: rgba(35, 55, 80, 0.3) 0px 6px 6px; */
+  /* border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+   */
+}
+
+/* .convertdiv:hover{
+  
+  box-shadow: rgba(35, 55, 80, 0.3) 0px 6px 6px;
+} */
+
+.inputsect {
+  display: flex;
+  margin-top: 8%;
+  justify-content: space-between;
+}
+
+.selectpickerinput {
+}
+
+.inputsect .rs-picker-default .rs-picker-toggle.rs-btn {
+  padding-bottom: 15px;
+  padding-top: 15px;
+}
+
+.inputsect
+  .rs-picker-default
+  .rs-picker-toggle.rs-btn
+  .rs-picker-toggle-indicator
+  .rs-picker-caret-icon {
+  top: 15px;
+}
+
+.amountinput {
+  height: 52px;
+  border: 1px solid rgb(221, 221, 221);
+  border-radius: 6px;
+  box-shadow: rgba(0, 17, 51, 0.05) 0px 3px 15px;
+  padding: 12px;
+  color: rgb(20, 30, 55);
+  background: none;
+  width: 97%;
+}
+
+.amountinput:hover {
+  border-color: 1px solid #3498ff !important;
+}
+
+.active {
+  background: #d40511;
+  color: #fff;
+}
+
+select:hover {
+  border-color: #999;
+}
+
+select:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2);
+}
+
+/* selectficker */
+
+.ulNotType {
+  list-style-type: none;
+  padding: 0px !important;
+  position: absolute;
+  background-color: #f9f9f9;
+  width: 300px;
+
+  z-index: 1;
+}
+.ulNotType li {
+  cursor: pointer;
+  border-bottom: 1px solid #000;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ulNotType li img {
+  width: 40px;
+}
+
+.countryIcon {
+  width: 40px;
+}
+
+.countryDiv {
+  height: 52px;
+  border: 1px solid rgb(221, 221, 221);
+  border-radius: 6px;
+  box-shadow: rgba(0, 17, 51, 0.05) 0px 3px 15px;
+  padding: 6px 12px;
+  color: rgb(20, 30, 55);
+  background: none;
+  width: 260px;
+  display: flex;
+}
+
+.alertsheading {
+  color: rgb(10, 20, 110);
+  margin: 20px;
+  text-align: center;
+}
+
+.alertspara {
+  margin: 20px;
+  text-align: center;
+}
+
+.alertsratebtn {
+  padding: 10px 30px;
+  background-color: #10122b;
+  margin-bottom: 20px;
+  margin-left: 30%;
+}
+
+.alertsgraphs {
+  width: 100%;
+  height: 300px;
+  margin: 20px;
+}

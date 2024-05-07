@@ -1,0 +1,140 @@
+    .mainlogindiv{
+       
+position: relative;
+margin-bottom: 40%;
+    }
+
+    .sidelogin{
+        padding: 20px;
+        background-image:url("../images/loginimage.jpg");
+        background-size: cover;
+        background-position: center center;
+        color: #fff;
+        min-height: 540px;
+       
+        /* box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.3); */
+        transition: all 0.6s cubic-bezier(1.000, -0.375, 0.285, 0.995)
+       
+       
+        
+    }
+
+    .mainlogincontener{
+        height: 450px;
+        width: 450px;
+     
+margin-top:3%;
+
+background-image: #fbfbfb;
+  border-radius: 8px;
+  box-shadow: 1px 2px 8px rgba(0, 0, 0, 0.65);
+    }
+
+
+    .tabs{
+         background-color: #10122b;
+         text-align: center;
+         font-size: 20px;
+         color:#fff;
+         padding:20px 0;
+         cursor: pointer;
+         
+    }
+
+  
+
+    
+
+    .activeBtn{
+        background-color: #23265b;
+    }
+
+    .login_form{
+        margin:1px 8px;
+    }
+
+    .login-content {
+        padding: 12px 44px;
+      }
+      .login-title {
+        font-family: "Raleway Thin", sans-serif;
+        letter-spacing: 4px;
+        padding-bottom: 23px;
+        padding-top: 13px;
+        text-align: center;
+      }
+
+
+      .underline-title {
+        background: -webkit-linear-gradient(right, #23265b, #10122b);
+        height: 2px;
+        margin: -0.4rem auto 0 auto;
+        width: 89px;
+      }
+
+
+    .input-container {
+        position: relative;
+        margin-bottom: 20px;
+      }
+    
+      input[type="text"], input[type="email"], input[type="password"] {
+        width: 100%;
+        padding: 10px;
+        border: none;
+        border-bottom: 1px solid #ccc;
+        font-size: 16px;
+        
+      }
+    
+      input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus{
+        border-bottom-color: dodgerblue;
+        outline: none;
+      }
+
+      .submit-btn {
+        background: -webkit-linear-gradient(right, #23265b, #10122b);
+        border: none;
+        border-radius: 21px;
+        box-shadow: 0px 1px 8px #23265b;
+        cursor: pointer;
+        color: white;
+        font-family: "Raleway SemiBold", sans-serif;
+        height: 42.3px;
+       
+        margin-top: 18px;
+        transition: 0.25s;
+        width: 153px;
+        margin-left:27%
+      }
+      #submit-btn:hover {
+        box-shadow: 0px 1px 18px #24c64f;
+      }
+
+      .form-border {
+        background: -webkit-linear-gradient(right, #a6f77b, #2ec06f);
+        height: 1px;
+        width: 100%;
+      }
+      .form-content {
+        background: #fbfbfb;
+        border: none;
+        outline: none;
+        padding-top: 14px;
+      }
+
+      .forgot-pass{
+        text-align: end;
+        margin-right:10px !important;
+      }
+
+      
+    .loginImg{
+      background-image: url("https://media.istockphoto.com/id/1791310420/photo/login-and-password-windows-background-web-browser-login-page-username-and-password-entry-3d.jpg?s=2048x2048&w=is&k=20&c=9kMiLfjgdTAOk9067AwD7OwtNz7cSJKfqid-9_nQsuY=");
+     
+      background-size: cover;
+      height:500px;
+     
+      margin-top:10px;
+
+    }

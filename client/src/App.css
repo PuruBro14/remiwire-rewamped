@@ -1,0 +1,32 @@
+.logo {
+    width: 40px;
+    padding: 0px;
+    margin: 0px !important;
+}
+.rs-navbar-brand {
+    padding: 10px !important;
+}
+
+.profile-user-name{
+    font-size: 20px;
+}
+
+.center{
+    margin-left:10px;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+.label-style {
+    @apply text-[14px] text-richblack-5;
+}
+
+.form-style {
+    @apply rounded-lg bg-richblack-700 p-3 text-[16px] leading-[24px] text-richblack-5 shadow-[0_1px_0_0] shadow-white/50 placeholder:text-richblack-400 focus:outline-none;
+}
+
+ .stdropdown-menu {
+     position: static !important;
+ }
