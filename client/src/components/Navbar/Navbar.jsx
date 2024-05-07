@@ -112,7 +112,7 @@ const Navbar = () => {
     <div className="flex flex-row md:h-20 flex-wrap items-center w-full">
       <div className=" w-11/12 mx-auto items-center justify-between ">
         {showHamburger && (
-          <div className=" mt-5 md:mt-0">
+          <div className=" mt-5 md:mt-0  text-right">
             <button onClick={toggleNavbar}>
               {isOpen ? (
                 <IoMdClose size={30} color="black" />
@@ -167,7 +167,7 @@ const Navbar = () => {
                       ) : (
                         <Link
                           to={
-                            ele?.title !== "Send Money" &&
+                            
                             ele?.title !== "Contact Us"
                               ? ele?.path
                               : ""
@@ -175,9 +175,7 @@ const Navbar = () => {
                         >
                           <p
                             onClick={(e) => {
-                              if (ele?.title === "Send Money") {
-                                handleClick(e);
-                              } else if (ele?.title === "Contact Us") {
+                              if (ele?.title === "Contact Us") {
                                 handleContactus(e);
                               }
                             }}

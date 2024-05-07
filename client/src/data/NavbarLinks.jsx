@@ -5,7 +5,7 @@ export const NavbarLinks = [
   },
   {
     title: "Send Money",
-    path: '/sendmoney',
+    path: '/sendmoneyabroad',
   },
   {
     title: "Track + Recieve",

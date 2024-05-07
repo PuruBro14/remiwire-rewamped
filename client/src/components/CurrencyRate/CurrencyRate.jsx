@@ -40,7 +40,7 @@ export const ContentSlider = () => {
   };
 
   return (
-    <div className='mt-16 w-11/12 max-w-maxContent mx-auto'>
+    <div className='my-8 md:mt-16 w-11/12 max-w-maxContent mx-auto'>
         <Slider {...settings}>
       <div>
         <div>
@@ -69,7 +69,7 @@ export const ContentSlider = () => {
             width="30"
             height="30"
           />
-          <h6>NZD</h6>
+          <h6>ENG</h6>
         </div>
         <div className='flex flex-row'>
           <p>
@@ -87,7 +87,7 @@ export const ContentSlider = () => {
             width="30"
             height="30"
           />
-          <h6>NZD</h6>
+          <h6>AUS</h6>
         </div>
         <div className='flex flex-row'>
           <p>
@@ -105,7 +105,7 @@ export const ContentSlider = () => {
             width="30"
             height="30"
           />
-          <h6>NZD</h6>
+          <h6>SA</h6>
         </div>
         <div className='flex flex-row'>
           <p>
@@ -123,11 +123,11 @@ export const ContentSlider = () => {
             width="30"
             height="30"
           />
-          <h6>NZD</h6>
+          <h6>INR</h6>
         </div>
         <div className='flex flex-row'>
           <p>
-            Remiwire Rate : <b>51.41</b>
+            Remiwire Rate : <b>84.96</b>
           </p>
         </div>
       </div>
