@@ -49,7 +49,7 @@ const Checkout = () => {
   },[])
 
   return (
-    <div className='bg-richblack-800'>
+    <div className='bg-gradient-to-r from-blue-100 to-blue-500'>
     <div className='w-11/12 mx-auto max-w-[900px]'>
       <div className='flex flex-col gap-5 py-16 pb-48 '>
         {/* first div  */}
@@ -72,18 +72,18 @@ const Checkout = () => {
           <div className=' flex flex-row justify-between w-full'>
             <div>
               <ul className='flex flex-row gap-x-2'>
-                <li className='text-richblack-600'>Policies:</li>
-                <li className='text-richblack-600'>Return Policy | </li>
-                <li className='text-richblack-600'>Security </li>
+                <li className='text-richblack-5'>Policies:</li>
+                <li className='text-richblack-5'>Return Policy | </li>
+                <li className='text-richblack-5'>Security </li>
               </ul>
             </div>
-            <div className='flex flex-row text-richblack-600 mr-10'>
+            <div className='flex flex-row text-richblack-5 mr-10'>
               2020-2024 Remiwire.com
             </div>
           </div>
 
           <Link to="/">
-            <p className='text-richblack-600 tracking-wide'>Need help?Visit the help center or Contact Us</p>
+            <p className='text-richblack-5 tracking-wide'>Need help?Visit the help center or Contact Us</p>
           </Link>
         </div>
       </div>

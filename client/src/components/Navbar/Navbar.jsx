@@ -54,6 +54,7 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
+  const[showMobileServices,setShowMobileServices]=useState(false);
   const { token } = useSelector((state) => state.auth);
   const { user } = useSelector((state) => state.profile);
   const contactUsRef = useRef(null);
@@ -86,18 +87,6 @@ const Navbar = () => {
     };
   }, [window.innerWidth]);
 
-  console.log("contactUs", document.getElementById("contactUs"));
-
-  const handleClick = (e) => {
-    console.log("clicked");
-    e.preventDefault();
-    if (location.pathname !== "/") {
-      navigate("/");
-    }
-    dispatch(setScrollToComponentSend(true));
-    dispatch(setScrollToComponentContact(false));
-  };
-
   const handleContactus = (e) => {
     console.log("clicked");
     e.preventDefault();
@@ -105,8 +94,8 @@ const Navbar = () => {
       navigate("/");
     }
     dispatch(setScrollToComponentContact(true));
-    dispatch(setScrollToComponentSend(false));
   };
+  
 
   return (
     <div className="flex flex-row md:h-20 flex-wrap items-center w-full">
@@ -142,11 +131,11 @@ const Navbar = () => {
                     <li key={index} onClick={closeNavbar}>
                       {ele?.title === "Services" ? (
                         <div>
-                          <div className="relative flex flex-row gap-2 items-center group">
+                          <div className="relative flex flex-row gap-2 items-center group" onClick={()=>setShowMobileServices(!showMobileServices)}>
                             <p>{ele?.title}</p>
                             <IoIosArrowDropdownCircle />
-                            <div className="z-20 invisible absolute left-[50%] top-[50%] -translate-x-[50%] translate-y-[20%] flex flex-col rounded-md bg-richblack-5 p-4 text-richblack-900 opacity-0 transition-all duration-200 group-hover:visible group-hover:opacity-100 lg:w-[300px]">
-                              <div className="absolute left-[50%] translate-x-[80%] -translate-y-[45%] top-0 h-6 w-6 -45 rounded rotate-45 bg-richblack-5"></div>
+                            <div className="z-20 invisible absolute left-[50%] top-[0%] opacity-0 md:top-[50%] -translate-x-[50%] md:translate-y-[20%] flex flex-col rounded-md bg-richblack-5 p-4 text-richblack-900 transition-all duration-200 group-hover:visible group-hover:opacity-100 lg:w-[300px]">
+                              <div className="absolute left-[50%] translate-x-[80%] -translate-y-[45%] top-0 h-6 w-6  rounded rotate-45 bg-richblack-5"></div>
                               {subLinksData?.map((ele, index) => {
                                 {
                                   console.log("ele", ele);
@@ -157,7 +146,7 @@ const Navbar = () => {
                                     to={ele?.link}
                                     key={index}
                                   >
-                                    <p>{ele?.title}</p>
+                                  <p>{ele?.title}</p>
                                   </Link>
                                 );
                               })}

@@ -1,7 +1,7 @@
 import Home from "./components/HomePage/Home";
 import Login from "./components/Form/Login";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import SendMoneyAbroad from "./components/OurServices/SendMoneyAbroad";
+import SendMoneyAbroad from "./components/OurServices/SendMoneyAbroad/SendMoneyAbroad";
 import PrepaidTravelCard from "./components/OurServices/PrepaidTravelCard";
 import ForexCurrency from "./components/OurServices/ForexCurrency";
 import NRIRepatriation from "./components/OurServices/NRIRepatriation";

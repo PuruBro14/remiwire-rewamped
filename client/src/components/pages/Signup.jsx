@@ -8,7 +8,7 @@ const SignUp = () => {
   const[passedFromSignup,setPassedFromSignup]=useState(false);
 
   return (
-    <div className="bg-richblack-900 py-10 lg:pt-0">
+    <div className="bg-gradient-to-r from-blue-100 to-blue-500 py-10 lg:pt-0">
       <div className="lg:h-[100px]"></div>
       <div className="w-11/12 mx-auto justify-center flex flex-row">
         {/* first div  */}

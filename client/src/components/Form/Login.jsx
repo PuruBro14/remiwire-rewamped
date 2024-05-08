@@ -33,7 +33,7 @@ const Login = ({ passedFromSignup }) => {
   };
 
   return (
-    <div className="bg-richblack-900 pb-52 h-calc w-full">
+    <div className="bg-gradient-to-r from-blue-100 to-blue-500 pb-52 h-calc w-full">
       <div className={`${!passedFromSignup ? "lg:h-[150px]" : ""}`}></div>
       <div
         className={`${
@@ -42,7 +42,7 @@ const Login = ({ passedFromSignup }) => {
       >
         <div className="flex flex-col w-[80%] mt-6 lg:mt-0">
           <div className="w-full md:w-8/12">
-            <div className="text-4xl font-semibold text-richblack-300 mt-6 lg:mt-0">
+            <div className="text-4xl font-semibold text-richblack-5 mt-6 lg:mt-0">
               Login Here
             </div>
 
@@ -55,6 +55,7 @@ const Login = ({ passedFromSignup }) => {
                     onChange={(e) => handleFormData()}
                   >
                     Email address
+                    <sup className="text-pink-200">*</sup>
                   </label>
                   <input
                     type="email"
@@ -62,7 +63,7 @@ const Login = ({ passedFromSignup }) => {
                     style={{
                       boxShadow: "inset 0px -1px 0px rgba(255, 255, 255, 0.18)",
                     }}
-                    className="w-full mt-3 p-3 rounded-lg bg-richblack-800 text-white"
+                    className="w-full mt-3 p-3 rounded-lg bg-richblue-800 text-white"
                     name="email"
                     value={email}
                     onChange={(e) => handleOnChange(e)}
@@ -74,7 +75,9 @@ const Login = ({ passedFromSignup }) => {
 
                 <div className="flex flex-row items-center gap-5">
                   <div className="flex flex-col relative  w-full">
-                    <label className="text-richblack-5">Create Password</label>
+                    <label className="text-richblack-5">Create Password
+                    <sup className="text-pink-200">*</sup>
+                    </label>
                     <input
                       type={showPassword ? "text" : "password"}
                       placeholder="Enter password"
@@ -82,7 +85,7 @@ const Login = ({ passedFromSignup }) => {
                         boxShadow:
                           "inset 0px -1px 0px rgba(255, 255, 255, 0.18)",
                       }}
-                      className="mt-3 p-3 rounded-lg bg-richblack-800 text-white"
+                      className="mt-3 p-3 rounded-lg bg-richblue-800 text-white"
                       name="password"
                       value={password}
                       onChange={(e) => handleOnChange(e)}

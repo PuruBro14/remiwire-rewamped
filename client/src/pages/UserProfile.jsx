@@ -17,7 +17,7 @@ import Sidebar from "../components/core/Sidebar"
     }
 
     return(
-        <div className="relative flex min-h-[calc(100vh-3.5rem)] bg-richblack-900">
+        <div className="relative flex min-h-[calc(100vh-3.5rem)] bg-gradient-to-r from-blue-100 to-blue-500">
             <div className="hidden md:block">
             <Sidebar/>
             </div>

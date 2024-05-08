@@ -31,16 +31,15 @@ export default function Contactus() {
 
   useEffect(() => {
     if (scrollToComponentContact) {
+        console.log('scrollToComponentContact',scrollToComponentContact);
       sectionRef.current.scrollIntoView({ behaviour: "smooth" });
       dispatch(setScrollToComponentContact(false))
     }
   });
 
-  console.log('scrollToComponentContact',scrollToComponentContact,scrollToComponentSend);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("clicked");
     try {
       setLoading(true);
 
@@ -60,13 +59,6 @@ export default function Contactus() {
     }
   };
 
-   useEffect(() => {
-    // Wait for component mount and check if the element exists
-    const contactUsElement = document.getElementById("contactUs");
-    if (contactUsElement) {
-      console.log('contactUsElement',contactUsElement); // Debugging to ensure the element is found
-    }
-  }, []); // Empty dependency array means this effect runs only once after mount
 
   return (
     <>

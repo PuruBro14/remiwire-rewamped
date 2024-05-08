@@ -64,7 +64,7 @@ const SignupForm = () => {
   return (
     <div className=''>
         <div className="w-full md:w-8/12 my-6">
-            <div className="text-4xl font-semibold text-richblack-300 mt-6 lg:mt-0">
+            <div className="text-4xl font-semibold text-richblack-5 mt-6 lg:mt-0">
              Register Here
             </div>
 
@@ -73,11 +73,11 @@ const SignupForm = () => {
               <div className="flex flex-col gap-5 mt-7">
                 <div className="flex flex-row items-center">
                   <div className="flex flex-col w-full">
-                    <label className="text-richblack-5">UserName <sup className="text-pink-200">*</sup></label>
+                    <label className="text-richblack-5">Username <sup className="text-pink-200">*</sup></label>
                     <input
                       type="text"
                       placeholder="Enter Your UserName"
-                      className="mt-3 p-3 rounded-lg bg-richblack-800 text-white"
+                      className="mt-3 p-3 rounded-lg bg-richblue-800 text-white"
                       name="userName"
                       value={formData.userName}
                       onChange={(e) => handleFormData(e)}
@@ -97,7 +97,7 @@ const SignupForm = () => {
                   <input
                     type="text"
                     placeholder="Enter Your First Name"
-                    className="relative mt-3 p-3 rounded-lg bg-richblack-800 text-white"
+                    className="relative mt-3 p-3 rounded-lg bg-richblue-800 text-white"
                     name="firstName"
                     value={formData.firstName}
                     onChange={(e) => handleFormData(e)}
@@ -115,7 +115,7 @@ const SignupForm = () => {
                   <input
                     type="text"
                     placeholder="Enter Your Last Name"
-                    className="relative mt-3 p-3 rounded-lg bg-richblack-800 text-white"
+                    className="relative mt-3 p-3 rounded-lg bg-richblue-800 text-white"
                     name="lastName"
                     value={formData.lastName}
                     onChange={(e) => handleFormData(e)}
@@ -133,7 +133,7 @@ const SignupForm = () => {
                   <input
                     type="number"
                     placeholder="Enter Your phone number"
-                    className="relative mt-3 p-3 rounded-lg bg-richblack-800 text-white"
+                    className="relative mt-3 p-3 rounded-lg bg-richblue-800 text-white"
                     name="phoneNo"
                     value={formData.phoneNo}
                     onChange={(e) => handleFormData(e)}
@@ -151,7 +151,7 @@ const SignupForm = () => {
                   <input
                     type="email"
                     placeholder="Enter Your email address"
-                    className="relative mt-3 p-3 rounded-lg bg-richblack-800 text-white"
+                    className="relative mt-3 p-3 rounded-lg bg-richblue-800 text-white"
                     name="email"
                     value={formData.email}
                     onChange={(e) => handleFormData(e)}
@@ -167,7 +167,7 @@ const SignupForm = () => {
                     <input
                       type={showPassword ? "text" : "password"}
                       placeholder="Enter Your password"
-                      className="mt-3 p-3 rounded-lg bg-richblack-800 text-white"
+                      className="mt-3 p-3 rounded-lg bg-richblue-800 text-white"
                       name="password"
                       value={formData.password}
                       onChange={(e) => handleFormData(e)}

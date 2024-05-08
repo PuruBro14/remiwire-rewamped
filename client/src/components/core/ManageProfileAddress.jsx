@@ -109,8 +109,8 @@ const ManageAddress = ({checkoutPageAddress,setAddAddress,setViewAddress,editAdd
       <form onSubmit={handleSubmit(submitAddress)}>
         <div className='my-5 flex flex-col gap-y-6 rounded-md'>
            {!checkoutPageAddress && <div className='flex flex-row gap-5 items-center border border-richblack-50 p-4 cursor-pointer' onClick={()=>setShowAddressField(true)}>
-            <FiPlus className='text-white text-3xl'/>
-            <p className='uppercase text-2xl text-blue-500'>Add a new address</p>
+            <FiPlus className='text-richblack-5 text-3xl'/>
+            <p className='uppercase text-2xl text-richblack-5'>Add a new address</p>
           </div>
 }
           {showAddressField && 

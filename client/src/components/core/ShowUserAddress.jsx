@@ -27,7 +27,7 @@ const ShowUserAddress = ({deliveryAddress,setDeliveryAddress}) => {
         deliveryAddress?.slice(-3)?.map((currentItem,index)=>{
             const isHovered = index === hoveredIndex;
             return (
-                <div className='flex flex-col text-white border mt-7'
+                <div className='flex flex-col text-richblack-5 border mt-7'
                 onMouseEnter={() => setHoveredIndex(index)}
                 onMouseLeave={() => setHoveredIndex(null)}
                 >
@@ -47,7 +47,7 @@ const ShowUserAddress = ({deliveryAddress,setDeliveryAddress}) => {
             <div className='relative cursor-pointer'>
             <HiOutlineDotsVertical />
             {isHovered && 
-            <div className='absolute flex flex-col bg-white p-2 right-[6px] -top-[20px]'>
+            <div className='absolute flex flex-col bg-white p-3 right-[6px] -top-[20px]'>
                 <p className='text-richblack-800 hover:text-richblue-200'>Edit</p>
                 <p className='text-richblack-800 mt-1' onClick={()=>deleteAddress(currentItem?._id)}>Delete</p>
             </div>

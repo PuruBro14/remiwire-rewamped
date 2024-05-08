@@ -19,10 +19,10 @@ const MyProfile = () => {
     My Profile
    </h1>
 
-   <div className='flex items-center justify-between rounded-md border-[1px] border-richblack-700 bg-richblack-800 p-8 px-12'>
+   <div className='flex items-center justify-between rounded-md border-[1px] border-richblack-700 bg-richblue-800 p-8 px-12'>
     <div className='flex items-center gap-x-2 md:gap-x-4 relative right-8 md:right-0'>
         <img src={user?.image}
-        alt={`profile-${user?.firstName}`}bg-richblack-800
+        alt={`profile-${user?.firstName}`}
         className='aspect-square w-[78px] rounded-full object-cover'
         />
         <div className='space-y-1'>
@@ -46,7 +46,7 @@ const MyProfile = () => {
     </div>
    </div>
 
-   <div className='my-10 flex flex-col gap-y-10 rounded-md border-[1px] border-richblack-700 bg-richblack-800 p-8 px-12'>
+   <div className='my-10 flex flex-col gap-y-10 rounded-md border-[1px] border-richblack-700 bg-richblue-800 p-8 px-12'>
     <div className='flex w-full items-center justify-between'>
         <p className='text-lg font-semibold text-richblack-5'>Personal Details</p>
         <IconBtn
