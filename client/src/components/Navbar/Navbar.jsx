@@ -8,7 +8,6 @@ import ProfileDropDown from "../ProfileDropDown";
 import { logout } from "../../services/operations/authAPI";
 import { RxHamburgerMenu } from "react-icons/rx";
 import {
-  setScrollToComponentSend,
   setScrollToComponentContact,
 } from "../../utils/scrollSlice";
 const subLinksData = [

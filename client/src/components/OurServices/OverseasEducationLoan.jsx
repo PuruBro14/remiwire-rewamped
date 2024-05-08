@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./assets/css/ourservices.css";
 import image1 from "./assets/img/over.svg";
 import countriesList from "../../utils/countryList";
@@ -27,6 +27,10 @@ export default function OverseasEducationLoan() {
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
   };
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <div className="container mx-auto px-4">

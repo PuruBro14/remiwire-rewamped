@@ -7,6 +7,9 @@ import SendMoneyForm2 from "./SendMoneyForm2";
 import SendMoneyForm3 from "./SendMoneyForm3";
 
 export default function SendMoneyAbroad() {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const [formStep, setformStep] = useState(0);
 
   const [documentProof, setDocumentProofs] = useState({

@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { FaMobileAlt } from "react-icons/fa";
 import { MdMarkEmailUnread } from "react-icons/md";
 import { FaMapLocationDot } from "react-icons/fa6";
-import { setScrollToComponentContact, setScrollToComponentSend } from "../../utils/scrollSlice";
+import { setScrollToComponentContact } from "../../utils/scrollSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { apiConnector } from "../../services/operations/apiconnector";
 import { contactUsEndPoint } from "../../services/apis";
@@ -16,9 +16,8 @@ export default function Contactus() {
   });
   const sectionRef = useRef(null);
   const dispatch = useDispatch();
-  const { scrollToComponentSend,scrollToComponentContact } = useSelector((state) => state.scroll1);
+  const { scrollToComponentContact } = useSelector((state) => state.scroll1);
 
-  console.log("scrollToComponentSend", scrollToComponentContact);
 
   const { name, email, message } = formData;
 

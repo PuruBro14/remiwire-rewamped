@@ -6,6 +6,9 @@ import { VscAdd } from "react-icons/vsc"
 import OrdersTable from '../components/core/OrdersTable'
 
 const MyOrders = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
     const {token}=useSelector((state)=>state.auth)
     const navigate=useNavigate();
   

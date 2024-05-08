@@ -104,6 +104,10 @@ const ManageAddress = ({checkoutPageAddress,setAddAddress,setViewAddress,editAdd
     }
   },[])
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <>
       <form onSubmit={handleSubmit(submitAddress)}>

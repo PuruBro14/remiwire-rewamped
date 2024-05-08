@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./assets/css/ourservices.css";
 import image1 from "./assets/img/blocked.jpg";
 import countriesList from "../../utils/countryList";
@@ -36,6 +36,11 @@ export default function BlockedAccountPayment() {
     setFormData({ ...formData, [name]: value });
   };
   const filteredCountries = [{ label: "India", value: "India" }];
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <div className="container mx-auto px-4">
       <h2 className="text-center my-4 text-3xl mt-10 mb-10">

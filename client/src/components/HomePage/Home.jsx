@@ -12,7 +12,6 @@ import Send from "./Send";
 import Charts from "./Charts";
 import Alerts from "./Alerts";
 import {useSelector} from "react-redux"
-import { setScrollToComponentSend } from "../../utils/scrollSlice";
 import {useDispatch} from "react-redux"
 
 const homeServices = [
@@ -47,14 +46,6 @@ const Home = () => {
     useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-
-   useEffect(() => {
-    if (scrollToComponentSend) {
-      sectionRef.current.scrollIntoView({ behaviour: "smooth" });
-      setActiveMenu(2);
-      dispatch(setScrollToComponentSend(false));
-    }
-  });
 
   return (
     <div className="overflow-x-hidden">

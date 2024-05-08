@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import IconBtn from '../common/IconBtn'
 import { RiEditBoxLine } from 'react-icons/ri'
 import {useSelector} from "react-redux"
@@ -12,6 +12,10 @@ const MyProfile = () => {
     const[editProfile,setEditProfile]=useState(null);
 
     console.log('user',user);
+
+    useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
     
   return (
    <>

@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./assets/css/ourservices.css";
 import image1 from "./assets/img/nri.jpg";
 export default function NRIRepatriation() {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <div className="container mx-auto px-4">
       <h2 className="text-center my-4 text-3xl mt-10 mb-10">
