@@ -21,19 +21,19 @@ export default function GICAccountForm1({ setformStep }) {
 
     const newErrors = {};
 
-    if (!gicAccountForms.transferFromState) {
+    if (!gicAccountForms?.transferFromState) {
       newErrors.transferFromState = "State is required";
     }
 
-    if (!gicAccountForms.transferFromCity) {
+    if (!gicAccountForms?.transferFromCity) {
       newErrors.transferFromCity = "City is required";
     }
 
-    if (!gicAccountForms.receivingAmountInEuro) {
+    if (!gicAccountForms?.receivingAmountInEuro) {
       newErrors.receivingAmountInEuro = "Amount in Euro is required";
     }
 
-    if (!gicAccountForms.receivingAmountInINR) {
+    if (!gicAccountForms?.receivingAmountInINR) {
       newErrors.receivingAmountInINR = "Amount in INR is required";
     }
 
@@ -72,6 +72,8 @@ export default function GICAccountForm1({ setformStep }) {
     getCurrentRateINRtoEURO();
   }, [gicAccountForms?.oneEurotoINR]);
 
+  console.log('errors',errors);
+
   return (
     <>
       {" "}
@@ -87,9 +89,9 @@ export default function GICAccountForm1({ setformStep }) {
               }}
               placeHolder="Select State"
             />
-            {errors.transferFromState && (
+            {errors?.transferFromState && (
               <span className="text-[red] text-[11px] italic">
-                {errors.transferFromState}
+                {errors?.transferFromState}
               </span>
             )}
 
@@ -103,9 +105,9 @@ export default function GICAccountForm1({ setformStep }) {
                 }}
                 placeHolder="Select City"
               />
-              {errors.transferFromCity && (
+              {errors?.transferFromCity && (
                 <span className="text-[red] text-[11px] italic">
-                  {errors.transferFromCity}
+                  {errors?.transferFromCity}
                 </span>
               )}
             </div>
@@ -180,9 +182,9 @@ export default function GICAccountForm1({ setformStep }) {
                 <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
                   <span className="text-gray-500">$</span>
                 </div>
-                {errors.receivingAmountInEuro && (
+                {errors?.receivingAmountInEuro && (
                   <span className="text-[red] text-[11px] italic">
-                    {errors.receivingAmountInEuro}
+                    {errors?.receivingAmountInEuro}
                   </span>
                 )}
               </div>
@@ -207,9 +209,9 @@ export default function GICAccountForm1({ setformStep }) {
                 <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
                   <span className="text-gray-500">&#x20B9;</span>
                 </div>
-                {errors.receivingAmountInINR && (
+                {errors?.receivingAmountInINR && (
                   <span className="text-[red] text-[11px] italic">
-                    {errors.receivingAmountInINR}
+                    {errors?.receivingAmountInINR}
                   </span>
                 )}
               </div>

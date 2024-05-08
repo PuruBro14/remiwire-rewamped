@@ -1,5 +1,5 @@
 const express = require("express");
-const overseaLoanEnquiryController = require("../controllers/overseaLoanEnquiry");
+const overseaLoanEnquiryController = require("../controllers/createOverseaLoanEnquiry");
 const overSeaLoanRoutes = express.Router();
 
 overSeaLoanRoutes.post(

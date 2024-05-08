@@ -14,7 +14,7 @@ export default function SendMoneyAbroad() {
 
   const [documentProof, setDocumentProofs] = useState({
     panCardImage: "",
-  });
+});
 
   return (
     <div className="container mx-auto px-4">
