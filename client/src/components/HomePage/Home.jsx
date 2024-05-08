@@ -58,7 +58,7 @@ const Home = () => {
           </h1>
           <p className="mt-4 w-[90%]">
             Best source for currency conversion, sending money online and
-            tracking exchange rates
+            tracking exchange ratess
           </p>
         </div>
 
