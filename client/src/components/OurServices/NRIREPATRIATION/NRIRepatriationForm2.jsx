@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { setformValue } from "../../features/GICAccountSlice";
+import { setformValue } from "../../features/NRIRepatriationSlice";
 
-export default function GICAccountForm2({
+export default function NRIRepatriationForm2({
   setformStep,
   setDocumentProofs,
   documentProof,
@@ -10,67 +10,67 @@ export default function GICAccountForm2({
   const [errors, setErrors] = useState({
     pancardNumber: "",
     panCardImage: "",
-    passportNumber: "",
-    passportImage: "",
-    blockACSheetDoc: "",
     remiterFirstName: "",
     remiterLastName: "",
     remiterAccountNo: "",
     remiterIFSCCode: "",
     remiterEmailID: "",
     remiterMobileNo: "",
+    passportNumber: "",
+    passportImage: "",
   });
 
   const dispatch = useDispatch();
-  const gicAccountForms = useSelector((state) => state.gicAccountForms);
+  const NRIRepatriationForms = useSelector(
+    (state) => state.NRIRepatriationForms
+  );
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
     const newErrors = {};
 
     // Example validations (replace with your actual validation logic)
-    if (!gicAccountForms.pancardNumber) {
+    if (!NRIRepatriationForms.pancardNumber) {
       newErrors.pancardNumber = "PAN card number is required";
     }
 
     if (!documentProof.panCardImage) {
-      newErrors.panCardImage = "PAN card document is required";
+      newErrors.panCardImage = "PAN card image is required";
     }
 
-    if (!gicAccountForms.passportNumber) {
+    if (!NRIRepatriationForms.remiterFirstName) {
+      newErrors.remiterFirstName = "Remitter's first name is required";
+    }
+
+    if (!NRIRepatriationForms.remiterLastName) {
+      newErrors.remiterLastName = "Remitter's last name is required";
+    }
+
+    if (!NRIRepatriationForms.passportNumber) {
       newErrors.passportNumber =
-        "Passport / Aadhar Card / Driving License Number is required";
+        "Passport/Aadhar/Driving License number is required";
     }
 
     if (!documentProof.passportImage) {
       newErrors.passportImage = "Document is required";
     }
 
-    if (!documentProof.blockACSheetDoc) {
-      newErrors.blockACSheetDoc = "Block AC sheet document is required";
-    }
-
-    if (!gicAccountForms.remiterFirstName) {
-      newErrors.remiterFirstName = "Remitter's first name is required";
-    }
-
-    if (!gicAccountForms.remiterLastName) {
-      newErrors.remiterLastName = "Remitter's last name is required";
-    }
-
-    if (!gicAccountForms.remiterAccountNo) {
+    if (!NRIRepatriationForms.remiterAccountNo) {
       newErrors.remiterAccountNo = "Remitter's account number is required";
     }
 
-    if (!gicAccountForms.remiterIFSCCode) {
+    if (!NRIRepatriationForms.remiterIFSCCode) {
       newErrors.remiterIFSCCode = "Remitter's IFSC code is required";
+    } else if (!NRIRepatriationForms.remiterIFSCCode.startsWith("ICICI")) {
+      newErrors.remiterIFSCCode = "Please enter a valid ICICI IFSC code";
     }
 
-    if (!gicAccountForms.remiterEmailID) {
+    if (!NRIRepatriationForms.remiterEmailID) {
       newErrors.remiterEmailID = "Remitter's email ID is required";
     }
 
-    if (!gicAccountForms.remiterMobileNo) {
+    if (!NRIRepatriationForms.remiterMobileNo) {
       newErrors.remiterMobileNo = "Remitter's mobile number is required";
     }
 
@@ -118,7 +118,7 @@ export default function GICAccountForm2({
               id="course_details"
               className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
               placeholder=" "
-              value={gicAccountForms.pancardNumber}
+              value={NRIRepatriationForms.pancardNumber}
               onChange={(e) => {
                 handleInputChange("pancardNumber", e.target.value);
                 clearError("pancardNumber");
@@ -169,7 +169,7 @@ export default function GICAccountForm2({
               id="course_details"
               className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
               placeholder=" "
-              value={gicAccountForms.passportNumber}
+              value={NRIRepatriationForms.passportNumber}
               onChange={(e) => {
                 handleInputChange("passportNumber", e.target.value);
                 clearError("passportNumber");
@@ -194,7 +194,7 @@ export default function GICAccountForm2({
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 htmlFor="file_input"
               >
-                Upload Passport
+                Upload Document
               </label>
               <input
                 className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer "
@@ -212,33 +212,6 @@ export default function GICAccountForm2({
               )}
             </div>
           </div>
-          <div className="relative z-0 w-full mb-5 group">
-            <div>
-              <label
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                htmlFor="file_input"
-              >
-                Block A/C Instruction Sheet
-              </label>
-              <input
-                className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer "
-                id="file_input"
-                type="file"
-                onChange={(e) => {
-                  handleSubmitChangeFormDoc(
-                    "blockACSheetDoc",
-                    e.target.files[0]
-                  );
-                  clearErrorDoc("blockACSheetDoc");
-                }}
-              />
-              {errors.blockACSheetDoc && (
-                <span className="text-[red] text-[11px] italic">
-                  {errors.blockACSheetDoc}
-                </span>
-              )}
-            </div>
-          </div>
           <div className="grid md:grid-cols-2 md:gap-6">
             <div className="relative z-0 w-full mb-5 group">
               <input
@@ -247,7 +220,7 @@ export default function GICAccountForm2({
                 id="course_details"
                 className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                 placeholder=" "
-                value={gicAccountForms.remiterFirstName}
+                value={NRIRepatriationForms.remiterFirstName}
                 onChange={(e) => {
                   handleInputChange("remiterFirstName", e.target.value);
                   clearError("remiterFirstName");
@@ -273,7 +246,7 @@ export default function GICAccountForm2({
                 id="course_details"
                 className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                 placeholder=" "
-                value={gicAccountForms.remiterLastName}
+                value={NRIRepatriationForms.remiterLastName}
                 onChange={(e) => {
                   handleInputChange("remiterLastName", e.target.value);
                   clearError("remiterLastName");
@@ -300,7 +273,7 @@ export default function GICAccountForm2({
                 id="course_details"
                 className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                 placeholder=" "
-                value={gicAccountForms.remiterAccountNo}
+                value={NRIRepatriationForms.remiterAccountNo}
                 onChange={(e) => {
                   handleInputChange("remiterAccountNo", e.target.value);
                   clearError("remiterAccountNo");
@@ -326,7 +299,7 @@ export default function GICAccountForm2({
                 id="course_details"
                 className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                 placeholder=" "
-                value={gicAccountForms.remiterIFSCCode}
+                value={NRIRepatriationForms.remiterIFSCCode}
                 onChange={(e) => {
                   handleInputChange("remiterIFSCCode", e.target.value);
                   clearError("remiterIFSCCode");

@@ -3,7 +3,7 @@ const mailSender = require("../../utils/mailSender");
 const contactUsTemplate = require("../../views/contact_us");
 
 const contactUsSchema = joi.object().keys({
-  //   name: joi.string().min(2).max(100).required(),
+    fullname: joi.string().min(2).max(100).required(),
   email: joi.string().email().required().lowercase(),
   message: joi.string().required(),
 });

@@ -1,10 +1,10 @@
-const express = require("express");
-const overseaLoanEnquiryController = require("../controllers/createOverseaLoanEnquiry");
-const overSeaLoanRoutes = express.Router();
+// const express = require("express");
+// const overseaLoanEnquiryController = require("./controllers/overseaLoanEnquiry/createOverseaLoanEnquiry.controller");
+// const overSeaLoanRoutes = express.Router();
 
-overSeaLoanRoutes.post(
-  "/createInquiry",
-  overseaLoanEnquiryController.createOverseaLoanEnquiry
-);
+// overSeaLoanRoutes.post(
+//   "/createInquiry",
+//   overseaLoanEnquiryController.createOverseaLoanEnquiry
+// );
 
-module.exports = overSeaLoanRoutes;
+// module.exports = overSeaLoanRoutes;

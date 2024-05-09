@@ -10,13 +10,14 @@ export default function SendMoneyForm2({
   const [errors, setErrors] = useState({
     pancardNumber: "",
     panCardImage: "",
-    blockACSheetDoc: "",
     remiterFirstName: "",
     remiterLastName: "",
     remiterAccountNo: "",
     remiterIFSCCode: "",
     remiterEmailID: "",
     remiterMobileNo: "",
+    passportNumber: "",
+    passportImage: "",
   });
 
   const dispatch = useDispatch();
@@ -32,6 +33,14 @@ export default function SendMoneyForm2({
     // Example validations (replace with your actual validation logic)
     if (!sendMoneyAboroadForms.pancardNumber) {
       newErrors.pancardNumber = "PAN card number is required";
+    }
+    if (!sendMoneyAboroadForms.passportNumber) {
+      newErrors.passportNumber =
+        "Passport/Aadhar/Driving License number is required";
+    }
+
+    if (!documentProof.passportImage) {
+      newErrors.passportImage = "Document is required";
     }
 
     if (!documentProof.panCardImage) {
@@ -77,7 +86,11 @@ export default function SendMoneyForm2({
   };
 
   const handleInputChange = (fieldName, value) => {
-    dispatch(setformValue({ [fieldName]: value }));
+    const trimmedValue = value.replace(/\s/g, "");
+
+    const sanitizedValue = trimmedValue.replace(/[^a-zA-Z0-9]/g, "");
+
+    dispatch(setformValue({ [fieldName]: sanitizedValue }));
   };
 
   const handleSubmitChangeFormDoc = (fieldName, value) => {
@@ -102,6 +115,7 @@ export default function SendMoneyForm2({
               id="course_details"
               className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
               placeholder=" "
+              value={sendMoneyAboroadForms.pancardNumber}
               onChange={(e) => {
                 handleInputChange("pancardNumber", e.target.value);
                 clearError("pancardNumber");
@@ -145,7 +159,56 @@ export default function SendMoneyForm2({
               )}
             </div>
           </div>
+          <div className="relative z-0 w-full mb-5 group">
+            <input
+              type="text"
+              name="courseDetails"
+              id="course_details"
+              className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+              placeholder=" "
+              value={sendMoneyAboroadForms.passportNumber}
+              onChange={(e) => {
+                handleInputChange("passportNumber", e.target.value);
+                clearError("passportNumber");
+              }}
+            />
 
+            <label
+              htmlFor="course_details"
+              className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+            >
+              Passport / Aadhar Card / Driving License Number
+            </label>
+            {errors.passportNumber && (
+              <span className="text-[red] text-[11px] italic">
+                {errors.passportNumber}
+              </span>
+            )}
+          </div>
+          <div className="relative z-0 w-full mb-5 group">
+            <div>
+              <label
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                htmlFor="file_input"
+              >
+                Upload Document
+              </label>
+              <input
+                className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer "
+                id="file_input"
+                type="file"
+                onChange={(e) => {
+                  handleSubmitChangeFormDoc("passportImage", e.target.files[0]);
+                  clearErrorDoc("passportImage");
+                }}
+              />
+              {errors.passportImage && (
+                <span className="text-[red] text-[11px] italic">
+                  {errors.passportImage}
+                </span>
+              )}
+            </div>
+          </div>
           <div className="grid md:grid-cols-2 md:gap-6">
             <div className="relative z-0 w-full mb-5 group">
               <input
@@ -154,6 +217,7 @@ export default function SendMoneyForm2({
                 id="course_details"
                 className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                 placeholder=" "
+                value={sendMoneyAboroadForms.remiterFirstName}
                 onChange={(e) => {
                   handleInputChange("remiterFirstName", e.target.value);
                   clearError("remiterFirstName");
@@ -179,6 +243,7 @@ export default function SendMoneyForm2({
                 id="course_details"
                 className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                 placeholder=" "
+                value={sendMoneyAboroadForms.remiterLastName}
                 onChange={(e) => {
                   handleInputChange("remiterLastName", e.target.value);
                   clearError("remiterLastName");
@@ -205,6 +270,7 @@ export default function SendMoneyForm2({
                 id="course_details"
                 className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                 placeholder=" "
+                value={sendMoneyAboroadForms.remiterAccountNo}
                 onChange={(e) => {
                   handleInputChange("remiterAccountNo", e.target.value);
                   clearError("remiterAccountNo");
@@ -230,6 +296,7 @@ export default function SendMoneyForm2({
                 id="course_details"
                 className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                 placeholder=" "
+                value={sendMoneyAboroadForms.remiterIFSCCode}
                 onChange={(e) => {
                   handleInputChange("remiterIFSCCode", e.target.value);
                   clearError("remiterIFSCCode");

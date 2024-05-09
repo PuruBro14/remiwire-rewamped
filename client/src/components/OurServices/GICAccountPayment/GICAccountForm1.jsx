@@ -21,19 +21,19 @@ export default function GICAccountForm1({ setformStep }) {
 
     const newErrors = {};
 
-    if (!gicAccountForms?.transferFromState) {
+    if (!gicAccountForms.transferFromState) {
       newErrors.transferFromState = "State is required";
     }
 
-    if (!gicAccountForms?.transferFromCity) {
+    if (!gicAccountForms.transferFromCity) {
       newErrors.transferFromCity = "City is required";
     }
 
-    if (!gicAccountForms?.receivingAmountInEuro) {
+    if (!gicAccountForms.receivingAmountInEuro) {
       newErrors.receivingAmountInEuro = "Amount in Euro is required";
     }
 
-    if (!gicAccountForms?.receivingAmountInINR) {
+    if (!gicAccountForms.receivingAmountInINR) {
       newErrors.receivingAmountInINR = "Amount in INR is required";
     }
 
@@ -61,7 +61,7 @@ export default function GICAccountForm1({ setformStep }) {
       const { INR } = response.data.conversion_rates;
 
       dispatch(setformValue({ oneEurotoINR: INR }));
-      const inrValue = 11208 * gicAccountForms?.oneEurotoINR;
+      const inrValue = 11208 * gicAccountForms.oneEurotoINR;
       handleInputChange("receivingAmountInINR", inrValue);
     } catch (err) {
       console.error(err);
@@ -70,9 +70,7 @@ export default function GICAccountForm1({ setformStep }) {
 
   useEffect(() => {
     getCurrentRateINRtoEURO();
-  }, [gicAccountForms?.oneEurotoINR]);
-
-  console.log('errors',errors);
+  }, [gicAccountForms.oneEurotoINR]);
 
   return (
     <>
@@ -89,9 +87,9 @@ export default function GICAccountForm1({ setformStep }) {
               }}
               placeHolder="Select State"
             />
-            {errors?.transferFromState && (
+            {errors.transferFromState && (
               <span className="text-[red] text-[11px] italic">
-                {errors?.transferFromState}
+                {errors.transferFromState}
               </span>
             )}
 
@@ -105,9 +103,9 @@ export default function GICAccountForm1({ setformStep }) {
                 }}
                 placeHolder="Select City"
               />
-              {errors?.transferFromCity && (
+              {errors.transferFromCity && (
                 <span className="text-[red] text-[11px] italic">
-                  {errors?.transferFromCity}
+                  {errors.transferFromCity}
                 </span>
               )}
             </div>
@@ -125,7 +123,7 @@ export default function GICAccountForm1({ setformStep }) {
               <input
                 type="text"
                 readOnly={true}
-                value={gicAccountForms?.transferToCountry}
+                value={gicAccountForms.transferToCountry}
                 className="w-full border border-gray-300 rounded-[5px] text-gray p-1"
               />
             </div>
@@ -135,7 +133,7 @@ export default function GICAccountForm1({ setformStep }) {
               <div className="text-sm">Purpose</div>
               <input
                 readOnly={true}
-                value={gicAccountForms?.purposeOfTransfer}
+                value={gicAccountForms.purposeOfTransfer}
                 className="w-full border border-gray-300 rounded-[5px] text-gray p-1"
               />
             </div>
@@ -146,7 +144,7 @@ export default function GICAccountForm1({ setformStep }) {
               <input
                 type="text"
                 readOnly={true}
-                value={gicAccountForms?.receivingCurrency}
+                value={gicAccountForms.receivingCurrency}
                 name="courseDetails"
                 id="course_details"
                 className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
@@ -157,7 +155,7 @@ export default function GICAccountForm1({ setformStep }) {
               <input
                 type="text"
                 readOnly={true}
-                value={gicAccountForms?.sendingCurrencyIn}
+                value={gicAccountForms.sendingCurrencyIn}
                 className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                 placeholder=" "
               />
@@ -169,10 +167,10 @@ export default function GICAccountForm1({ setformStep }) {
                 <input
                   type="number"
                   className="block py-2.5 pr-10 pl-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 placeholder-black::placeholder"
-                  value={gicAccountForms?.receivingAmountInEuro}
+                  value={gicAccountForms.receivingAmountInEuro}
                   onChange={(e) => {
                     const inrValue =
-                      e.target.value * gicAccountForms?.oneEurotoINR;
+                      e.target.value * gicAccountForms.oneEurotoINR;
                     handleInputChange("receivingAmountInINR", inrValue);
                     handleInputChange("receivingAmountInEuro", e.target.value);
                     clearError("receivingAmountInINR");
@@ -182,9 +180,9 @@ export default function GICAccountForm1({ setformStep }) {
                 <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
                   <span className="text-gray-500">$</span>
                 </div>
-                {errors?.receivingAmountInEuro && (
+                {errors.receivingAmountInEuro && (
                   <span className="text-[red] text-[11px] italic">
-                    {errors?.receivingAmountInEuro}
+                    {errors.receivingAmountInEuro}
                   </span>
                 )}
               </div>
@@ -196,10 +194,10 @@ export default function GICAccountForm1({ setformStep }) {
                   name="courseDetails"
                   id="course_details"
                   className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer placeholder-black::placeholder"
-                  value={gicAccountForms?.receivingAmountInINR}
+                  value={gicAccountForms.receivingAmountInINR}
                   onChange={(e) => {
                     const inputValue = parseFloat(e.target.value);
-                    const eurValue = inputValue / gicAccountForms?.oneEurotoINR;
+                    const eurValue = inputValue / gicAccountForms.oneEurotoINR;
                     handleInputChange("receivingAmountInEuro", eurValue);
                     handleInputChange("receivingAmountInINR", inputValue);
                     clearError("receivingAmountInINR");
@@ -209,9 +207,9 @@ export default function GICAccountForm1({ setformStep }) {
                 <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
                   <span className="text-gray-500">&#x20B9;</span>
                 </div>
-                {errors?.receivingAmountInINR && (
+                {errors.receivingAmountInINR && (
                   <span className="text-[red] text-[11px] italic">
-                    {errors?.receivingAmountInINR}
+                    {errors.receivingAmountInINR}
                   </span>
                 )}
               </div>

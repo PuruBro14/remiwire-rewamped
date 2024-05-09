@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { setformValue } from "../../features/BlockedAccountSlice";
+import { setformValue } from "../../features/NRIRepatriationSlice";
 
-export default function BlockedAccountForm3({ documentProof }) {
+export default function NRIRepatriationForm3({ documentProof }) {
   const [errors, setErrors] = useState({
     beneficiaryName: "",
     beneficiaryAddress: "",
@@ -14,7 +14,9 @@ export default function BlockedAccountForm3({ documentProof }) {
   });
 
   const dispatch = useDispatch();
-  const blockeAccountForms = useSelector((state) => state.blockeAccountForms);
+  const NRIRepatriationForms = useSelector(
+    (state) => state.NRIRepatriationForms
+  );
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -22,43 +24,43 @@ export default function BlockedAccountForm3({ documentProof }) {
     const newErrors = {};
 
     // Validate beneficiaryName
-    if (!blockeAccountForms.beneficiaryName.trim()) {
+    if (!NRIRepatriationForms.beneficiaryName.trim()) {
       newErrors.beneficiaryName = "Beneficiary name is required";
     }
 
     // Validate beneficiaryAddress
-    if (!blockeAccountForms.beneficiaryAddress.trim()) {
+    if (!NRIRepatriationForms.beneficiaryAddress.trim()) {
       newErrors.beneficiaryAddress = "Beneficiary address is required";
     }
 
     // Validate beneficiaryAccountNo
-    if (!blockeAccountForms.beneficiaryAccountNo.trim()) {
+    if (!NRIRepatriationForms.beneficiaryAccountNo.trim()) {
       newErrors.beneficiaryAccountNo = "Beneficiary account number is required";
     }
 
     // Validate beneficiaryAccountNoRe
-    if (!blockeAccountForms.beneficiaryAccountNoRe.trim()) {
+    if (!NRIRepatriationForms.beneficiaryAccountNoRe.trim()) {
       newErrors.beneficiaryAccountNoRe =
         "Re-enter beneficiary account number is required";
     } else if (
-      blockeAccountForms.beneficiaryAccountNo !==
-      blockeAccountForms.beneficiaryAccountNoRe
+      NRIRepatriationForms.beneficiaryAccountNo !==
+      NRIRepatriationForms.beneficiaryAccountNoRe
     ) {
       newErrors.beneficiaryAccountNoRe = "Account numbers do not match";
     }
 
     // Validate beneficiarySwiftCode
-    if (!blockeAccountForms.beneficiarySwiftCode.trim()) {
+    if (!NRIRepatriationForms.beneficiarySwiftCode.trim()) {
       newErrors.beneficiarySwiftCode = "Beneficiary SWIFT code is required";
     }
 
     // Validate beneficiaryIBANNo
-    if (!blockeAccountForms.beneficiaryIBANNo.trim()) {
+    if (!NRIRepatriationForms.beneficiaryIBANNo.trim()) {
       newErrors.beneficiaryIBANNo = "Beneficiary IBAN number is required";
     }
 
     // Validate beneficiaryCountry
-    if (!blockeAccountForms.beneficiaryCountry.trim()) {
+    if (!NRIRepatriationForms.beneficiaryCountry.trim()) {
       newErrors.beneficiaryCountry = "Beneficiary country is required";
     }
 
@@ -96,7 +98,7 @@ export default function BlockedAccountForm3({ documentProof }) {
                 id="course_details"
                 className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                 placeholder=" "
-                value={blockeAccountForms.beneficiaryName}
+                value={NRIRepatriationForms.beneficiaryName}
                 onChange={(e) => {
                   handleInputChange("beneficiaryName", e.target.value);
                   clearError("beneficiaryName");
@@ -124,7 +126,7 @@ export default function BlockedAccountForm3({ documentProof }) {
                 id="course_details"
                 className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                 placeholder=" "
-                value={blockeAccountForms.beneficiaryAddress}
+                value={NRIRepatriationForms.beneficiaryAddress}
                 onChange={(e) => {
                   handleInputChange("beneficiaryAddress", e.target.value);
                   clearError("beneficiaryAddress");
@@ -152,7 +154,7 @@ export default function BlockedAccountForm3({ documentProof }) {
                 id="course_details"
                 className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                 placeholder=" "
-                value={blockeAccountForms.beneficiaryAccountNo}
+                value={NRIRepatriationForms.beneficiaryAccountNo}
                 onChange={(e) => {
                   handleInputChange("beneficiaryAccountNo", e.target.value);
                   clearError("beneficiaryAccountNo");
@@ -178,7 +180,7 @@ export default function BlockedAccountForm3({ documentProof }) {
                 id="course_details"
                 className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                 placeholder=" "
-                value={blockeAccountForms.beneficiaryAccountNoRe}
+                value={NRIRepatriationForms.beneficiaryAccountNoRe}
                 onChange={(e) => {
                   handleInputChange("beneficiaryAccountNoRe", e.target.value);
                   clearError("beneficiaryAccountNoRe");
@@ -205,7 +207,7 @@ export default function BlockedAccountForm3({ documentProof }) {
                 id="course_details"
                 className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                 placeholder=" "
-                value={blockeAccountForms.beneficiarySwiftCode}
+                value={NRIRepatriationForms.beneficiarySwiftCode}
                 onChange={(e) => {
                   handleInputChange("beneficiarySwiftCode", e.target.value);
                   clearError("beneficiarySwiftCode");
@@ -231,7 +233,7 @@ export default function BlockedAccountForm3({ documentProof }) {
                 id="course_details"
                 className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                 placeholder=" "
-                value={blockeAccountForms.beneficiaryIBANNo}
+                value={NRIRepatriationForms.beneficiaryIBANNo}
                 onChange={(e) => {
                   handleInputChange("beneficiaryIBANNo", e.target.value);
                   clearError("beneficiaryIBANNo");
@@ -259,7 +261,7 @@ export default function BlockedAccountForm3({ documentProof }) {
                 className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                 placeholder=" "
                 readOnly={true}
-                value={blockeAccountForms.beneficiaryCountry}
+                value={NRIRepatriationForms.beneficiaryCountry}
               />
               <label
                 htmlFor="course_details"

@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import "../assets/css/ourservices.css";
-import image1 from "../assets/img/send.jpeg";
+import image1 from "../assets/img/nri.jpg";
 import countriesList from "../../../utils/countryList";
-import SendMoneyForm1 from "./SendMoneyForm1";
-import SendMoneyForm2 from "./SendMoneyForm2";
-import SendMoneyForm3 from "./SendMoneyForm3";
+import NRIRepatriationForm1 from "./NRIRepatriationForm1";
+import NRIRepatriationForm2 from "./NRIRepatriationForm2";
+import NRIRepatriationForm3 from "./NRIRepatriationForm3";
 
-export default function SendMoneyAbroad() {
+export default function NRIRepatriation() {
   const [formStep, setformStep] = useState(0);
 
   const [documentProof, setDocumentProofs] = useState({
@@ -18,17 +18,16 @@ export default function SendMoneyAbroad() {
   return (
     <div className="container mx-auto px-4">
       <h2 className="text-center my-4 text-3xl mt-10 mb-10">
-        SEND MONEY ABROAD
+        NRI REPATRIATION
       </h2>
 
       <div className="bg-[#e7e7e7] p-5">
         <p>
-          Global Connectivity, Trusted Security: Send Money Abroad with
-          Confidence. Your Reliable Partner for International Transactions,
-          Ensuring Peace of Mind Every Step of the Way. Seamlessly Connect
-          Across Borders, Safeguarding Your Funds with Advanced Security
-          Measures. Experience Effortless Transfers, Wherever You Are in the
-          World.
+          NRI repatriation services assist non-resident Indians in transferring
+          funds, assets, and investments from abroad to their home country.
+          These services facilitate smooth repatriation of earnings, ensuring
+          compliance with regulations and offering expert guidance in navigating
+          financial and legal procedures involved in the repatriation process.
         </p>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-5">
@@ -36,15 +35,21 @@ export default function SendMoneyAbroad() {
           {formStep !== 3 && (
             <>
               <div className="sma_pclara bg-white shadow-lg rounded-lg p-6">
+                <div>
+                  <p className="text-[12px]">
+                    *ICICI-only NRI repatriation: Ease fund transfer from abroad
+                    to India. Compliance ensured, expert guidance provided.
+                  </p>
+                </div>
                 {formStep === 0 && (
                   <>
                     {" "}
-                    <SendMoneyForm1 setformStep={setformStep} />
+                    <NRIRepatriationForm1 setformStep={setformStep} />
                   </>
                 )}
                 {formStep === 1 && (
                   <>
-                    <SendMoneyForm2
+                    <NRIRepatriationForm2
                       setformStep={setformStep}
                       documentProof={documentProof}
                       setDocumentProofs={setDocumentProofs}
@@ -54,7 +59,7 @@ export default function SendMoneyAbroad() {
 
                 {formStep === 2 && (
                   <>
-                    <SendMoneyForm3
+                    <NRIRepatriationForm3
                       setformStep={setformStep}
                       documentProof={documentProof}
                     />

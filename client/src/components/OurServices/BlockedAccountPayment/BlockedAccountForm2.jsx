@@ -34,15 +34,16 @@ export default function BlockedAccountForm2({
     }
 
     if (!documentProof.panCardImage) {
-      newErrors.panCardImage = "PAN card image is required";
+      newErrors.panCardImage = "PAN card document is required";
     }
 
     if (!blockeAccountForms.passportNumber) {
-      newErrors.passportNumber = "Passport number is required";
+      newErrors.passportNumber =
+        "Passport / Aadhar Card / Driving License Number is required";
     }
 
     if (!documentProof.passportImage) {
-      newErrors.passportImage = "Passport image is required";
+      newErrors.passportImage = "Document is required";
     }
 
     if (!documentProof.blockACSheetDoc) {
@@ -88,7 +89,11 @@ export default function BlockedAccountForm2({
   };
 
   const handleInputChange = (fieldName, value) => {
-    dispatch(setformValue({ [fieldName]: value }));
+    const trimmedValue = value.replace(/\s/g, "");
+
+    const sanitizedValue = trimmedValue.replace(/[^a-zA-Z0-9]/g, "");
+
+    dispatch(setformValue({ [fieldName]: sanitizedValue }));
   };
 
   const handleSubmitChangeFormDoc = (fieldName, value) => {
@@ -113,6 +118,7 @@ export default function BlockedAccountForm2({
               id="course_details"
               className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
               placeholder=" "
+              value={blockeAccountForms.pancardNumber}
               onChange={(e) => {
                 handleInputChange("pancardNumber", e.target.value);
                 clearError("pancardNumber");
@@ -163,6 +169,7 @@ export default function BlockedAccountForm2({
               id="course_details"
               className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
               placeholder=" "
+              value={blockeAccountForms.passportNumber}
               onChange={(e) => {
                 handleInputChange("passportNumber", e.target.value);
                 clearError("passportNumber");
@@ -240,6 +247,7 @@ export default function BlockedAccountForm2({
                 id="course_details"
                 className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                 placeholder=" "
+                value={blockeAccountForms.remiterFirstName}
                 onChange={(e) => {
                   handleInputChange("remiterFirstName", e.target.value);
                   clearError("remiterFirstName");
@@ -265,6 +273,7 @@ export default function BlockedAccountForm2({
                 id="course_details"
                 className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                 placeholder=" "
+                value={blockeAccountForms.remiterLastName}
                 onChange={(e) => {
                   handleInputChange("remiterLastName", e.target.value);
                   clearError("remiterLastName");
@@ -291,6 +300,7 @@ export default function BlockedAccountForm2({
                 id="course_details"
                 className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                 placeholder=" "
+                value={blockeAccountForms.remiterAccountNo}
                 onChange={(e) => {
                   handleInputChange("remiterAccountNo", e.target.value);
                   clearError("remiterAccountNo");
@@ -316,6 +326,7 @@ export default function BlockedAccountForm2({
                 id="course_details"
                 className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                 placeholder=" "
+                value={blockeAccountForms.remiterIFSCCode}
                 onChange={(e) => {
                   handleInputChange("remiterIFSCCode", e.target.value);
                   clearError("remiterIFSCCode");

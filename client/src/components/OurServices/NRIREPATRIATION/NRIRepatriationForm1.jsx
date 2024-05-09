@@ -2,12 +2,12 @@ import React, { useState, useEffect } from "react";
 import { CitySelect, StateSelect } from "react-country-state-city";
 import "react-country-state-city/dist/react-country-state-city.css";
 import { useSelector, useDispatch } from "react-redux";
-import { setformValue } from "../../features/SendMoneySlice";
+import { setformValue } from "../../features/NRIRepatriationSlice";
 import axios from "axios";
 import countriesList from "../../../utils/countryList";
 import currencyWithSymbol from "../../../utils/currencyWithSymbol";
 
-export default function SendMoneyForm1({ setformStep }) {
+export default function NRIRepatriationForm1({ setformStep }) {
   const [countryid, setCountryid] = useState(101);
   const [stateid, setstateid] = useState(0);
   const [selectedCurrencySymbol, setselectedCurrencySymbol] = useState("");
@@ -21,8 +21,8 @@ export default function SendMoneyForm1({ setformStep }) {
     receivingAmountInINR: "",
     receivingCurrency: "",
   });
-  const sendMoneyAboroadForms = useSelector(
-    (state) => state.sendMoneyAboroadForms
+  const NRIRepatriationForms = useSelector(
+    (state) => state.NRIRepatriationForms
   );
 
   const handleSubmit = (e) => {
@@ -30,30 +30,30 @@ export default function SendMoneyForm1({ setformStep }) {
 
     const newErrors = {};
 
-    if (!sendMoneyAboroadForms.transferFromState) {
+    if (!NRIRepatriationForms.transferFromState) {
       newErrors.transferFromState = "State is required";
     }
 
-    if (!sendMoneyAboroadForms.transferFromCity) {
+    if (!NRIRepatriationForms.transferFromCity) {
       newErrors.transferFromCity = "City is required";
     }
-    if (!sendMoneyAboroadForms.receivingCurrency) {
+    if (!NRIRepatriationForms.receivingCurrency) {
       newErrors.receivingCurrency = "Currency is required";
     }
 
-    if (!sendMoneyAboroadForms.purposeOfTransfer) {
+    if (!NRIRepatriationForms.purposeOfTransfer) {
       newErrors.purposeOfTransfer = "Purpose is required";
     }
 
-    if (!sendMoneyAboroadForms.transferToCountry) {
+    if (!NRIRepatriationForms.transferToCountry) {
       newErrors.transferToCountry = "Receiver Country is required";
     }
 
-    if (!sendMoneyAboroadForms.receivingAmountInEuro) {
-      newErrors.receivingAmountInEuro = "Amount in Euro is required";
+    if (!NRIRepatriationForms.receivingAmountInEuro) {
+      newErrors.receivingAmountInEuro = "Amount is required";
     }
 
-    if (!sendMoneyAboroadForms.receivingAmountInINR) {
+    if (!NRIRepatriationForms.receivingAmountInINR) {
       newErrors.receivingAmountInINR = "Amount in INR is required";
     }
 
@@ -75,16 +75,16 @@ export default function SendMoneyForm1({ setformStep }) {
 
   const getCurrentRateINRtoEURO = async () => {
     try {
-      if (sendMoneyAboroadForms.receivingCurrency !== "") {
+      if (NRIRepatriationForms.receivingCurrency !== "") {
         const response = await axios.get(
           "https://v6.exchangerate-api.com/v6/1902e21487d17680cb9fc088/latest/" +
-            sendMoneyAboroadForms.receivingCurrency
+            NRIRepatriationForms.receivingCurrency
         );
         const { INR } = response.data.conversion_rates;
         const finalINR = (INR + (INR / 100) * 1.75).toFixed(2);
 
         dispatch(setformValue({ oneEurotoINR: finalINR }));
-        // const inrValue = sendMoneyAboroadForms.oneEurotoINR;
+        // const inrValue = NRIRepatriationForms.oneEurotoINR;
         // handleInputChange("receivingAmountInINR", inrValue);
       }
     } catch (err) {
@@ -94,7 +94,7 @@ export default function SendMoneyForm1({ setformStep }) {
 
   useEffect(() => {
     getCurrentRateINRtoEURO();
-  }, [sendMoneyAboroadForms.receivingCurrency]);
+  }, [NRIRepatriationForms.receivingCurrency]);
 
   return (
     <>
@@ -248,7 +248,7 @@ export default function SendMoneyForm1({ setformStep }) {
               <input
                 type="text"
                 readOnly={true}
-                value={sendMoneyAboroadForms.sendingCurrencyIn}
+                value={NRIRepatriationForms.sendingCurrencyIn}
                 className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                 placeholder=" "
               />
@@ -260,10 +260,10 @@ export default function SendMoneyForm1({ setformStep }) {
                 <input
                   type="number"
                   className="block py-2.5 pr-10 pl-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 placeholder-black::placeholder"
-                  value={sendMoneyAboroadForms.receivingAmountInEuro}
+                  value={NRIRepatriationForms.receivingAmountInEuro}
                   onChange={(e) => {
                     const inrValue =
-                      e.target.value * sendMoneyAboroadForms.oneEurotoINR;
+                      e.target.value * NRIRepatriationForms.oneEurotoINR;
                     handleInputChange("receivingAmountInINR", inrValue);
                     handleInputChange("receivingAmountInEuro", e.target.value);
                     clearError("receivingAmountInINR");
@@ -289,11 +289,11 @@ export default function SendMoneyForm1({ setformStep }) {
                   name="courseDetails"
                   id="course_details"
                   className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer placeholder-black::placeholder"
-                  value={sendMoneyAboroadForms.receivingAmountInINR}
+                  value={NRIRepatriationForms.receivingAmountInINR}
                   onChange={(e) => {
                     const inputValue = parseFloat(e.target.value);
                     const eurValue =
-                      inputValue / sendMoneyAboroadForms.oneEurotoINR;
+                      inputValue / NRIRepatriationForms.oneEurotoINR;
                     handleInputChange("receivingAmountInEuro", eurValue);
                     handleInputChange("receivingAmountInINR", inputValue);
                     clearError("receivingAmountInINR");

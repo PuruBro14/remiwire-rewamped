@@ -77,8 +77,13 @@ export default function SendMoneyForm3({ documentProof }) {
   };
 
   const handleInputChange = (fieldName, value) => {
-    dispatch(setformValue({ [fieldName]: value }));
+    const trimmedValue = value.replace(/\s/g, "");
+
+    const sanitizedValue = trimmedValue.replace(/[^a-zA-Z0-9]/g, "");
+
+    dispatch(setformValue({ [fieldName]: sanitizedValue }));
   };
+
   return (
     <>
       {" "}
@@ -93,6 +98,7 @@ export default function SendMoneyForm3({ documentProof }) {
                 id="course_details"
                 className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                 placeholder=" "
+                value={sendMoneyAboroadForms.beneficiaryName}
                 onChange={(e) => {
                   handleInputChange("beneficiaryName", e.target.value);
                   clearError("beneficiaryName");
@@ -120,6 +126,7 @@ export default function SendMoneyForm3({ documentProof }) {
                 id="course_details"
                 className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                 placeholder=" "
+                value={sendMoneyAboroadForms.beneficiaryAddress}
                 onChange={(e) => {
                   handleInputChange("beneficiaryAddress", e.target.value);
                   clearError("beneficiaryAddress");
@@ -147,6 +154,7 @@ export default function SendMoneyForm3({ documentProof }) {
                 id="course_details"
                 className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                 placeholder=" "
+                value={sendMoneyAboroadForms.beneficiaryAccountNo}
                 onChange={(e) => {
                   handleInputChange("beneficiaryAccountNo", e.target.value);
                   clearError("beneficiaryAccountNo");
@@ -172,6 +180,7 @@ export default function SendMoneyForm3({ documentProof }) {
                 id="course_details"
                 className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                 placeholder=" "
+                value={sendMoneyAboroadForms.beneficiaryAccountNoRe}
                 onChange={(e) => {
                   handleInputChange("beneficiaryAccountNoRe", e.target.value);
                   clearError("beneficiaryAccountNoRe");
@@ -198,6 +207,7 @@ export default function SendMoneyForm3({ documentProof }) {
                 id="course_details"
                 className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                 placeholder=" "
+                value={sendMoneyAboroadForms.beneficiarySwiftCode}
                 onChange={(e) => {
                   handleInputChange("beneficiarySwiftCode", e.target.value);
                   clearError("beneficiarySwiftCode");
@@ -223,6 +233,7 @@ export default function SendMoneyForm3({ documentProof }) {
                 id="course_details"
                 className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                 placeholder=" "
+                value={sendMoneyAboroadForms.beneficiaryIBANNo}
                 onChange={(e) => {
                   handleInputChange("beneficiaryIBANNo", e.target.value);
                   clearError("beneficiaryIBANNo");

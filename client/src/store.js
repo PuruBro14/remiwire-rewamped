@@ -6,6 +6,7 @@ import bookCurrencySlice from "./utils/bookCurrencySlice";
 import BlockedAccountSlice from "./components/features/BlockedAccountSlice";
 import GICAccountSlice from "./components/features/GICAccountSlice";
 import SendMoneySlice from "./components/features/SendMoneySlice";
+import NRIRepatriationSlice from "./components/features/NRIRepatriationSlice";
 
 const store = configureStore({
   reducer: {
@@ -16,6 +17,7 @@ const store = configureStore({
     blockeAccountForms: BlockedAccountSlice,
     gicAccountForms: GICAccountSlice,
     sendMoneyAboroadForms: SendMoneySlice,
+    NRIRepatriationForms: NRIRepatriationSlice,
   },
 });
 

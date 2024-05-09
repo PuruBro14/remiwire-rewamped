@@ -9,7 +9,7 @@ const dotenv = require("dotenv");
 const addressRouter = require("./routes/address.routes");
 const contactRouter = require("./routes/contact_us.routes");
 const profileRoutes = require("./routes/Profile");
-const overSeaLoanRoutes = require("./routes/overseaEducationLoan.routes");
+// const overSeaLoanRoutes = require("./overseaEducationLoan.routes");
 
 dotenv.config();
 const PORT = process.env.PORT || 4000;
@@ -31,7 +31,7 @@ app.use("/api/v1", ordersRoutes);
 app.use("/api/v1/address", addressRouter);
 app.use("/api/v1", contactRouter);
 app.use("/api/v1/profile", profileRoutes);
-app.use("/api/v1/overseaEducationLoan", overSeaLoanRoutes);
+// app.use("/api/v1/overseaEducationLoan", overSeaLoanRoutes);
 
 app.get("/", (req, res) => {
   return res.json({

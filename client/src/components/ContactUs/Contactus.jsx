@@ -6,11 +6,12 @@ import { setScrollToComponentContact } from "../../utils/scrollSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { apiConnector } from "../../services/operations/apiconnector";
 import { contactUsEndPoint } from "../../services/apis";
+import toast from "react-hot-toast";
 
 export default function Contactus() {
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
-    name: "",
+    fullname: "",
     email: "",
     message: "",
   });
@@ -19,7 +20,7 @@ export default function Contactus() {
   const { scrollToComponentContact } = useSelector((state) => state.scroll1);
 
 
-  const { name, email, message } = formData;
+  const { fullname, email, message } = formData;
 
   const formDataHandler = (e) => {
     setFormData((prev) => ({
@@ -39,6 +40,7 @@ export default function Contactus() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const toastId = toast.loading("Loading...");
     try {
       setLoading(true);
 
@@ -48,14 +50,17 @@ export default function Contactus() {
         formData
       );
       setFormData({
-        name: "",
+        fullname: "",
         email: "",
         message: "",
       });
+      toast.success("Email Sent Successfully");
     } catch (error) {
       console.log(error.message);
       setLoading(false);
+      toast.error("Email Not Sent");
     }
+    toast.dismiss(toastId);
   };
 
 
@@ -78,12 +83,13 @@ export default function Contactus() {
               <div>
                 <input
                   type="text"
-                  name="name"
-                  id="name"
+                  name="fullname"
+                  id="fullname"
                   placeholder="Name"
                   className="w-full border-b outline-none"
-                  value={name}
+                  value={fullname}
                   onChange={formDataHandler}
+                  required
                 />
               </div>
 
@@ -96,6 +102,7 @@ export default function Contactus() {
                   className="w-full border-b outline-none"
                   value={email}
                   onChange={formDataHandler}
+                  required
                 />
               </div>
 
@@ -109,6 +116,7 @@ export default function Contactus() {
                   className="w-full border-b outline-none"
                   value={message}
                   onChange={formDataHandler}
+                  required
                 />
               </div>
 
