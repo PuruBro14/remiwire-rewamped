@@ -1,6 +1,7 @@
 const adminOverseaUserTemplate = require("../mail/templates/adminOverseaEnqiuryTemplate");
 const userSeaTemplate = require("../mail/templates/userOverseaTemplate");
 const SendMoney = require("../models/SendMoney");
+const { uploadImageToCloudinary } = require("../utils/imageUploader");
 const mailSender = require("../utils/mailSender");
 // const { uploadImageToCloudinary } = require("../utils/imageUploader");
 
@@ -20,9 +21,7 @@ exports.createSendMoney = async (req, res) => {
       receivingAmountInINR,
       oneEurotoINR,
       pancardNumber,
-      pancardImage,
       passportNumber,
-      // passportImage,
       blockACSheetDoc,
       remiterFirstName,
       remiterLastName,
@@ -39,6 +38,9 @@ exports.createSendMoney = async (req, res) => {
       beneficiaryCountry,
     } = req.body;
 
+    const { pancardImage, passportImage } = req.files;
+
+
     // Validate required fields
     const requiredFields = [
       transferFromCountry,
@@ -52,9 +54,9 @@ exports.createSendMoney = async (req, res) => {
       receivingAmountInINR,
       oneEurotoINR,
       pancardNumber,
-      // pancardImage,
+      pancardImage,
       passportNumber,
-      // passportImage,
+      passportImage,
       blockACSheetDoc,
       remiterFirstName,
       remiterLastName,
@@ -70,6 +72,8 @@ exports.createSendMoney = async (req, res) => {
       beneficiaryIBANNo,
       beneficiaryCountry,
     ];
+
+    console.log(transferFromCountry,pancardImage);
     const missingFields = requiredFields.filter((field) => !field);
     if (missingFields.length > 0) {
       return res.status(400).json({
@@ -78,18 +82,17 @@ exports.createSendMoney = async (req, res) => {
         missingFields,
       });
     }
+transferFromCountry;
 
-    // Upload images to Cloudinary
-    // const panImage = await uploadImageToCloudinary(
-    //   pancardImage,
-    //   process.env.FOLDER_NAME
-    // );
-    // const passportImg = await uploadImageToCloudinary(
-    //   passportImage,
-    //   process.env.FOLDER_NAME
-    // );
+        const panImage = await uploadImageToCloudinary(
+          pancardImage,
+          process.env.FOLDER_NAME
+        );
+    const passportImg = await uploadImageToCloudinary(
+      passportImage,
+      process.env.FOLDER_NAME
+    );
 
-    // Create new SendMoney instance
     const newSendMoney = await SendMoney.create({
       // userId,
       transferFromCountry,
@@ -103,9 +106,9 @@ exports.createSendMoney = async (req, res) => {
       receivingAmountInINR,
       oneEurotoINR,
       pancardNumber,
-      // pancardImage: panImage.url,
+      pancardImage: panImage.url,
       passportNumber,
-      // passportImage: passportImg.url,
+      passportImage: passportImg.url,
       blockACSheetDoc,
       remiterFirstName,
       remiterLastName,

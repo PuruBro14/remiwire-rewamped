@@ -12,6 +12,8 @@ const profileRoutes = require("./routes/Profile");
 const NRIRepatriationRoutes = require("./routes/nriRepatriatoin");
 const sendMoneyRoutes = require("./routes/sendMoney");
 const blockedAccountRoutes = require("./routes/blockedAccount");
+const { cloudinaryConnect } = require("./config/cloudinary");
+const fileUpload = require("express-fileupload");
 // const overSeaLoanRoutes = require("./overseaEducationLoan.routes");
 
 dotenv.config();
@@ -28,6 +30,15 @@ app.use(
     credentials: true,
   })
 );
+
+app.use(
+  fileUpload({
+    useTempFiles: true,
+    tempFileDir: "/tmp",
+  })
+);
+//cloudinary connection
+cloudinaryConnect();
 
 app.use("/api/v1/auth", userRoutes);
 app.use("/api/v1", ordersRoutes);

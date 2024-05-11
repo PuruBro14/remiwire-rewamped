@@ -1,7 +1,7 @@
 const adminOverseaUserTemplate = require("../mail/templates/adminOverseaEnqiuryTemplate");
 const userSeaTemplate = require("../mail/templates/userOverseaTemplate");
 const BlockedAccount = require("../models/blockedAccount");
-// const { uploadImageToCloudinary } = require("../utils/imageUploader");
+const { uploadImageToCloudinary } = require("../utils/imageUploader");
 
 exports.createBlockedAccount = async (req, res) => {
   try {
@@ -36,7 +36,7 @@ exports.createBlockedAccount = async (req, res) => {
       beneficiaryCountry,
     } = req.body;
 
-    // const { pancardImage, passportImage } = req.files;
+    const { pancardImage, passportImage } = req.files;
 
     if (
       !transferFromCountry ||
@@ -45,9 +45,9 @@ exports.createBlockedAccount = async (req, res) => {
       !receivingCurrency ||
       !receivingAmountInEuro ||
       !pancardNumber ||
-      // !pancardImage ||
+      !pancardImage ||
       !passportNumber ||
-      // !passportImage ||
+      !passportImage ||
       !blockACSheetDoc ||
       !remiterFirstName ||
       !remiterLastName ||
@@ -69,14 +69,14 @@ exports.createBlockedAccount = async (req, res) => {
       });
     }
 
-    // const panImage = await uploadImageToCloudinary(
-    //   pancardImage,
-    //   process.env.FOLDER_NAME
-    // );
-    // const passportImg = await uploadImageToCloudinary(
-    //   passportImage,
-    //   process.env.FOLDER_NAME
-    // );
+    const panImage = await uploadImageToCloudinary(
+      pancardImage,
+      process.env.FOLDER_NAME
+    );
+    const passportImg = await uploadImageToCloudinary(
+      passportImage,
+      process.env.FOLDER_NAME
+    );
 
     const newBlockedAccount = await BlockedAccount.create({
       userId,
@@ -96,9 +96,9 @@ exports.createBlockedAccount = async (req, res) => {
       },
       identificationDetails: {
         pancardNumber,
-        // pancardImage: panImage.url,
+        pancardImage: panImage.url,
         passportNumber,
-        // passportImage: passportImg.url,
+        passportImage: passportImg.url,
         blockACSheetDoc,
       },
       remitterDetails: {

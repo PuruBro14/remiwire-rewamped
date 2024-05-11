@@ -1,6 +1,7 @@
 const adminOverseaUserTemplate = require("../mail/templates/adminOverseaEnqiuryTemplate");
 const userSeaTemplate = require("../mail/templates/userOverseaTemplate");
 const NRIRepatriation = require("../models/nriRepatriation");
+const { uploadImageToCloudinary } = require("../utils/imageUploader");
 const mailSender = require("../utils/mailSender");
 // const { uploadImageToCloudinary } = require("../utils/imageUploader");
 
@@ -39,7 +40,7 @@ exports.createNRIRepatriation = async (req, res) => {
       beneficiaryCountry,
     } = req.body;
 
-    // const { pancardImage, passportImage } = req.files;
+    const { pancardImage, passportImage } = req.files;
 
     if (
       !transferFromCountry ||
@@ -48,9 +49,9 @@ exports.createNRIRepatriation = async (req, res) => {
       !receivingCurrency ||
       !receivingAmountInEuro ||
       !pancardNumber ||
-      // !pancardImage ||
+      !pancardImage ||
       !passportNumber ||
-      // !passportImage ||
+      !passportImage ||
       !blockACSheetDoc ||
       !remiterFirstName ||
       !remiterLastName ||
@@ -74,14 +75,14 @@ exports.createNRIRepatriation = async (req, res) => {
 
     console.log("controller 2 ");
 
-    // const panImage = await uploadImageToCloudinary(
-    //   pancardImage,
-    //   process.env.FOLDER_NAME
-    // );
-    // const passportImg = await uploadImageToCloudinary(
-    //   passportImage,
-    //   process.env.FOLDER_NAME
-    // );
+    const panImage = await uploadImageToCloudinary(
+      pancardImage,
+      process.env.FOLDER_NAME
+    );
+    const passportImg = await uploadImageToCloudinary(
+      passportImage,
+      process.env.FOLDER_NAME
+    );
 
     const newNRIRepatriation = await NRIRepatriation.create({
       transferDetails: {
@@ -102,9 +103,9 @@ exports.createNRIRepatriation = async (req, res) => {
       },
       identificationDetails: {
         pancardNumber,
-        // pancardImage: panImage.url,
+        pancardImage: panImage.url,
         passportNumber,
-        // passportImage: passportImg.url,
+        passportImage: passportImg.url,
         blockACSheetDoc,
       },
       remitterDetails: {
