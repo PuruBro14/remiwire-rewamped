@@ -1,6 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Privacy from "./assets/img/privacy.jpg";
 export default function PrivacyPolicy() {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <>
       <div className="container mx-auto px-4">

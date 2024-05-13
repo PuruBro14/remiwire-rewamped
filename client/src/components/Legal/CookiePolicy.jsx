@@ -1,6 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Cookie from "./assets/img/cookie.jpg";
 export default function CookiePolicy() {
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <>
       <div className="container mx-auto px-4">
