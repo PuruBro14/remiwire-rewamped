@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setformValue } from "../../features/SendMoneySlice";
 
-export default function SendMoneyForm3({ documentProof }) {
+export default function SendMoneyForm3({ setformStep,documentProof }) {
   const [errors, setErrors] = useState({
     beneficiaryName: "",
     beneficiaryAddress: "",
@@ -69,7 +69,7 @@ export default function SendMoneyForm3({ documentProof }) {
 
     // If no errors, submit the form
     if (Object.keys(newErrors).length === 0) {
-      setformStep(2); // Proceed to next step
+      setformStep(3); // Proceed to next step
     }
   };
   const clearError = (fieldName) => {
