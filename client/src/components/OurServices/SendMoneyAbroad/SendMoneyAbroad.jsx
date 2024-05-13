@@ -5,9 +5,10 @@ import countriesList from "../../../utils/countryList";
 import SendMoneyForm1 from "./SendMoneyForm1";
 import SendMoneyForm2 from "./SendMoneyForm2";
 import SendMoneyForm3 from "./SendMoneyForm3";
+import SendMoneyBifurcation from "./SendMoneyBifurcation";
 
 export default function SendMoneyAbroad() {
-  const [formStep, setformStep] = useState(0);
+  const [formStep, setformStep] = useState(1);
 
   const [documentProof, setDocumentProofs] = useState({
     panCardImage: "",
@@ -33,7 +34,7 @@ export default function SendMoneyAbroad() {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-5">
         <div className="p-4">
-          {formStep !== 3 && (
+          {formStep !== 4 && (
             <>
               <div className="sma_pclara bg-white shadow-lg rounded-lg p-6">
                 {formStep === 0 && (
@@ -55,6 +56,15 @@ export default function SendMoneyAbroad() {
                 {formStep === 2 && (
                   <>
                     <SendMoneyForm3
+                      setformStep={setformStep}
+                      documentProof={documentProof}
+                    />
+                  </>
+                )}
+
+                {formStep === 3 && (
+                  <>
+                    <SendMoneyBifurcation
                       setformStep={setformStep}
                       documentProof={documentProof}
                     />

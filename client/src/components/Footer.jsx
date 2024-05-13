@@ -6,21 +6,7 @@ import {
   FaInstagramSquare,
   FaTwitter,
 } from "react-icons/fa";
-const Products = [
-  "Send Money Abroad",
-  "Forex Prepaid Cards",
-  "Currency Notes",
-  "Guaranteed Investment",
-  "Certificate",
-  "Western Union",
-];
-const QuickLinks = [
-  "About Us",
-  "Home",
-  "Contribute",
-  "Privacy Policy",
-  "Sitemap",
-];
+
 const Footer = () => {
   return (
     <div className="bg-white shadow-2xl">
@@ -36,43 +22,30 @@ const Footer = () => {
 
             <div className="w-[48%] lg:w-[25%] mb-7 lg:pl-0">
               <h1 className="text-richblack-900 font-semibold text-[16px]">
-                Products
+                Our Services
               </h1>
 
               <div className="flex flex-col gap-2 mt-2">
-                {Products.map((ele, index) => {
-                  return (
-                    <div
-                      key={index}
-                      className="text-[14px] cursor-pointer hover:text-richblack-50 transition-all duration-200"
-                    >
-                      <Link to={ele.split(" ").join("-").toLowerCase()}>
-                        {ele}
-                      </Link>
-                    </div>
-                  );
-                })}
+                <Link to="sendmoneyabroad">Send Money Abroad</Link>
+                <Link to="prepaidtravelcard">Prepaid Travel Card</Link>
+                <Link to="forexcurrency">Forex Currency</Link>
+                <Link to="NRIRepatriation">NRI Repatriation</Link>
+                <Link to="BlockedAccountPayment">Blocked Account Payment</Link>
+                <Link to="gicaccountpayment">GIC Account Payment</Link>
+                <Link to="OverseasEducationLoan">Overseas Education Loan</Link>
+                <Link to="creategicaccount">Create GIC Account</Link>
               </div>
             </div>
 
             <div className="w-[48%] lg:w-[25%] mb-7 lg:pl-0">
               <h1 className="text-richblack-900 font-semibold text-[16px]">
-                Quick Links
+                Legal
               </h1>
 
               <div className="flex flex-col gap-2 mt-2">
-                {QuickLinks.map((ele, index) => {
-                  return (
-                    <div
-                      key={index}
-                      className="text-[14px] cursor-pointer hover:text-richblack-50 transition-all duration-200"
-                    >
-                      <Link to={ele.split(" ").join("-").toLowerCase()}>
-                        {ele}
-                      </Link>
-                    </div>
-                  );
-                })}
+                <Link to="termsofuse">Terms Of Use</Link>
+                <Link to="privacypolicy">Privacy Policy</Link>
+                <Link to="cookie">Cookies Policy</Link>
               </div>
             </div>
           </div>
@@ -83,7 +56,7 @@ const Footer = () => {
         <div className="flex justify-between lg:items-start items-center flex-col lg:flex-row gap-3 w-full">
           <div className="flex flex-col md:flex-row w-full justify-between items-center">
             <div className="text-center">
-              Copyright © 2024 All Rights Reserved by remiwire.
+              Copyright © 2024 All Rights Reserved by Remiwire.
             </div>
             <ul className="flex flex-row text-white gap-8 mt-7 md:mt-0">
               <li className="h-10 w-10 bg-richblack-300 rounded-full flex justify-center items-center hover:bg-richblue-500 cursor-pointer transition-all duration-200">

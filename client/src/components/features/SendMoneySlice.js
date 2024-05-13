@@ -60,8 +60,11 @@ const SendMoneySlice = createSlice({
         beneficiaryIBANNo,
         beneficiaryCountry,
         receivingCurrency,
+        passportNumber,
       } = action.payload;
 
+      state.passportNumber =
+        passportNumber !== undefined ? passportNumber : state.passportNumber;
       state.transferFromState =
         transferFromState !== undefined
           ? transferFromState

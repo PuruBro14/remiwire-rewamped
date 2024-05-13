@@ -1,10 +1,10 @@
 import Home from "./components/HomePage/Home";
 import Login from "./components/Form/Login";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import SendMoneyAbroad from "./components/OurServices/SendMoneyAbroad/SendMoneyAbroad";
+
 import PrepaidTravelCard from "./components/OurServices/PrepaidTravelCard";
-import ForexCurrency from "./components/OurServices/ForexCurrency";
-import NRIRepatriation from "./components/OurServices/NRIRepatriation";
+
+import NRIRepatriation from "./components/OurServices/NRIREPATRIATION/NRIRepatriation";
 import BlockedAccountHome from "./components/OurServices/BlockedAccountPayment/BlockedAccountHome";
 import OverseasEducationLoan from "./components/OurServices/OverseasEducationLoan";
 import Signup from "./components/pages/Signup";
@@ -25,6 +25,11 @@ import AdminHome from "./pages/Admin/AdminHome";
 import MyOrders from "./pages/MyOrders";
 import CreateGICAccount from "./components/OurServices/CreateGICAccount";
 import GICAccountHome from "./components/OurServices/GICAccountPayment/GICAccountHome";
+import SendMoneyAbroad from "./components/OurServices/SendMoneyAbroad/SendMoneyAbroad";
+import ForexCurrencyExchange from "./components/OurServices/ForexCurrencyExchange/ForexCurrencyExchange";
+import CookiePolicy from "./components/Legal/CookiePolicy";
+import PrivacyPolicy from "./components/Legal/PrivacyPolicy";
+import TermsOfUse from "./components/Legal/TermsOfUse";
 
 function App() {
   return (
@@ -49,6 +54,31 @@ function App() {
           }
         ></Route>
         <Route
+          path="/cookie"
+          element={
+            <OpenRoute>
+              <CookiePolicy />
+            </OpenRoute>
+          }
+        ></Route>
+        <Route
+          path="/privacypolicy"
+          element={
+            <OpenRoute>
+              <PrivacyPolicy />
+            </OpenRoute>
+          }
+        ></Route>
+        <Route
+          path="/termsofuse"
+          element={
+            <OpenRoute>
+              <TermsOfUse />
+            </OpenRoute>
+          }
+        ></Route>
+
+        <Route
           path="/login"
           element={
             <OpenRoute>
@@ -60,7 +90,7 @@ function App() {
         <Route path="sendmoneyabroad" element={<SendMoneyAbroad />}></Route>
         <Route path="/trackandrecieve" element={<TrackShipment />}></Route>
         <Route path="prepaidtravelcard" element={<PrepaidTravelCard />}></Route>
-        <Route path="forexcurrency" element={<ForexCurrency />}></Route>
+        <Route path="forexcurrency" element={<ForexCurrencyExchange />}></Route>
         <Route path="nrirepatriation" element={<NRIRepatriation />}></Route>
         <Route
           path="blockedaccountpayment"
