@@ -26,7 +26,7 @@ import MyOrders from "./pages/MyOrders";
 import CreateGICAccount from "./components/OurServices/CreateGICAccount";
 import GICAccountHome from "./components/OurServices/GICAccountPayment/GICAccountHome";
 import SendMoneyAbroad from "./components/OurServices/SendMoneyAbroad/SendMoneyAbroad";
-import ForexCurrencyExchange from "./components/OurServices/ForexCurrencyExchange/ForexCurrencyExchange";
+import ForexCurrencyExchange from "./components/OurServices/ForexCurrency";
 import CookiePolicy from "./components/Legal/CookiePolicy";
 import PrivacyPolicy from "./components/Legal/PrivacyPolicy";
 import TermsOfUse from "./components/Legal/TermsOfUse";
