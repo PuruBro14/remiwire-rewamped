@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import PrepaidTravelCard from "./components/OurServices/PrepaidTravelCard";
 
-import NRIRepatriation from "./components/OurServices/NRIRepatriation";
+import NRIRepatriation from "./components/OurServices/NRIREPATRIATION/NRIRepatriation";
 import BlockedAccountHome from "./components/OurServices/BlockedAccountPayment/BlockedAccountHome";
 import OverseasEducationLoan from "./components/OurServices/OverseasEducationLoan";
 import Signup from "./components/pages/Signup";

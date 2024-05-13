@@ -8,7 +8,7 @@ import SendMoneyForm3 from "./SendMoneyForm3";
 import SendMoneyBifurcation from "./SendMoneyBifurcation";
 
 export default function SendMoneyAbroad() {
-  const [formStep, setformStep] = useState(1);
+  const [formStep, setformStep] = useState(0);
 
   const [documentProof, setDocumentProofs] = useState({
     panCardImage: "",
@@ -32,6 +32,7 @@ export default function SendMoneyAbroad() {
           World.
         </p>
       </div>
+      
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-5">
         <div className="p-4">
           {formStep !== 4 && (
@@ -78,6 +79,7 @@ export default function SendMoneyAbroad() {
           <img src={image1} alt="Prepaid Travel Card" className="w-full" />
         </div>
       </div>
+
     </div>
   );
 }
