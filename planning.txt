@@ -1,0 +1,13 @@
+order id -for refund
+
+verify payment signature-for authorisation
+
+order states-created,attempted,paid 
+
+how do i know ki paise mil gaye-web hook 
+
+cash free me web hook-is particular route ko hit kar dena
+secret key verify karne ke sath 
+
+capture-pay order create 
+

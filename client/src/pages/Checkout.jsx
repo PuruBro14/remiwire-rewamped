@@ -49,7 +49,7 @@ const Checkout = () => {
   },[])
 
   return (
-    <div className='bg-gradient-to-r from-blue-100 to-blue-500'>
+    <div>
     <div className='w-11/12 mx-auto max-w-[900px]'>
       <div className='flex flex-col gap-5 py-16 pb-48 '>
         {/* first div  */}

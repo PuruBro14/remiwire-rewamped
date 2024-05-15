@@ -63,8 +63,8 @@ const SignupForm = () => {
   };
   return (
     <div className=''>
-        <div className="w-full md:w-8/12 my-6">
-            <div className="text-4xl font-semibold text-richblack-5 mt-6 lg:mt-0">
+        <div className="w-full md:w-8/12 my-2 shadow-md md:shadow-xl px-10 py-5 mx-auto">
+            <div className="text-4xl font-semibold text-richblack-800 mt-6 lg:mt-0">
              Register Here
             </div>
 
@@ -73,11 +73,11 @@ const SignupForm = () => {
               <div className="flex flex-col gap-5 mt-7">
                 <div className="flex flex-row items-center">
                   <div className="flex flex-col w-full">
-                    <label className="text-richblack-5">Username <sup className="text-pink-200">*</sup></label>
+                    <label className="text-richblack-700">Username <sup className="text-pink-200">*</sup></label>
                     <input
                       type="text"
                       placeholder="Enter Your UserName"
-                      className="mt-3 p-3 rounded-lg bg-richblue-800 text-white"
+                       className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer placeholder-black::placeholder"
                       name="userName"
                       value={formData.userName}
                       onChange={(e) => handleFormData(e)}
@@ -89,7 +89,7 @@ const SignupForm = () => {
 
                  <div className="flex flex-col relative">
                   <label
-                    className="text-richblack-5"
+                    className="text-richblack-700"
                     onChange={(e) => handleFormData()}
                   >
                     First Name <sup className="text-pink-200">*</sup>
@@ -97,7 +97,7 @@ const SignupForm = () => {
                   <input
                     type="text"
                     placeholder="Enter Your First Name"
-                    className="relative mt-3 p-3 rounded-lg bg-richblue-800 text-white"
+                     className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer placeholder-black::placeholder"
                     name="firstName"
                     value={formData.firstName}
                     onChange={(e) => handleFormData(e)}
@@ -107,7 +107,7 @@ const SignupForm = () => {
 
                  <div className="flex flex-col relative">
                   <label
-                    className="text-richblack-5"
+                    className="text-richblack-700"
                     onChange={(e) => handleFormData()}
                   >
                     Last Name <sup className="text-pink-200">*</sup>
@@ -115,7 +115,7 @@ const SignupForm = () => {
                   <input
                     type="text"
                     placeholder="Enter Your Last Name"
-                    className="relative mt-3 p-3 rounded-lg bg-richblue-800 text-white"
+                     className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer placeholder-black::placeholder"
                     name="lastName"
                     value={formData.lastName}
                     onChange={(e) => handleFormData(e)}
@@ -125,7 +125,7 @@ const SignupForm = () => {
 
                 <div className="flex flex-col relative">
                   <label
-                    className="text-richblack-5"
+                    className="text-richblack-700"
                     onChange={(e) => handleFormData()}
                   >
                     Phone Number <sup className="text-pink-200">*</sup>
@@ -133,7 +133,7 @@ const SignupForm = () => {
                   <input
                     type="number"
                     placeholder="Enter Your phone number"
-                    className="relative mt-3 p-3 rounded-lg bg-richblue-800 text-white"
+                     className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer placeholder-black::placeholder"
                     name="phoneNo"
                     value={formData.phoneNo}
                     onChange={(e) => handleFormData(e)}
@@ -143,7 +143,7 @@ const SignupForm = () => {
 
                 <div className="flex flex-col relative">
                   <label
-                    className="text-richblack-5"
+                    className="text-richblack-700"
                     onChange={(e) => handleFormData()}
                   >
                     Email address <sup className="text-pink-200">*</sup>
@@ -151,7 +151,7 @@ const SignupForm = () => {
                   <input
                     type="email"
                     placeholder="Enter Your email address"
-                    className="relative mt-3 p-3 rounded-lg bg-richblue-800 text-white"
+                     className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer placeholder-black::placeholder"
                     name="email"
                     value={formData.email}
                     onChange={(e) => handleFormData(e)}
@@ -163,11 +163,11 @@ const SignupForm = () => {
 
                 <div className="flex flex-row items-center gap-5">
                   <div className="flex flex-col relative  w-full">
-                    <label className="text-richblack-5">Create Password <sup className="text-pink-200">*</sup></label>
+                    <label className="text-richblack-700">Create Password <sup className="text-pink-200">*</sup></label>
                     <input
                       type={showPassword ? "text" : "password"}
                       placeholder="Enter Your password"
-                      className="mt-3 p-3 rounded-lg bg-richblue-800 text-white"
+                       className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer placeholder-black::placeholder"
                       name="password"
                       value={formData.password}
                       onChange={(e) => handleFormData(e)}
@@ -175,14 +175,14 @@ const SignupForm = () => {
                     />
                     {!showPassword && (
                       <AiFillEye
-                        className="bg-white absolute right-7 top-[45px] cursor-pointer"
+                        className="bg-white absolute right-7 top-[20px] cursor-pointer"
                         size={30}
                         onClick={() => setShowPassword(true)}
                       />
                     )}
                     {showPassword && (
                       <AiFillEyeInvisible
-                        className="bg-white absolute right-7 top-[45px] cursor-pointer"
+                        className="bg-white absolute right-7 top-[20px] cursor-pointer"
                         size={30}
                         onClick={() => setShowPassword(false)}
                       />

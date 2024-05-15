@@ -33,16 +33,16 @@ const Login = ({ passedFromSignup }) => {
   };
 
   return (
-    <div className="bg-gradient-to-r from-blue-100 to-blue-500 pb-52 h-calc w-full">
+    <div className="md:pb-28 h-calc w-full">
       <div className={`${!passedFromSignup ? "lg:h-[150px]" : ""}`}></div>
       <div
         className={`${
           !passedFromSignup ? "w-11/12 mx-auto justify-center flex" : "mt-8"
         }`}
       >
-        <div className="flex flex-col w-[80%] mt-6 lg:mt-0">
-          <div className="w-full md:w-8/12">
-            <div className="text-4xl font-semibold text-richblack-5 mt-6 lg:mt-0">
+        <div className="flex flex-col w-[100%] md:w-[50%] mx-auto shadow-md md:shadow-xl px-10 py-16 mt-6 lg:mt-0">
+          <div className="w-full">
+            <div className="text-4xl font-semibold text-richblack-800 mt-6 lg:mt-0">
               Login Here
             </div>
 
@@ -51,7 +51,7 @@ const Login = ({ passedFromSignup }) => {
               <div className="flex flex-col gap-5 mt-7">
                 <div className="flex flex-col relative">
                   <label
-                    className="text-richblack-5"
+                    className="text-richblack-700"
                     onChange={(e) => handleFormData()}
                   >
                     Email address
@@ -63,7 +63,7 @@ const Login = ({ passedFromSignup }) => {
                     style={{
                       boxShadow: "inset 0px -1px 0px rgba(255, 255, 255, 0.18)",
                     }}
-                    className="w-full mt-3 p-3 rounded-lg bg-richblue-800 text-white"
+                    className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer placeholder-black::placeholder"
                     name="email"
                     value={email}
                     onChange={(e) => handleOnChange(e)}
@@ -75,7 +75,7 @@ const Login = ({ passedFromSignup }) => {
 
                 <div className="flex flex-row items-center gap-5">
                   <div className="flex flex-col relative  w-full">
-                    <label className="text-richblack-5">Create Password
+                    <label className="text-richblack-700">Create Password
                     <sup className="text-pink-200">*</sup>
                     </label>
                     <input
@@ -85,7 +85,7 @@ const Login = ({ passedFromSignup }) => {
                         boxShadow:
                           "inset 0px -1px 0px rgba(255, 255, 255, 0.18)",
                       }}
-                      className="mt-3 p-3 rounded-lg bg-richblue-800 text-white"
+                      className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer placeholder-black::placeholder"
                       name="password"
                       value={password}
                       onChange={(e) => handleOnChange(e)}
@@ -93,14 +93,14 @@ const Login = ({ passedFromSignup }) => {
                     />
                     {!showPassword && (
                       <AiFillEye
-                        className="text-richblack-5 absolute right-7 top-[45px] cursor-pointer"
+                        className=" absolute right-7 top-[20px] cursor-pointer"
                         size={30}
                         onClick={() => setShowPassword(true)}
                       />
                     )}
                     {showPassword && (
                       <AiFillEyeInvisible
-                        className="text-richblack-5 absolute right-7 top-[45px] cursor-pointer"
+                        className=" absolute right-7 top-[20px] cursor-pointer"
                         size={30}
                         onClick={() => setShowPassword(false)}
                       />

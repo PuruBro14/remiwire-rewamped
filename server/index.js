@@ -15,8 +15,11 @@ const blockedAccountRoutes = require("./routes/blockedAccount");
 const { cloudinaryConnect } = require("./config/cloudinary");
 const fileUpload = require("express-fileupload");
 // const overSeaLoanRoutes = require("./overseaEducationLoan.routes");
+const {Cashfree}=require('cashfree-pg');
+const crypto = require("crypto");
+const axios=require("axios");
 
-dotenv.config();
+require('dotenv').config();
 const PORT = process.env.PORT || 4000;
 
 database.connect();
@@ -37,6 +40,11 @@ app.use(
     tempFileDir: "/tmp",
   })
 );
+
+Cashfree.XClientId = process.env.CLIENT_ID;
+Cashfree.XClientSecret = process.env.CLIENT_SECRET;
+Cashfree.XEnvironment = Cashfree.Environment.SANDBOX;
+
 //cloudinary connection
 cloudinaryConnect();
 
@@ -51,8 +59,107 @@ app.use("/api/v1", sendMoneyRoutes);
 app.use("/api/v1", blockedAccountRoutes);
 
 
+function generateOrderId() {
+  const uniqueId = crypto.randomBytes(16).toString("hex");
+
+  const hash = crypto.createHash("sha256");
+  hash.update(uniqueId);
+
+  const orderId = hash.digest("hex");
+
+  return orderId.substring(0, 12);
+}
+
+app.get("/payment", async (req, res) => {
+  console.log("Request received for /payment");
+  try {
+    const request = {
+      order_amount: 1.0,
+      order_currency: "INR",
+      order_id: await generateOrderId(),
+      customer_details: {
+        customer_id: "remiwire",
+        customer_phone: "9589068752",
+        customer_name: "goku",
+        customer_email: "goku@example.com",
+      },
+    };
+
+    Cashfree.PGCreateOrder("2023-08-01", request)
+      .then((response) => {
+        console.log("Payment creation response:", response.data);
+        res.json(response.data);
+      })
+      .catch((error) => {
+        console.error("Payment creation error:", error.response.data.message);
+        res.status(500).json({ error: "Payment creation failed" });
+      });
+  } catch (error) {
+    console.error("Internal server error:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+
+app.post("/verify", async (req, res) => {
+  try {
+    let { orderId } = req.body;
+
+    Cashfree.PGOrderFetchPayments("2023-08-01", orderId)
+      .then((response) => {
+        res.json(response.data);
+      })
+      .catch((error) => {
+        console.error(error.response.data.message);
+      });
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+app.post("/api/upload-document", async (req, res) => {
+  console.log("runned");
+  try {
+    // Check if file was uploaded
+    console.log("yaha runned");
+    if (!req.files || Object.keys(req.files).length === 0) {
+      return res.status(400).json({ error: "No files were uploaded." });
+    }
+
+    const document = req.files.file;
+
+    // Make a request to Cashfree API for document upload
+    const API_URL = `https://sandbox.cashfree.com/pg/lrs/orders/order_001_nkyyyg/documents/upload`;
+
+    const formData = new FormData();
+    formData.append("files", document.data);
+    console.log("files", formData);
+
+    const response = await axios.post(API_URL, formData, {
+      headers: {
+        "x-client-id": "TEST10191770356b0bd65101d6e3d1ea07719101",
+        "x-client-secret":
+          "cfsk_ma_test_92343bedf3b0e95988bd61078376c370_4e7f49e2 ", 
+        "x-api-version": "2023-03-01",
+      },
+    });
+
+    console.log("Response from Cashfree API:", response.data);
+    res.json({
+      success: true,
+      message: "File uploaded and API called successfully.",
+    });
+  } catch (error) {
+    console.error(
+      "Error uploading file:",
+      error.response?.data || error.message
+    );
+    res.status(500).json({ error: "Error uploading file." });
+  }
+});
 
 app.get("/", (req, res) => {
+  console.log("this is running");
   return res.json({
     success: true,
     message: "Your server is up and running....",
@@ -63,34 +170,3 @@ app.listen(PORT, () => {
   console.log(`App is running at ${PORT}`);
 });
 
-/*
-{
-  "transferFromCountry": "India",
-  "transferFromState": "Delhi",
-  "transferFromCity": "New Delhi",
-  "transferToCountry": "USA",
-  "purposeOfTransfer": "Investment",
-  "receivingCurrency": "USD",
-  "sendingCurrencyIn": "INR",
-  "receivingAmountInEuro": 1000,
-  "receivingAmountInINR": 75000,
-  "oneEurotoINR": 75,
-  "pancardNumber": "ABCDE1234F",
-  "passportNumber": "ABC123XYZ",
-  "blockACSheetDoc": "BlockACSheet.pdf",
-  "remiterFirstName": "John",
-  "remiterLastName": "Doe",
-  "remiterAccountNo": "1234567890",
-  "remiterIFSCCode": "ABCD1234567",
-  "remiterEmailID": "john.doe@example.com",
-  "remiterMobileNo": "9876543210",
-  "beneficiaryName": "Alice Smith",
-  "beneficiaryAddress": "123 Main Street, Anytown",
-  "beneficiaryAccountNo": "0987654321",
-  "beneficiaryAccountNoRe": "0987654321",
-  "beneficiarySwiftCode": "SWIFT123",
-  "beneficiaryIBANNo": "IBAN987",
-  "beneficiaryCountry": "USA"
-}
-
-*/

@@ -40,7 +40,7 @@ export const ContentSlider = () => {
   };
 
   return (
-    <div className='my-8 md:mt-16 w-11/12 max-w-maxContent mx-auto'>
+    <div className='my-8 md:mt-20 w-11/12 max-w-maxContent mx-auto'>
         <Slider {...settings}>
       <div>
         <div>
@@ -133,6 +133,12 @@ export const ContentSlider = () => {
       </div>
 
     </Slider>
+    <style jsx>{`
+        .slick-dots {
+        bottom: -60px;
+        right:60px;
+        }
+      `}</style>
 </div>
   );
 };

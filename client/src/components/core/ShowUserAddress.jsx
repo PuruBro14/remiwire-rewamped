@@ -33,19 +33,19 @@ const ShowUserAddress = ({deliveryAddress,setDeliveryAddress}) => {
                 >
         <div className='flex flex-row justify-between items-center gap-5 p-5 border-b'>
             <div className='flex flex-col gap-5'>
-                <div className='flex flex-row gap-3 items-center'>
+                <div className='flex flex-row gap-3 items-center text-richblack-800'>
                     <p>{user?.firstName + " " + user?.lastName +","}</p>
                     <p>9589068752</p>
                 </div>
-                <div className='uppercase'>
+                <div className='uppercase text-richblack-800'>
                     {currentItem?.address + "," + currentItem?.country}
                 </div>
-            <div>
+            <div className='uppercase text-richblack-800'>
                 {currentItem?.zipcode}
             </div>
             </div>
             <div className='relative cursor-pointer'>
-            <HiOutlineDotsVertical />
+            <HiOutlineDotsVertical className='text-black'/>
             {isHovered && 
             <div className='absolute flex flex-col bg-white p-3 right-[6px] -top-[20px]'>
                 <p className='text-richblack-800 hover:text-richblue-200'>Edit</p>

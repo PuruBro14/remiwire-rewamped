@@ -112,9 +112,9 @@ const ManageAddress = ({checkoutPageAddress,setAddAddress,setViewAddress,editAdd
     <>
       <form onSubmit={handleSubmit(submitAddress)}>
         <div className='my-5 flex flex-col gap-y-6 rounded-md'>
-           {!checkoutPageAddress && <div className='flex flex-row gap-5 items-center border border-richblack-50 p-4 cursor-pointer' onClick={()=>setShowAddressField(true)}>
-            <FiPlus className='text-richblack-5 text-3xl'/>
-            <p className='uppercase text-2xl text-richblack-5'>Add a new address</p>
+           {!checkoutPageAddress && <div className='flex flex-row gap-5 items-center border border-richblack-700 p-4 cursor-pointer' onClick={()=>setShowAddressField(true)}>
+            <FiPlus className='text-richblack-700 text-3xl'/>
+            <p className='uppercase text-2xl text-richblack-700'>Add a new address</p>
           </div>
 }
           {showAddressField && 
@@ -122,14 +122,15 @@ const ManageAddress = ({checkoutPageAddress,setAddAddress,setViewAddress,editAdd
 
           <div className='flex flex-col gap-5 md:flex-row'>
             <div className='flex flex-col gap-2 md:w-[48%]'>
-              <label htmlFor='phone' className='label-style'>
+              <label htmlFor='phone' className="text-richblack-700">
                 Phone No
+                <sup className="text-pink-200">*</sup>
               </label>
               <input type="text"
               name="number"
               placeholder='Enter Phone Number'
               id="phone"
-              className='form-style'
+              className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer placeholder-black::placeholder"
               {...register("phone",{
                 required:{
                   value:true,
@@ -148,14 +149,15 @@ const ManageAddress = ({checkoutPageAddress,setAddAddress,setViewAddress,editAdd
             </div>
 
             <div className='flex flex-col gap-2 md:w-[48%]'>
-              <label htmlFor='country' className='label-style'>
+              <label htmlFor='country' className="text-richblack-700">
                 Country
+                <sup className="text-pink-200">*</sup>
               </label>
               <input type="text"
               name="text"
               placeholder='Enter Country'
               id="phone"
-              className='form-style'
+              className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer placeholder-black::placeholder"
               {...register("country",{
                 required:{
                   value:true,
@@ -177,13 +179,14 @@ const ManageAddress = ({checkoutPageAddress,setAddAddress,setViewAddress,editAdd
 
            <div className='flex flex-col gap-5 lg:flex-row'>
             <div className='flex flex-col gap-2 lg:w-[48%]'>
-              <label htmlFor='zipcode' className='label-style'>
+              <label htmlFor='zipcode' className="text-richblack-700">
                 Pin Code
+                <sup className="text-pink-200">*</sup>
               </label>
               <input 
               type="text"
               name="zipcode"
-              className='form-style'
+              className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer placeholder-black::placeholder"
               id="zipcode"
               placeholder='Enter zipcode'
               {...register("zipcode",{required:true})}
@@ -200,14 +203,15 @@ const ManageAddress = ({checkoutPageAddress,setAddAddress,setViewAddress,editAdd
             </div>
 
             <div className='flex flex-col gap-2 lg:w-[48%]'>
-              <label htmlFor='locality' className='label-style'>
+              <label htmlFor='locality' className="text-richblack-700">
                Locality
+               <sup className="text-pink-200">*</sup>
               </label>
               <input 
               type="text"
               id="locality"
               placeholder='Enter Locality'
-              className='form-style'
+              className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer placeholder-black::placeholder"
               defaultValue={user?.additionalDetails?.locality}
               />
               {
@@ -223,14 +227,15 @@ const ManageAddress = ({checkoutPageAddress,setAddAddress,setViewAddress,editAdd
 
           <div className='flex flex-col gap-5 md:flex-row'>
             <div className='flex flex-col gap-2 md:w-[48%]'>
-              <label htmlFor='address' className='label-style'>
+              <label htmlFor='address' className="text-richblack-700">
                 Address
+                <sup className="text-pink-200">*</sup>
               </label>
               <input type="text"
               name="address"
               placeholder='Enter address'
               id="address"
-              className='form-style'
+              className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer placeholder-black::placeholder"
               {...register("address",{
                 required:{
                   value:true,
@@ -250,14 +255,15 @@ const ManageAddress = ({checkoutPageAddress,setAddAddress,setViewAddress,editAdd
 
             <div className='flex flex-col gap-2 md:w-[48%]'>
 
-              <label htmlFor='state' className='label-style'>
+              <label htmlFor='state' className="text-richblack-700">
                 State
+                <sup className="text-pink-200">*</sup>
               </label>
               <select
               type='text'
               name='state'
               id='state'
-              className='form-style'
+              className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer placeholder-black::placeholder"
               {...register('state',{required:true})}
               defaultValue={user?.additionalDetails?.state}
               required
@@ -276,21 +282,18 @@ const ManageAddress = ({checkoutPageAddress,setAddAddress,setViewAddress,editAdd
             </div>
           </div>
 
-          
-
-          
-
           <div className='flex flex-col gap-5 lg:flex-row'>
             <div className='flex flex-col gap-2 md:w-[48%]'>
 
-              <label htmlFor='city' className='label-style'>
+              <label htmlFor='city' className="text-richblack-700">
                 City
+                <sup className="text-pink-200">*</sup>
               </label>
               <select
               type='text'
               name='city'
               id='city'
-              className='form-style'
+              className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer placeholder-black::placeholder"
               {...register('city',{required:true})}
               defaultValue={user?.additionalDetails?.city}
               required
@@ -309,15 +312,16 @@ const ManageAddress = ({checkoutPageAddress,setAddAddress,setViewAddress,editAdd
             </div>
 
             <div className='flex flex-col gap-2 lg:w-[48%]'>
-              <label htmlFor='landmark' className='label-style'>
+              <label htmlFor='landmark' className="text-richblack-700">
                 Landmark
+                <sup className="text-pink-200">*</sup>
               </label>
               <input 
               type="text"
               name="landmark"
               id="landmark"
               placeholder='Enter landmark'
-              className='form-style'
+              className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer placeholder-black::placeholder"
               {...register("landmark",{required:true})}
               defaultValue={user?.additionalDetails?.landmark}
               required

@@ -34,18 +34,19 @@ const AddAdditionalDetails = () => {
     <>
       <form onSubmit={handleSubmit(submitProfileForm)}>
         <div className='my-5 flex flex-col gap-y-6 rounded-md border-richblack- px-12'>
-          <h2 className='text-lg font-semibold text-richblack-5'>
+          <h2 className='text-lg font-semibold text-richblack-800'>
             Edit Information
           </h2>
           <div className='flex flex-col gap-5 lg:flex-row'>
             <div className='flex flex-col gap-2 lg:w-[48%]'>
-              <label htmlFor='firstName' className='label-style'>
+              <label htmlFor='firstName' className='text-richblack-700'>
                 First Name
+                <sup className="text-pink-200">*</sup>
               </label>
               <input 
               type="text"
               name="firstName"
-              className='form-style'
+              className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer placeholder-black::placeholder"
               id="firstName"
               placeholder='Enter first name'
               {...register("firstName",{required:true})}
@@ -62,15 +63,16 @@ const AddAdditionalDetails = () => {
             </div>
 
             <div className='flex flex-col gap-2 lg:w-[48%]'>
-              <label htmlFor='lastName' className='label-style'>
+              <label htmlFor='lastName' className='text-richblack-700'>
                 Last Name
+                <sup className="text-pink-200">*</sup>
               </label>
               <input 
               type="text"
               name="lastName"
               id="lastName"
               placeholder='Enter last name'
-              className='form-style'
+              className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer placeholder-black::placeholder"
               {...register("lastName",{required:true})}
               defaultValue={user?.lastName}
               required
@@ -88,14 +90,15 @@ const AddAdditionalDetails = () => {
 
           <div className='flex flex-col gap-5 md:flex-row'>
             <div className='flex flex-col gap-2 md:w-[48%]'>
-              <label htmlFor='dateOfBirth' className='label-style'>
+              <label htmlFor='dateOfBirth' className='text-richblack-700'>
                 Date of Birth
+                <sup className="text-pink-200">*</sup>
               </label>
               <input type="date"
               name="dateOfBirth"
               id="dateOfBirth"
               required
-              className='form-style'
+              className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer placeholder-black::placeholder"
               {...register("dateOfBirth",{
                 required:{
                   value:true,
@@ -114,14 +117,15 @@ const AddAdditionalDetails = () => {
 
             <div className='flex flex-col gap-2 md:w-[48%]'>
 
-              <label htmlFor='gender' className='label-style'>
+              <label htmlFor='gender' className='text-richblack-700'>
                 Gender
+                <sup className="text-pink-200">*</sup>
               </label>
               <select
               type='text'
               name='gender'
               id='gender'
-              className='form-style'
+              className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer placeholder-black::placeholder"
               {...register('gender',{required:true})}
               defaultValue={user?.additionalDetails?.gender}
               >
@@ -140,15 +144,16 @@ const AddAdditionalDetails = () => {
 
           <div className='flex flex-col gap-5 lg:flex-row'>
             <div className='flex flex-col gap-2 lg:w-[48%]'>
-              <label htmlFor='contactNumber' className='label-style'>
+              <label htmlFor='contactNumber' className='text-richblack-700'>
                 Contact Number
+                <sup className="text-pink-200">*</sup>
               </label>
               <input 
               type="tel"
               name="contactNumber"
               id="contactNumber"
               placeholder='Enter Contact Number'
-              className='form-style'
+              className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer placeholder-black::placeholder"
               {...register("contactNumber",{required:true})}
               required
               defaultValue={user?.additionalDetails?.contactNumber}
@@ -163,7 +168,7 @@ const AddAdditionalDetails = () => {
             </div>
 
             <div className='flex flex-col gap-2 lg:w-[48%]'>
-              <label htmlFor='email' className='label-style'>
+              <label htmlFor='email' className='text-richblack-700'>
                 Email
               </label>
               <input 
@@ -171,7 +176,7 @@ const AddAdditionalDetails = () => {
               name="email"
               id="email"
               placeholder='Enter email'
-              className='form-style bg-pure-greys-300'
+              className="bg-pure-greys-300 block py-3 px-3 w-full text-sm text-gray-900 rounded-md border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer placeholder-black::placeholder"
               {...register("email")}
               required
               defaultValue={user?.email}
