@@ -138,8 +138,7 @@ app.post("/api/upload-document", async (req, res) => {
     const response = await axios.post(API_URL, formData, {
       headers: {
         "x-client-id": process.env.CLIENT_ID,
-        "x-client-secret":
-          process.env.SECRET_KEY, 
+        "x-client-secret":process.env.SECRET_KEY, 
         "x-api-version": "2023-03-01",
       },
     });
