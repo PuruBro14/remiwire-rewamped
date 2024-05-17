@@ -137,7 +137,6 @@ const Navbar = () => {
                               <div className="absolute left-[50%] translate-x-[80%] -translate-y-[45%] top-0 h-6 w-6  rounded rotate-45 bg-richblack-5"></div>
                               {subLinksData?.map((ele, index) => {
                                 {
-                                  console.log("ele", ele);
                                 }
                                 return (
                                   <Link

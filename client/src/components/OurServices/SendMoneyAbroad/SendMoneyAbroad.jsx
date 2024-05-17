@@ -8,7 +8,7 @@ import SendMoneyForm3 from "./SendMoneyForm3";
 import SendMoneyBifurcation from "./SendMoneyBifurcation";
 
 export default function SendMoneyAbroad() {
-  const [formStep, setformStep] = useState(3);
+  const [formStep, setformStep] = useState(0);
 
   const [documentProof, setDocumentProofs] = useState({
     panCardImage: "",

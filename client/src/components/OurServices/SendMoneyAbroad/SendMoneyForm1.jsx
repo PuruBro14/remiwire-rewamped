@@ -12,6 +12,8 @@ export default function SendMoneyForm1({ setformStep }) {
   const [stateid, setstateid] = useState(0);
   const [selectedCurrencySymbol, setselectedCurrencySymbol] = useState("");
   const dispatch = useDispatch();
+  const[isLoggedIn,setIsLoggedIn]=useState(false);
+  const user=useSelector((state)=>state.profile)
   const [errors, setErrors] = useState({
     transferFromState: "",
     transferFromCity: "",
@@ -68,6 +70,7 @@ export default function SendMoneyForm1({ setformStep }) {
   const clearError = (fieldName) => {
     setErrors({ ...errors, [fieldName]: "" });
   };
+  
 
   const handleInputChange = (fieldName, value) => {
     dispatch(setformValue({ [fieldName]: value }));
@@ -95,6 +98,8 @@ export default function SendMoneyForm1({ setformStep }) {
   useEffect(() => {
     getCurrentRateINRtoEURO();
   }, [sendMoneyAboroadForms.receivingCurrency]);
+
+
 
   return (
     <>

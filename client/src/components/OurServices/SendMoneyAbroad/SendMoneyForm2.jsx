@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setformValue } from "../../features/SendMoneySlice";
+import axios from "axios";
 
 export default function SendMoneyForm2({
   setformStep,
@@ -25,7 +26,7 @@ export default function SendMoneyForm2({
     (state) => state.sendMoneyAboroadForms
   );
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
 
     const newErrors = {};
@@ -75,9 +76,38 @@ export default function SendMoneyForm2({
     setErrors(newErrors);
 
     // If no errors, submit the form
-    if (Object.keys(newErrors).length === 0) {
-      setformStep(2); // Proceed to next step
+     if (Object.keys(newErrors).length === 0) {
+      try {
+        const response = await axios.post('http://localhost:8100/registerRemitter', {
+          remitter_id: "rem_09",
+          purpose: sendMoneyAboroadForms.purposeOfTransfer,
+          account_number: "011234567990",
+          ifsc: "SBIN0005943",
+          pan: "ABCDE1234F",
+          name: "Siddharth",
+          address: "ABC street",
+          phone_number: "9090909090",
+          email: "abc@b.com",
+          nationality: "IN",
+          postal_code: "474005",
+          state: sendMoneyAboroadForms.transferFromState,
+          city: sendMoneyAboroadForms.transferFromCity,
+          bank_code: "3003"
+        }, {
+          headers: {
+            'x-client-id': 'TEST10191770356b0bd65101d6e3d1ea07719101',
+            'x-client-secret':'fsk_ma_test_92343bedf3b0e95988bd61078376c370_4e7f49e2',
+            'x-api-version': '2023-03-01'
+          }
+        });
+
+        console.log('API Response:', response.data);
+      } catch (error) {
+        console.error('API Error:', error);
+      }
     }
+
+        setformStep(2);
   };
 
   // Clear error when input field is clicked

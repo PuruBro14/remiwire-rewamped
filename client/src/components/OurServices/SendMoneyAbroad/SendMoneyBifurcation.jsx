@@ -1,10 +1,19 @@
 import React, {  useState,useEffect } from "react";
 import axios from "axios";
 import {load} from '@cashfreepayments/cashfree-js'
-
+import {useParams} from 'react-router-dom';
 export default function SendMoneyBifurcation({ setformStep, documentProof }) {
 
+    const [orderId, setOrderId] = useState("");
+    const params=useParams();
+    const isSessionId=params.sessionid
+
+    const[sessionId,setSessionId]=useState('');
   const [file, setFile] = useState(null);
+
+  const localStorageOrderId=localStorage.getItem("orderId")
+
+  console.log('localStorageOrderId',localStorageOrderId);
 
   const handleFileChange = (event) => {
     setFile(event.target.files[0]);
@@ -20,7 +29,7 @@ export default function SendMoneyBifurcation({ setformStep, documentProof }) {
     formData.append("file", file);
 
     try {
-      await axios.post("http://localhost:8100/api/upload-document", formData);
+      await axios.post("http://localhost:8100/api/upload-document/${orderId}", formData);
       alert("File uploaded successfully.");
     } catch (error) {
       console.error("Error uploading file:", error.response?.data || error.message);
@@ -39,17 +48,18 @@ export default function SendMoneyBifurcation({ setformStep, documentProof }) {
 
   insitialzeSDK()
 
-    const [orderId, setOrderId] = useState("");
 
-    console.log('orderId',orderId);
 
 
   const getSessionId=async()=>{
     try {
-      let res=await axios.get("http://localhost:8100/payment");
-      if(res.data && res.data.payment_session_id && res.data.order_id){
-        console.log(res.data);
+      let res=await axios.post("http://localhost:8100/payment");
+      console.log('res',res);
+      if(res.data){
+        console.log('res',res);
+        setSessionId(res.data.payment_session_id)
         setOrderId(res.data.order_id)
+        localStorage.setItem('orderId',res.data.order_id)
         return res.data.payment_session_id
       }
     } catch (error) {
@@ -73,55 +83,89 @@ export default function SendMoneyBifurcation({ setformStep, documentProof }) {
     }
 }
 
-  const handlePayment=async(e)=>{
-    e.preventDefault();
-    try {
-      let sessionId=await getSessionId();
-      sendDocumentVerificationRequest();
-      let checkoutOptions={
-        paymentSessionId:sessionId,
-        redirectTarget:"_modal"
-      }
-      cashfree.checkout(checkoutOptions).then((res)=>{
-        console.log("payment initiatilized");
-        verifyPayment()
-      })
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-
-async function sendDocumentVerificationRequest() {
-  const API_URL = `https://sandbox.cashfree.com/pg/lrs/orders/order_001_nkyyyg/documents/upload`;
-  const fileName = "KYC_PASSPORT_STUDENT_1_lrsDoc.pdf";
-
-  const formData = new FormData();
-  formData.append("files", fileName);
-
+const handlePayment = async (e) => {
+  e.preventDefault();
   try {
-    const response = await axios.post(API_URL, formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-        "x-client-id": "{client_id_lrs}",
-        "x-client-secret": "{client_secret_lrs}",
-        "x-api-version": "2023-03-01",
-      },
-    });
+    let sessionId = await getSessionId();
+    console.log('sessionId',sessionId);
 
-    console.log('Response from document verification API:', response.data);
-    return response.data;
+    let checkoutOptions = {
+      paymentSessionId: sessionId,
+      redirectTarget: "_modal"
+    };
+
+    cashfree.checkout(checkoutOptions).then((res) => {
+      console.log("Payment initialized");
+      if (res.error) {
+        console.log('result error', res.error.message);
+      }
+
+      console.log('res',res);
+
+      if (res) {
+        console.log("Redirection");
+        verifyPayment();
+        fetchStatus()
+        console.log('end----->');
+      }
+    });
   } catch (error) {
-    console.error('Error during document verification:', error.response?.data || error.message);
-    throw error;
+    console.log('error', error);
   }
 }
+
+console.log('orderId',orderId);
+
+
+const fetchStatus = async () => {
+  try {
+    const orderId = localStorageOrderId; 
+    console.log('OrderId:', orderId);
+
+    const response = await axios.get(`http://localhost:8100/api/status/${orderId}`);
+    console.log('Response:', response.data); 
+
+  } catch (error) {
+    console.log('Error:', error); 
+  }
+};
+
+
+
+
+// async function sendDocumentVerificationRequest() {
+//   const API_URL = `https://sandbox.cashfree.com/pg/lrs/orders/${orderId}/documents/upload`;
+//   const fileName = "KYC_PASSPORT_STUDENT_1_lrsDoc.pdf";
+
+//   const formData = new FormData();
+//   formData.append("files", fileName);
+
+//   try {
+//     const response = await axios.post(API_URL, formData, {
+//       headers: {
+//         "Content-Type": "multipart/form-data",
+//         "x-client-id": "{client_id_lrs}",
+//         "x-client-secret": "{client_secret_lrs}",
+//         "x-api-version": "2023-03-01",
+//       },
+//     });
+
+//     console.log('Response from document verification API:', response.data);
+//     return response.data;
+//   } catch (error) {
+//     console.error('Error during document verification:', error.response?.data || error.message);
+//     throw error;
+//   }
+// }
 
 
 useEffect(()=>{
   handlePayment()
 },[])
 
+useEffect(()=>{
+  setSessionId(isSessionId)
+},[isSessionId])
 
   return (
     <div>
@@ -182,9 +226,9 @@ useEffect(()=>{
             Proceed to Checkout
           </button>
         </div>
-
+{/* 
         <input type="file" onChange={handleFileChange} />
-      <button onClick={handleUpload}>Upload Document</button>
+      <button onClick={handleUpload}>Upload Document</button> */}
       </div>
     </div>
   );

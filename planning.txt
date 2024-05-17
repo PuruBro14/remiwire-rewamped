@@ -11,3 +11,7 @@ secret key verify karne ke sath
 
 capture-pay order create 
 
+remitter->beneficiary->customer(optional)->orderId->doc verify(bulk)->verify
+createRemiiter-addBeneficiary-addCustomer 
+
+pehle par login

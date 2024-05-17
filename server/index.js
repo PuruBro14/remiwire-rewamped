@@ -70,35 +70,45 @@ function generateOrderId() {
   return orderId.substring(0, 12);
 }
 
-app.get("/payment", async (req, res) => {
-  console.log("Request received for /payment");
+app.post("/payment", async (req, res) => {
   try {
-    const request = {
-      order_amount: 1.0,
-      order_currency: "INR",
-      order_id: await generateOrderId(),
-      customer_details: {
-        customer_id: "remiwire",
-        customer_phone: "9589068752",
-        customer_name: "goku",
-        customer_email: "goku@example.com",
+    const options = {
+      method: "POST",
+      url: "https://sandbox.cashfree.com/pg/orders",
+      headers: {
+        accept: "application/json",
+        "x-api-version": process.env.API_VERSION,
+        "content-type": "application/json",
+        "x-client-id": process.env.CLIENT_ID,
+        "x-client-secret": process.env.CLIENT_SECRET,
+      },
+      data: {
+        customer_details: {
+          customer_id: "CID89898" + Date.now(),
+          customer_email: "purusharma1405@gmail.com",
+          customer_phone: "7498608775",
+          customer_name: "goku",
+        },
+        order_meta: {
+          notify_url:
+            "https://webhook.site/99b1bf89-@bbc-4c0d-ad03-abcd1240c321",
+          payment_methods: "cc,dc,upi",
+        },
+        order_amount: 1,
+        order_id: "TORID665456" + Date.now(),
+        order_currency: "INR",
+        order_note: "Remiwire order",
       },
     };
-
-    Cashfree.PGCreateOrder("2023-08-01", request)
-      .then((response) => {
-        console.log("Payment creation response:", response.data);
-        res.json(response.data);
-      })
-      .catch((error) => {
-        console.error("Payment creation error:", error.response.data.message);
-        res.status(500).json({ error: "Payment creation failed" });
-      });
+    const response = await axios.request(options);
+    console.log(response.data);
+    return res.status(200).send(response.data);
   } catch (error) {
     console.error("Internal server error:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 });
+
 
 
 app.post("/verify", async (req, res) => {
@@ -117,45 +127,162 @@ app.post("/verify", async (req, res) => {
   }
 });
 
-app.post("/api/upload-document", async (req, res) => {
-  console.log("runned");
-  try {
-    // Check if file was uploaded
-    console.log("yaha runned");
-    if (!req.files || Object.keys(req.files).length === 0) {
-      return res.status(400).json({ error: "No files were uploaded." });
-    }
+  const FormData = require("form-data");
+  const fs = require("fs");
 
-    const document = req.files.file;
+app.post("/api/upload-document/:orderid", async (req, res) => {
+  const orderId=req.params.orderid;
+  console.log('orderId',orderId);
 
-    // Make a request to Cashfree API for document upload
-    const API_URL = `https://sandbox.cashfree.com/pg/lrs/orders/order_001_nkyyyg/documents/upload`;
 
-    const formData = new FormData();
-    formData.append("files", document.data);
-    console.log("files", formData);
+  const url =
+    "https://sandbox.cashfree.com/pg/lrs/orders/58ac433f617f/documents/upload";
+  const client_id = process.env.CLIENT_ID;
+  const client_secret =
+    process.env.CLIENT_SECRET;
+  const api_version = process.env.API_VERSION;
+  const filePath = "../../../Downloads/KYC_PASSPORT_STUDENT_1.pdf";
 
-    const response = await axios.post(API_URL, formData, {
+  const form = new FormData();
+  form.append("files", fs.createReadStream(filePath));
+
+  axios
+    .post(url, form, {
       headers: {
-        "x-client-id": process.env.CLIENT_ID,
-        "x-client-secret":process.env.SECRET_KEY, 
-        "x-api-version": "2023-03-01",
+        ...form.getHeaders(),
+        "x-client-id": client_id,
+        "x-client-secret": client_secret,
+        "x-api-version": api_version,
       },
+    })
+    .then((response) => {
+      console.log("Response:", response.data);
+    })
+    .catch((error) => {
+      console.error("Error:", error);
     });
 
-    console.log("Response from Cashfree API:", response.data);
-    res.json({
-      success: true,
-      message: "File uploaded and API called successfully.",
-    });
-  } catch (error) {
-    console.error(
-      "Error uploading file:",
-      error.response?.data || error.message
+});
+
+app.post("/registerRemitter", async (req, res) => {
+    const client_id = process.env.CLIENT_ID;
+    const client_secret =
+      process.env.CLIENT_SECRET;
+  try {
+    const remitterData = {
+      remitter_id: "rem_09",
+      purpose: "EDUCATION",
+      account_number: "011234567990",
+      ifsc: "SBIN0005943",
+      pan: "ABCDE1234F",
+      name: "Siddharth",
+      address: "ABC street",
+      phone_number: "9090909090",
+      email: "abc@b.com",
+      nationality: "IN",
+      postal_code: "474005",
+      state: "madhya pradesh",
+      city: "gwalior",
+      bank_code: "3003",
+    };
+
+    const response = await axios.post(
+      "https://sandbox.cashfree.com/pg/lrs/remitters",
+      remitterData,
+      {
+        headers: {
+          "x-client-id": client_id,
+          "x-client-secret": client_secret,
+          "x-api-version": process.env.API_VERSION,
+          "Content-Type": "application/json",
+        },
+      }
     );
-    res.status(500).json({ error: "Error uploading file." });
+
+    res.json(response.data); 
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ error: "An error occurred while registering the remitter." });
   }
 });
+
+app.post("/beneficiaries", async (req, res) => {
+  const client_id = process.env.CLIENT_ID;
+  const client_secret =
+    process.env.CLIENT_SECRET;
+  try {
+    const beneficiaryData = 
+      {"beneficiary_id":"bene_002","account_holder_name":"Harward University","account_number":"13719713158835300","swift_code":"SVBKUS6S","iban":"ABCDEFGHIJ123458923","bank_name":"Silicon Valley Bank","bank_country":"US","bank_address":"003 Tasman Drive, Santa Clar","address":"Harvard University","city":"Cambridge","state":"Massachusetts","country":"US","postal_code":"021384","routing_number":"121140399"}
+    
+
+    const response = await axios.post(
+      "https://sandbox.cashfree.com/pg/lrs/beneficiaries",
+      beneficiaryData,
+      {
+        headers: {
+          "x-client-id": client_id,
+          "x-client-secret": client_secret,
+          "x-api-version": process.env.API_VERSION,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    res.json(response.data);
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ error: "An error occurred while registering the beneficiary." });
+  }
+});
+
+
+app.get("/api/status/:orderid", async (req, res) => {
+  const client_id = process.env.CLIENT_ID;
+  const client_secret =
+    process.env.CLIENT_SECRET;
+  console.log("runned");
+  const orderid = req.params.orderid;
+  console.log("orderid", orderid);
+
+  console.log('line 176');
+  try {
+    const options = {
+      method: "GET",
+      url: `https://sandbox.cashfree.com/pg/orders/${orderid}`,
+      headers: {
+        accept: "application/json",
+        "x-api-version": "2022-09-01",
+        "x-client-id": client_id,
+        "x-client-secret": client_secret,
+      },
+    };
+
+    console.log('line 187');
+
+    axios
+      .request(options)
+      .then(function (response) {
+        console.log('response----------->',response.data,'order_status',response.data.order_status);
+        if (response.data.order_status === "PAID") {
+          console.log('success');
+        } else if (response.data.order_status === "ACTIVE") {
+          console.log('redicrect');
+        } else {
+          console.log('failed');
+        }
+      })
+      .catch(function (error) {
+        return console.error('error------>',error);
+      });
+  } catch (error) {
+    return console.error(error);
+  }
+});
+
 
 app.get("/", (req, res) => {
   console.log("this is running");

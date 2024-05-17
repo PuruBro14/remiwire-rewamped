@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setformValue } from "../../features/SendMoneySlice";
+import axios from "axios";
 
 export default function SendMoneyForm3({ setformStep,documentProof }) {
   const [errors, setErrors] = useState({
@@ -18,7 +19,7 @@ export default function SendMoneyForm3({ setformStep,documentProof }) {
     (state) => state.sendMoneyAboroadForms
   );
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
 
     const newErrors = {};
@@ -69,7 +70,20 @@ export default function SendMoneyForm3({ setformStep,documentProof }) {
 
     // If no errors, submit the form
     if (Object.keys(newErrors).length === 0) {
-      setformStep(3); // Proceed to next step
+      try {
+        const response = await axios.post('http://localhost:8100/beneficiaries', {"beneficiary_id":"bene_002","account_holder_name":"Harward University","account_number":"13719713158835300","swift_code":"SVBKUS6S","iban":"ABCDEFGHIJ123458923","bank_name":"Silicon Valley Bank","bank_country":"US","bank_address":"003 Tasman Drive, Santa Clar","address":"Harvard University","city":"Cambridge","state":"Massachusetts","country":"US","postal_code":"021384","routing_number":"121140399"}, {
+          headers: {
+            'x-client-id': 'TEST10191770356b0bd65101d6e3d1ea07719101',
+            'x-client-secret':'fsk_ma_test_92343bedf3b0e95988bd61078376c370_4e7f49e2',
+            'x-api-version': '2023-03-01'
+          }
+        });
+
+        console.log('API Response:', response.data);
+        setformStep(3);
+      } catch (error) {
+        console.error('API Error:', error);
+      }
     }
   };
   const clearError = (fieldName) => {
