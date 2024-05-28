@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setformValue } from "../../features/SendMoneySlice";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 export default function SendMoneyForm2({
   setformStep,
@@ -110,8 +111,10 @@ export default function SendMoneyForm2({
         });
 
         console.log('API Response:', response.data);
+        toast.success("Remitter Created");
       } catch (error) {
         console.error('API Error:', error);
+        toast.success("Remitter Already Exist")
       }
     }
 
@@ -228,7 +231,7 @@ export default function SendMoneyForm2({
                 handleInputChange("addressProof", e.target.value);
                 clearError("addressProof");
               }}
-              value={sendMoneyAboroadForms?.addressProof}
+              // value={sendMoneyAboroadForms?.addressProof}
               >
                 <option value="">--Select Address Proof--</option>
                 <option>Aadhar Card</option>

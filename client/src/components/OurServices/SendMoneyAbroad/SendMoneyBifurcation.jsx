@@ -52,9 +52,6 @@ export default function SendMoneyBifurcation({ setformStep, documentProof }) {
 
   insitialzeSDK()
 
-
-
-
   const getSessionId=async()=>{
     try {
       let res=await axios.post("http://localhost:8100/payment");
@@ -163,9 +160,7 @@ const fetchStatus = async () => {
 //   }
 // }
 
-useEffect(()=>{
-  handlePayment()
-},[])
+
 
 useEffect(()=>{
   setSessionId(isSessionId)

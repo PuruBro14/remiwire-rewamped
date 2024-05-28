@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setformValue } from "../../features/SendMoneySlice";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 export default function SendMoneyForm3({ setformStep,documentProof }) {
   const [errors, setErrors] = useState({
@@ -84,8 +85,10 @@ export default function SendMoneyForm3({ setformStep,documentProof }) {
         });
 
         console.log('API Response:', response.data);
+        toast.success("Beneficiary Created")
       } catch (error) {
         console.error('API Error:', error);
+        toast.success("Beneficiary already exist")
       }
     }
 
