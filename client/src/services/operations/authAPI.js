@@ -51,8 +51,9 @@ export const sendSignUp = (
   };
 };
 
-export const setLogin = (email, password, navigate, loginFromCheckout) => {
-  console.log("loginFromCheckout", loginFromCheckout);
+export const setLogin = (email, password,navigate, loginFromCheckout) => {
+  const sendMoneyLoggedIn=localStorage.getItem("sendmoneyloggedin")
+  console.log("sendMoneyLoggedIn", sendMoneyLoggedIn);
   return async (dispatch) => {
     const toastId = toast.loading("Loading...");
     dispatch(setLoading(false));
@@ -78,7 +79,13 @@ export const setLogin = (email, password, navigate, loginFromCheckout) => {
       localStorage.setItem("token", JSON.stringify(response?.data?.token));
       localStorage.setItem("user", JSON.stringify(response?.data?.user));
 
-      !loginFromCheckout?navigate("/"):navigate('/checkout');
+      if(sendMoneyLoggedIn){
+      navigate('/sendmoneyabroad')
+      localStorage.removeItem("sendmoneyloggedin");
+      }else{
+        navigate('/')
+      }
+      console.log('navigated to send money abroad');
     } catch (err) {
       console.log("LOGIN API ERROR............", err);
       toast.error("Login Failed");
@@ -96,7 +103,7 @@ export const logout=(navigate)=>{
       localStorage.removeItem("token");
       localStorage.removeItem("user")
       toast.success("Logged Out")
-      navigate("/");
+      // navigate("/");
   }
 }
 

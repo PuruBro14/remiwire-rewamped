@@ -11,7 +11,82 @@ secret key verify karne ke sath
 
 capture-pay order create 
 
+
 remitter->beneficiary->customer(optional)->orderId->doc verify(bulk)->verify
 createRemiiter-addBeneficiary-addCustomer 
 
 pehle par login
+
+send money blurification-done
+
+modal
+
+remitter populate -if already existing
+transfer to me sab countries-done
+get ftx rate - pending
+dropdown upload document/address proof-done
+my order-order id 
+
+app.get("remitters/:remitterID",async (req, res) => {
+    console.log('runned');
+    const client_id = process.env.CLIENT_ID;
+    const client_secret = process.env.CLIENT_SECRET;
+
+    try {
+      const options = {
+        method: "GET",
+        url: `https://sandbox.cashfree.com/pg/lrs/remitters/prod_cf_rem_005`,
+        headers: {
+          accept: "application/json",
+          "x-api-version": "2022-09-01",
+          "x-client-id": client_id,
+          "x-client-secret": client_secret,
+        },
+      };
+
+
+      axios
+        .request(options)
+        .then(function (response) {
+         console.log('response-------->',response);
+         return response
+        })
+        .catch(function (error) {
+          return console.error("error------>", error);
+        });
+    } catch (error) {
+      return console.error(error);
+    }
+  }
+);
+
+
+app.get("/remitters/:remitterID", async (req, res) => {
+  const { remitterID } = req.params;
+  console.log("Endpoint hit with remitterID:", remitterID);
+
+  const client_id = process.env.CLIENT_ID;
+  const client_secret = process.env.CLIENT_SECRET;
+
+  const options = {
+    method: "GET",
+    url: `https://sandbox.cashfree.com/pg/lrs/remitters/prod_cf_rem_005`,
+    headers: {
+      accept: "application/json",
+      "x-api-version": "2022-09-01",
+      "x-client-id": client_id,
+      "x-client-secret": client_secret,
+    },
+  };
+
+  try {
+    const response = await axios.request(options);
+    console.log("Response received:", response.data);
+    res.json(response.data);
+  } catch (error) {
+    console.error("Error occurred:", error);
+    res
+      .status(500)
+      .json({ error: "An error occurred while fetching remitter data" });
+  }
+});

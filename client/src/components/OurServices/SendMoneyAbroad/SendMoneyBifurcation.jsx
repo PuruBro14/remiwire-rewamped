@@ -2,11 +2,15 @@ import React, {  useState,useEffect } from "react";
 import axios from "axios";
 import {load} from '@cashfreepayments/cashfree-js'
 import {useParams} from 'react-router-dom';
+import { useSelector } from "react-redux";
 export default function SendMoneyBifurcation({ setformStep, documentProof }) {
 
     const [orderId, setOrderId] = useState("");
     const params=useParams();
     const isSessionId=params.sessionid
+      const { oneEurotoINR,receivingAmountInEuro,receivingAmountInINR } = useSelector((state) => state.sendMoneyAboroadForms);
+
+    console.log('oneEurotoINR',oneEurotoINR,receivingAmountInEuro,receivingAmountInINR);
 
     const[sessionId,setSessionId]=useState('');
   const [file, setFile] = useState(null);
@@ -63,7 +67,7 @@ export default function SendMoneyBifurcation({ setformStep, documentProof }) {
         return res.data.payment_session_id
       }
     } catch (error) {
-      console.log(error);
+      console.log('error----->',error);
     }
   }
 
@@ -84,7 +88,7 @@ export default function SendMoneyBifurcation({ setformStep, documentProof }) {
 }
 
 const handlePayment = async (e) => {
-  e.preventDefault();
+  e?.preventDefault();
   try {
     let sessionId = await getSessionId();
     console.log('sessionId',sessionId);
@@ -105,8 +109,9 @@ const handlePayment = async (e) => {
       if (res) {
         console.log("Redirection");
         verifyPayment();
+        console.log('this done');
         fetchStatus()
-        console.log('end----->');
+        console.log('this not done end----->');
       }
     });
   } catch (error) {
@@ -118,10 +123,10 @@ console.log('orderId',orderId);
 
 
 const fetchStatus = async () => {
+  console.log('this called fetch status');
   try {
     const orderId = localStorageOrderId; 
     console.log('OrderId:', orderId);
-
     const response = await axios.get(`http://localhost:8100/api/status/${orderId}`);
     console.log('Response:', response.data); 
 
@@ -158,7 +163,6 @@ const fetchStatus = async () => {
 //   }
 // }
 
-
 useEffect(()=>{
   handlePayment()
 },[])
@@ -176,15 +180,15 @@ useEffect(()=>{
             <tr>
               <td>
                 Exchange Rate
-                <div className="font-bold">100</div>
+                <div className="font-bold">{oneEurotoINR}</div>
               </td>
               <td>
                 Transfer Amount in FCY
-                <div className="font-bold">100</div>
+                <div className="font-bold">{receivingAmountInEuro}</div>
               </td>
               <td>
                 Total Funding Amount in INR
-                <div className="font-bold">&nbsp;</div>
+                <div className="font-bold">{receivingAmountInINR}</div>
               </td>
             </tr>
             <tr>
@@ -194,11 +198,11 @@ useEffect(()=>{
               </td>
               <td>
                 GST on Charge
-                <div className="font-bold">100</div>
+                <div className="font-bold">{((receivingAmountInINR*18)/100).toFixed(2)}</div>
               </td>
               <td>
                 GST on Currency Conversion
-                <div className="font-bold">&nbsp;</div>
+                <div className="font-bold">10</div>
               </td>
             </tr>
             <tr>
@@ -212,7 +216,7 @@ useEffect(()=>{
               </td>
               <td>
                 Total of all Charges and Taxes
-                <div className="font-bold">&nbsp;</div>
+                <div className="font-bold">  {(1000 + (receivingAmountInINR * 18) / 100 + 10 + 100).toFixed(2)}</div>
               </td>
             </tr>
           </tbody>

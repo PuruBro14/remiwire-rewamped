@@ -4,7 +4,7 @@ import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css"
 import { FiEdit2 } from "react-icons/fi"
 import { HiClock } from "react-icons/hi"
 import { RiDeleteBin6Line } from "react-icons/ri"
-const OrdersTable = ({ConvertTableEntries,editArray,filterArray}) => {
+const OrdersTable = ({orders}) => {
        const[bookOrders,setBookOrders]=useState([]);
        const[orderSummaryDetails,setOrderSummaryDetails]=useState(()=>{
     const storedData=localStorage.getItem("convertEntries")
@@ -22,65 +22,54 @@ const OrdersTable = ({ConvertTableEntries,editArray,filterArray}) => {
 
             <Thead className="bg-white">
                 <Tr className='flex items-center rounded-t-md border-b border-[#DDDDDD]  justify-between p-5'>
-                    <Th className='text-left text-lg font-medium uppercase text-richblack-600 border-none'>
-                        Conversion
-                    </Th>
-                    <Th className='text-left text-lg font-medium uppercase text-richblack-600 border-none'>
-                        Amount
-                    </Th>
-                    <Th className='text-left text-lg font-medium uppercase text-richblack-600 border-none'>
-                        From
-                    </Th>
-                    <Th className='text-left text-lg font-medium uppercase text-richblack-600 border-none'>
-                        To
-                    </Th>
-                     <Th className=' text-left text-lg font-medium uppercase text-richblack-600 border-none'>
-                        CurrentRate
-                    </Th>
                     <Th className=' text-left text-lg font-medium uppercase text-richblack-600 border-none'>
-                        Total
+                        Customer Id
                     </Th>
                     <Th className='text-left text-lg font-medium uppercase text-richblack-600 border-none'>
-                        Status
+                        Order Id
+                    </Th>
+                    <Th className='text-left text-lg font-medium uppercase text-richblack-600 border-none'>
+                        Order Status
+                    </Th>
+                    <Th className='text-left text-lg font-medium uppercase text-richblack-600 border-none'>
+                        Order Date
+                    </Th>
+                    <Th className='text-left text-lg font-medium uppercase text-richblack-600 border-none'>
+                        Order Amount
                     </Th>
                 </Tr>
             </Thead>
 
             <Tbody className='flex flex-col justify-center'>
                 {
-                    orderSummaryDetails?.length===0?(
+                    orders?.length===0?(
                         <Tr classNamebg="bg-white">
                             <Td className='text-lg font-medium text-richblack-600  border-none text-center'>
-                                No currencies found
+                                No Orders found
                             </Td>
                         </Tr>
                     )
                     :(
-                        orderSummaryDetails?.map((entry,index)=>(
-                            <Tr key={index} className='flex items-center  bg-white border-b border-[#DDDDDD]  justify-between p-5'>
+                        orders?.map((entry,index)=>{
+                            console.log('entry',entry);
+                           return <Tr key={index} className='flex items-center  bg-white border-b border-[#DDDDDD]  justify-between p-5'>
                                  <Td className='text-lg font-medium text-richblack-600  border-none text-center'>
-                                    Buy
+                                    {entry.customerId}
                                 </Td>
-                                <Td className='text-lg font-medium text-richblack-600  border-none text-center relative md:left-20'>
-                                    {entry?.amount}
+                                <Td className='text-lg font-medium text-richblack-600  border-none text-center relative md:right-10'>
+                                    {entry?.orderId}
                                 </Td>
-                                <Td className='text-lg font-medium text-richblack-600  border-none text-center relative md:left-20'>
-                                    {entry?.from}
+                                <Td className='text-lg font-medium text-richblack-600  border-none text-center relative md:right-28'>
+                                    {entry?.order_status}
                                 </Td>
-                                <Td className='text-lg font-medium text-richblack-600  border-none relative'>
-                                    {entry?.to}
+                                <Td className='text-lg font-medium text-richblack-600  border-none relative md:right-20'>
+                                    {entry?.created_at}
                                 </Td>
                                 <Td className='text-lg font-medium text-richblack-600  border-none relative md:right-10'>
-                                    {entry?.currentRate.toFixed(3)}
-                                </Td>
-                                <Td className='text-lg font-medium text-richblack-600  border-none'>
-                                    {entry?.amount}
-                                </Td>
-                                <Td className='text-lg font-medium text-richblack-600  border-none flex flex-row gap-5'>
-                                   Pending
+                                    {entry?.order_amount}
                                 </Td>
                             </Tr>
-                        ))
+})
                     )
 }
             </Tbody>

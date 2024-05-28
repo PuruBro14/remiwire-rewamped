@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { setSignUpData } from "../../utils/authSlice";
 import { useDispatch } from "react-redux";
 import { sendSignUp } from '../../services/operations/authAPI';
-const SignupForm = () => {
+const SignupForm = ({sendMoneyLoggedIn}) => {
       const [showPassword, setShowPassword] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -65,7 +65,7 @@ const SignupForm = () => {
     <div className=''>
         <div className="w-full md:w-8/12 my-2 shadow-md md:shadow-xl px-10 py-5 mx-auto">
             <div className="text-4xl font-semibold text-richblack-800 mt-6 lg:mt-0">
-             Register Here
+            {sendMoneyLoggedIn?"Haven’t registered? Sign up now.":"Register Here"}
             </div>
 
             {/* form  */}

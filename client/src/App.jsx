@@ -81,9 +81,7 @@ function App() {
         <Route
           path="/login"
           element={
-            <OpenRoute>
               <Login />
-            </OpenRoute>
           }
         ></Route>
         <Route path="creategicaccount" element={<CreateGICAccount />}></Route>

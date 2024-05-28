@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setformValue } from "../../features/SendMoneySlice";
 import axios from "axios";
@@ -21,13 +21,21 @@ export default function SendMoneyForm2({
     passportImage: "",
   });
 
+  const purposeOfTransfer=useSelector((state)=>state.purposeOfTransfer)
+
   const dispatch = useDispatch();
   const sendMoneyAboroadForms = useSelector(
     (state) => state.sendMoneyAboroadForms
   );
 
+  const[getRemitterDetails,setGetRemiiterDetails]=useState([]);
+
   const handleSubmit = async(e) => {
     e.preventDefault();
+
+    console.log('sendMoneyAboroadForms',sendMoneyAboroadForms);
+
+      const{purposeOfTransfer,remiterAccountNo,remiterIFSCCode,pancardNumber,remiterFirstName,remiterMobileNo,remiterEmailID,transferFromState,addressProof,transferFromCity}=sendMoneyAboroadForms
 
     const newErrors = {};
 
@@ -35,10 +43,10 @@ export default function SendMoneyForm2({
     if (!sendMoneyAboroadForms.pancardNumber) {
       newErrors.pancardNumber = "PAN card number is required";
     }
-    if (!sendMoneyAboroadForms.passportNumber) {
-      newErrors.passportNumber =
-        "Passport/Aadhar/Driving License number is required";
-    }
+    // if (!sendMoneyAboroadForms.passportNumber) {
+    //   newErrors.passportNumber =
+    //     "Passport/Aadhar/Driving License number is required";
+    // }
 
     if (!documentProof.passportImage) {
       newErrors.passportImage = "Document is required";
@@ -78,26 +86,26 @@ export default function SendMoneyForm2({
     // If no errors, submit the form
      if (Object.keys(newErrors).length === 0) {
       try {
-        const response = await axios.post('http://localhost:8100/registerRemitter', {
-          remitter_id: "rem_09",
-          purpose: sendMoneyAboroadForms.purposeOfTransfer,
-          account_number: "011234567990",
-          ifsc: "SBIN0005943",
-          pan: "ABCDE1234F",
-          name: "Siddharth",
-          address: "ABC street",
-          phone_number: "9090909090",
-          email: "abc@b.com",
-          nationality: "IN",
-          postal_code: "474005",
-          state: sendMoneyAboroadForms.transferFromState,
-          city: sendMoneyAboroadForms.transferFromCity,
-          bank_code: "3003"
-        }, {
+        const response = await axios.post('http://localhost:8100/registerRemitter',{
+   "purpose" : "EDUCATION",
+  "account_number" : "011234567991234" , 
+  "ifsc" : "SBIN0005943" ,
+  "pan" : "ABCDE1234F" ,
+  "remitter_id": "prod_cf_rem_005",
+  "name" : "Siddharth" ,
+  "address" : "ABC street" ,
+  "phone_number" : "9090909090" ,
+  "email" : "abc@b.com",
+  "nationality"  : "IN",
+  "postal_code":"474005",
+  "state":"madhya pradesh",
+  "city":"gwalior",
+  "bank_code":"3003" 
+}, {
           headers: {
-            'x-client-id': 'TEST10191770356b0bd65101d6e3d1ea07719101',
-            'x-client-secret':'fsk_ma_test_92343bedf3b0e95988bd61078376c370_4e7f49e2',
-            'x-api-version': '2023-03-01'
+          'x-client-id': import.meta.env.VITE_CLIENT_ID,
+        'x-client-secret': import.meta.env.VITE_CLIENT_SECRET,
+        'x-api-version': import.meta.env.VITE_API_VERSION
           }
         });
 
@@ -107,7 +115,8 @@ export default function SendMoneyForm2({
       }
     }
 
-        setformStep(2);
+        purposeOfTransfer==="Maintenance of Close relative Abroad"?setformStep(2):setformStep(3);
+
   };
 
   // Clear error when input field is clicked
@@ -133,6 +142,22 @@ export default function SendMoneyForm2({
   const clearErrorDoc = (fieldName) => {
     setErrors({ ...errors, [fieldName]: "" });
   };
+
+  const fetchRemiiterDetails=async()=>{
+    const response=await fetch('http://localhost:8100/remitters/prod_cf_rem_005');
+    const data=await response.json();
+
+    console.log('data',data);
+    const{name,account_number,ifsc,email,phone_number}=data
+    dispatch(setformValue({remiterFirstName:name,remiterAccountNo:account_number,remiterIFSCCode:ifsc,remiterMobileNo:phone_number,remiterEmailID:data?.email}))
+    setGetRemiiterDetails(data)
+  }
+
+  useEffect(()=>{
+    fetchRemiiterDetails();
+  },[])
+
+  console.log('getRemiiterDetails',getRemitterDetails);
   return (
     <>
       <div className="mt-10">
@@ -190,25 +215,28 @@ export default function SendMoneyForm2({
             </div>
           </div>
           <div className="relative z-0 w-full mb-5 group">
-            <input
-              type="text"
-              name="courseDetails"
-              id="course_details"
-              className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-              placeholder=" "
-              value={sendMoneyAboroadForms.passportNumber}
-              onChange={(e) => {
-                handleInputChange("passportNumber", e.target.value);
-                clearError("passportNumber");
-              }}
-            />
-
             <label
               htmlFor="course_details"
               className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
             >
-              Passport / Aadhar Card / Driving License Number
+              Address Proof
             </label>
+            <select
+                className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                placeholder=" "
+              onChange={(e) => {
+                handleInputChange("addressProof", e.target.value);
+                clearError("addressProof");
+              }}
+              value={sendMoneyAboroadForms?.addressProof}
+              >
+                <option value="">--Select Address Proof--</option>
+                <option>Aadhar Card</option>
+                <option>Passport</option>
+                <option>Driving License</option>
+              </select>
+
+            
             {errors.passportNumber && (
               <span className="text-[red] text-[11px] italic">
                 {errors.passportNumber}
@@ -353,6 +381,7 @@ export default function SendMoneyForm2({
                 id="course_details"
                 className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                 placeholder=" "
+                value={sendMoneyAboroadForms?.remiterEmailID}
                 onChange={(e) => {
                   handleInputChange("remiterEmailID", e.target.value);
                   clearError("remiterEmailID");
@@ -382,6 +411,7 @@ export default function SendMoneyForm2({
                   handleInputChange("remiterMobileNo", e.target.value);
                   clearError("remiterMobileNo");
                 }}
+                value={sendMoneyAboroadForms.remiterMobileNo}
               />
               <label
                 htmlFor="course_details"

@@ -6,9 +6,22 @@ import SendMoneyForm1 from "./SendMoneyForm1";
 import SendMoneyForm2 from "./SendMoneyForm2";
 import SendMoneyForm3 from "./SendMoneyForm3";
 import SendMoneyBifurcation from "./SendMoneyBifurcation";
+import { useSelector } from "react-redux";
+import Signup from "../../pages/Signup"
+import SignupForm from "../../Auth/SignupForm";
+import SendMoneyForm2Customer from "./SendMoneyForm2Customer";
+import Modal from "../../Modal";
+import SendMoneyLogin from "../../SendMoneyLogin";
+import SendMoneyRegister from "../../SendMoneyRegister";
 
 export default function SendMoneyAbroad() {
+  const user=useSelector((state)=>state.profile.user?.email)
+  const[isLoggedIn,setIsLoggedIn]=useState(false)
   const [formStep, setformStep] = useState(0);
+  const [showSignUp, setShowSignUp] = useState(false);
+  const[showLoginModal,setShowLoginModal]=useState(true)
+  const[tabName,setTabName]=useState("Login")
+  const isUserLoggedIn=localStorage.getItem("sendmoneyloggedin")
 
   const [documentProof, setDocumentProofs] = useState({
     panCardImage: "",
@@ -19,6 +32,21 @@ export default function SendMoneyAbroad() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  const getTabName=(data)=>{
+    setTabName(data)
+  }
+
+  const getLoggedInData=(data)=>{
+    setIsLoggedIn(data)
+  }
+
+
+  useEffect(()=>{
+    if(user){
+      setIsLoggedIn(true)
+    }
+  },[user])
 
   return (
     <div className="container mx-auto px-4">
@@ -36,19 +64,20 @@ export default function SendMoneyAbroad() {
           World.
         </p>
       </div>
+
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-5">
         <div className="p-4">
-          {formStep !== 4 && (
+          {formStep !== 5 && (
             <>
               <div className="sma_pclara bg-white shadow-lg rounded-lg p-6">
                 {formStep === 0 && (
                   <>
                     {" "}
-                    <SendMoneyForm1 setformStep={setformStep} />
+                    <SendMoneyForm1 setformStep={setformStep} getLoggedInData={getLoggedInData}/>
                   </>
                 )}
-                {formStep === 1 && (
+                {formStep === 1 && isLoggedIn &&(
                   <>
                     <SendMoneyForm2
                       setformStep={setformStep}
@@ -58,7 +87,17 @@ export default function SendMoneyAbroad() {
                   </>
                 )}
 
-                {formStep === 2 && (
+                 {formStep === 2 && isLoggedIn &&(
+                  <>
+                    <SendMoneyForm2Customer
+                      setformStep={setformStep}
+                      documentProof={documentProof}
+                      setDocumentProofs={setDocumentProofs}
+                    />{" "}
+                  </>
+                )}
+
+                {formStep === 3 && isLoggedIn && (
                   <>
                     <SendMoneyForm3
                       setformStep={setformStep}
@@ -67,7 +106,7 @@ export default function SendMoneyAbroad() {
                   </>
                 )}
 
-                {formStep === 3 && (
+                {formStep === 4 && isLoggedIn &&(
                   <>
                     <SendMoneyBifurcation
                       setformStep={setformStep}
@@ -83,6 +122,18 @@ export default function SendMoneyAbroad() {
           <img src={image1} alt="Prepaid Travel Card" className="w-full" />
         </div>
       </div>
+
+      {isUserLoggedIn && 
+
+      <Modal isVisible={true} onClose={()=>setShowModal(false)} setShowLoginModal={setShowLoginModal} tabName={tabName} getTabName={getTabName}>
+        {
+          tabName==="Login"?
+        <SendMoneyLogin/>
+        :<SendMoneyRegister/>
+}
+      </Modal>
+
+}
 
     </div>
   );

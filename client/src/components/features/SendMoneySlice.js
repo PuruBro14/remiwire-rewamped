@@ -9,11 +9,12 @@ const initialState = {
   receivingCurrency: "",
   sendingCurrencyIn: "INR",
   receivingAmountInEuro: "",
+  exchangeRate:"",
   receivingAmountInINR: "",
   oneEurotoINR: "",
   pancardNumber: "",
   pancardImage: "",
-  passportNumber: "",
+  addressProof: "",
   passportImage: "",
   blockACSheetDoc: "",
   remiterFirstName: "",
@@ -43,6 +44,7 @@ const SendMoneySlice = createSlice({
         purposeOfTransfer,
         oneEurotoINR,
         receivingAmountInEuro,
+        exchangeRate,
         receivingAmountInINR,
         pancardNumber,
         pancardImage,
@@ -60,11 +62,11 @@ const SendMoneySlice = createSlice({
         beneficiaryIBANNo,
         beneficiaryCountry,
         receivingCurrency,
-        passportNumber,
+        addressProof,
       } = action.payload;
 
-      state.passportNumber =
-        passportNumber !== undefined ? passportNumber : state.passportNumber;
+      state.addressProof =
+        addressProof !== undefined ? addressProof : state.addressProof;
       state.transferFromState =
         transferFromState !== undefined
           ? transferFromState
@@ -79,6 +81,8 @@ const SendMoneySlice = createSlice({
         receivingAmountInEuro !== undefined
           ? receivingAmountInEuro
           : state.receivingAmountInEuro;
+          state.exchangeRate =
+            exchangeRate !== undefined ? exchangeRate : state.exchangeRate;
       state.receivingAmountInINR =
         receivingAmountInINR !== undefined
           ? receivingAmountInINR

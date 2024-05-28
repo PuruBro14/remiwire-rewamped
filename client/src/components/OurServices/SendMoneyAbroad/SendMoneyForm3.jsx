@@ -22,6 +22,10 @@ export default function SendMoneyForm3({ setformStep,documentProof }) {
   const handleSubmit = async(e) => {
     e.preventDefault();
 
+        console.log('sendMoneyAboroadForms',sendMoneyAboroadForms);
+        
+        const{beneficiaryName,beneficiaryAddress,beneficiaryAccountNo,beneficiaryAccountNoRe,beneficiarySwiftCode,beneficiaryIBANNo,beneficiaryCountry}=sendMoneyAboroadForms
+
     const newErrors = {};
 
     // Validate beneficiaryName
@@ -71,20 +75,21 @@ export default function SendMoneyForm3({ setformStep,documentProof }) {
     // If no errors, submit the form
     if (Object.keys(newErrors).length === 0) {
       try {
-        const response = await axios.post('http://localhost:8100/beneficiaries', {"beneficiary_id":"bene_002","account_holder_name":"Harward University","account_number":"13719713158835300","swift_code":"SVBKUS6S","iban":"ABCDEFGHIJ123458923","bank_name":"Silicon Valley Bank","bank_country":"US","bank_address":"003 Tasman Drive, Santa Clar","address":"Harvard University","city":"Cambridge","state":"Massachusetts","country":"US","postal_code":"021384","routing_number":"121140399"}, {
+        const response = await axios.post('http://localhost:8100/beneficiaries', {"beneficiary_id":"bene_004","account_holder_name":beneficiaryName,"account_number":beneficiaryAccountNo,"swift_code":beneficiarySwiftCode,"iban":beneficiaryIBANNo,"bank_name":"Silicon Valley Bank","bank_country":"US","bank_address":"003 Tasman Drive, Santa Clar","address":beneficiaryAddress,"city":"Cambridge","state":"Massachusetts","country":"US","postal_code":"021384","routing_number":"121140399"}, {
           headers: {
-            'x-client-id': 'TEST10191770356b0bd65101d6e3d1ea07719101',
-            'x-client-secret':'fsk_ma_test_92343bedf3b0e95988bd61078376c370_4e7f49e2',
-            'x-api-version': '2023-03-01'
+            'x-client-id': import.meta.env.VITE_CLIENT_ID,
+        'x-client-secret': import.meta.env.VITE_CLIENT_SECRET,
+        'x-api-version': import.meta.env.VITE_API_VERSION
           }
         });
 
         console.log('API Response:', response.data);
-        setformStep(3);
       } catch (error) {
         console.error('API Error:', error);
       }
     }
+
+        setformStep(4);
   };
   const clearError = (fieldName) => {
     setErrors({ ...errors, [fieldName]: "" });

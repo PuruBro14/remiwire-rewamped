@@ -1,40 +1,35 @@
 import React from "react";
 
-const Tab = ({
-  tabData,
-  currentState,
-  setCurrentState,
-  setPassedFromSignup,
-}) => {
+const Tab = ({ tabData, currentState, setCurrentState, setPassedFromSignup,setShowLoginModal,tabName,getTabName }) => {
   const handleTabClick = (tabName) => {
-    setCurrentState(tabName);
-    setPassedFromSignup(true);
+    // setCurrentState(tabName);
+    // setPassedFromSignup(true);
+    console.log('tabName',tabName);
+    getTabName(tabName)
   };
+
+  console.log('tabName',tabName);
+
   return (
-    <div
-      style={{
-        boxShadow: "inset 0px -1px 0px rgba(255,255,255,0.18)",
-      }}
-      className={`flex cursor-pointer items-center bg-richblack-600  gap-x-1 rounded-full max-w-max text-white 
-    
-    `}
-    >
-      {tabData?.map((tab) => (
-        <div
-          key={tab?.id}
-          onClick={(e) => {
-            e.preventDefault();
-            handleTabClick(tab?.tabName);
-          }}
-          className={`${
-            currentState === tab?.tabName
-              ? "p-4 bg-richblack-800 text-richblack-5"
-              : "bg-transparent text-richblack-200"
-          }py-0 px-8 rounded-full transition-all duration-200`}
-        >
-          {tab?.tabName}
-        </div>
-      ))}
+    <div className="flex justify-center my-4">
+      <div className="flex cursor-pointer items-center gap-x-1 rounded-full bg-richblack-600 text-white p-2 max-w-max shadow-md">
+        {tabData?.map((tab) => {
+         return <div
+            key={tab?.id}
+            onClick={(e) => {
+              e.preventDefault();
+              handleTabClick(tab?.tabName);
+            }}
+            className={`${
+              tabName === tab?.tabName
+                ? "bg-blue-500 text-white"
+                : "bg-transparent text-gray-700 hover:bg-gray-300"
+            } py-2 px-6 rounded-full transition-all duration-300`}
+          >
+            {tab?.tabName}
+          </div>
+})}
+      </div>
     </div>
   );
 };

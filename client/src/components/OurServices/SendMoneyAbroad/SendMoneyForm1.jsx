@@ -6,14 +6,15 @@ import { setformValue } from "../../features/SendMoneySlice";
 import axios from "axios";
 import countriesList from "../../../utils/countryList";
 import currencyWithSymbol from "../../../utils/currencyWithSymbol";
+import SignUp from "../../pages/Signup";
 
-export default function SendMoneyForm1({ setformStep }) {
+export default function SendMoneyForm1({ setformStep,isLoggedIn,setIsLoggedIn,getLoggedInData }) {
   const [countryid, setCountryid] = useState(101);
   const [stateid, setstateid] = useState(0);
   const [selectedCurrencySymbol, setselectedCurrencySymbol] = useState("");
   const dispatch = useDispatch();
-  const[isLoggedIn,setIsLoggedIn]=useState(false);
   const user=useSelector((state)=>state.profile)
+
   const [errors, setErrors] = useState({
     transferFromState: "",
     transferFromCity: "",
@@ -28,8 +29,15 @@ export default function SendMoneyForm1({ setformStep }) {
   );
 
   const handleSubmit = (e) => {
+    console.log('clicked on handle submit');
     e.preventDefault();
 
+     if (!user.user) {
+      getLoggedInData(true)
+      localStorage.setItem('sendmoneyloggedin',true)
+      return;
+    }
+    console.log('user',user);
     const newErrors = {};
 
     if (!sendMoneyAboroadForms.transferFromState) {
@@ -58,6 +66,7 @@ export default function SendMoneyForm1({ setformStep }) {
     if (!sendMoneyAboroadForms.receivingAmountInINR) {
       newErrors.receivingAmountInINR = "Amount in INR is required";
     }
+    
 
     setErrors(newErrors);
 
@@ -99,8 +108,6 @@ export default function SendMoneyForm1({ setformStep }) {
     getCurrentRateINRtoEURO();
   }, [sendMoneyAboroadForms.receivingCurrency]);
 
-
-
   return (
     <>
       {" "}
@@ -110,11 +117,13 @@ export default function SendMoneyForm1({ setformStep }) {
             <StateSelect
               countryid={countryid}
               onChange={(e) => {
+                console.log('countrhyid',e);
                 setstateid(e.id);
                 handleInputChange("transferFromState", e.name);
                 clearError("transferFromState");
               }}
               placeHolder="Select State"
+              value="4017"
             />
             {errors.transferFromState && (
               <span className="text-[red] text-[11px] italic">
@@ -147,8 +156,8 @@ export default function SendMoneyForm1({ setformStep }) {
             </label>
           </div>
           <div>
-            <div className="relative z-0 w-full mb-5 group">
-              <input
+            <div className="relative z-0 w-full mb-5 group mt-3">
+              {/* <input
                 type="text"
                 name="studyCountry"
                 id="studyCountry"
@@ -161,23 +170,36 @@ export default function SendMoneyForm1({ setformStep }) {
 
                   clearError("transferToCountry");
                 }}
-              />
+              value={sendMoneyAboroadForms.transferToCountry}
+              /> */}
+             
               <label
                 htmlFor="studyCountry"
                 className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-              >
+              > 
                 Transfer To
               </label>
 
-              <datalist id="studyCountryList">
+               <select
+               className="w-[100%] border mt-3 p-2"
+              onChange={(e) => {
+                  handleInputChange("transferToCountry", e.target.value);
+                  handleInputChange("beneficiaryCountry", e.target.value);
+
+                  clearError("transferToCountry");
+                }}
+              value={sendMoneyAboroadForms.transferToCountry}
+              >
+                <option value="">Please select a country</option>
                 {countriesList.map((val, index) => {
                   return (
-                    <div key={val.value + index}>
+                    // <div key={val.value + index}>
                       <option value={val.name}>{val.name}</option>
-                    </div>
+                    // </div>
                   );
                 })}
-              </datalist>
+                </select>
+              
               {errors.transferToCountry && (
                 <span className="text-[red] text-[11px] italic">
                   {errors.transferToCountry}
@@ -195,6 +217,7 @@ export default function SendMoneyForm1({ setformStep }) {
                   handleInputChange("purposeOfTransfer", e.target.value);
                   clearError("purposeOfTransfer");
                 }}
+                value={sendMoneyAboroadForms.purposeOfTransfer}
               >
                 <option value="">--Select A Purpose--</option>
                 <option>Maintenance of Close relative Abroad</option>
@@ -232,6 +255,7 @@ export default function SendMoneyForm1({ setformStep }) {
                   setselectedCurrencySymbol(selectedOption.symbol);
                   clearError("receivingCurrency");
                 }}
+                value={sendMoneyAboroadForms.receivingCurrency}
               >
                 <option value="">--Select A Currency--</option>
                 {currencyWithSymbol.map((val, index) => {
@@ -315,6 +339,10 @@ export default function SendMoneyForm1({ setformStep }) {
                 )}
               </div>
             </div>
+          </div>
+
+          <div>
+            Total : {sendMoneyAboroadForms.receivingAmountInINR} Rs
           </div>
           <button
             type="submit"

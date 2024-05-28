@@ -70,21 +70,25 @@ function generateOrderId() {
   return orderId.substring(0, 12);
 }
 
+let orders = []; // In-memory order storage. Replace this with a database in a real application.
+
 app.post("/payment", async (req, res) => {
   try {
+    const orderId = "TORID665456" + Date.now();
+    const customerId = "CID89898" + Date.now();
     const options = {
       method: "POST",
       url: "https://sandbox.cashfree.com/pg/orders",
       headers: {
         accept: "application/json",
-        "x-api-version": process.env.API_VERSION,
         "content-type": "application/json",
         "x-client-id": process.env.CLIENT_ID,
         "x-client-secret": process.env.CLIENT_SECRET,
+        "x-api-version": "2022-09-01",
       },
       data: {
         customer_details: {
-          customer_id: "CID89898" + Date.now(),
+          customer_id: customerId,
           customer_email: "purusharma1405@gmail.com",
           customer_phone: "7498608775",
           customer_name: "goku",
@@ -95,13 +99,21 @@ app.post("/payment", async (req, res) => {
           payment_methods: "cc,dc,upi",
         },
         order_amount: 1,
-        order_id: "TORID665456" + Date.now(),
+        order_id: orderId,
         order_currency: "INR",
         order_note: "Remiwire order",
       },
     };
     const response = await axios.request(options);
     console.log(response.data);
+
+    // Store order in in-memory array
+    orders.push({
+      orderId: orderId,
+      customerId: customerId,
+      ...response.data,
+    });
+
     return res.status(200).send(response.data);
   } catch (error) {
     console.error("Internal server error:", error);
@@ -109,11 +121,17 @@ app.post("/payment", async (req, res) => {
   }
 });
 
+// Endpoint to list all orders
+app.get("/orders", (req, res) => {
+  res.status(200).json(orders);
+});
+
 
 
 app.post("/verify", async (req, res) => {
   try {
     let { orderId } = req.body;
+    console.log('orderId',orderId);
 
     Cashfree.PGOrderFetchPayments("2023-08-01", orderId)
       .then((response) => {
@@ -165,25 +183,27 @@ app.post("/api/upload-document/:orderid", async (req, res) => {
 });
 
 app.post("/registerRemitter", async (req, res) => {
+  console.log('req----------->',req.body);
+  const{purpose,account_number,ifsc,pan,remitter_id,name,address,phone_number,email,nationality,postal_code,state,city,bank}=req.body
     const client_id = process.env.CLIENT_ID;
     const client_secret =
       process.env.CLIENT_SECRET;
   try {
     const remitterData = {
-      remitter_id: "rem_09",
-      purpose: "EDUCATION",
-      account_number: "011234567990",
-      ifsc: "SBIN0005943",
-      pan: "ABCDE1234F",
-      name: "Siddharth",
-      address: "ABC street",
-      phone_number: "9090909090",
-      email: "abc@b.com",
-      nationality: "IN",
-      postal_code: "474005",
-      state: "madhya pradesh",
-      city: "gwalior",
-      bank_code: "3003",
+      purpose: purpose,
+      account_number: account_number,
+      ifsc: ifsc,
+      pan: pan,
+      remitter_id: remitter_id,
+      name: name,
+      address: address,
+      phone_number: phone_number,
+      email: email,
+      nationality: nationality,
+      postal_code: postal_code,
+      state: state,
+      city: city,
+      bank_code: bank,
     };
 
     const response = await axios.post(
@@ -209,12 +229,45 @@ app.post("/registerRemitter", async (req, res) => {
 });
 
 app.post("/beneficiaries", async (req, res) => {
-  const client_id = process.env.CLIENT_ID;
-  const client_secret =
-    process.env.CLIENT_SECRET;
+  console.log('req-==->',req.body);
+const {
+  beneficiary_id,
+  account_holder_name,
+  account_number,
+  swift_code,
+  iban,
+  bank_name,
+  bank_country,
+  bank_address,
+  address,
+  city,
+  state,
+  country,
+  postal_code,
+  routing_number,
+} = req.body;
+
+const client_id =
+  process.env.CLIENT_ID !== undefined ? process.env.CLIENT_ID : "";
+const client_secret =
+  process.env.CLIENT_SECRET !== undefined ? process.env.CLIENT_SECRET : "";
   try {
-    const beneficiaryData = 
-      {"beneficiary_id":"bene_002","account_holder_name":"Harward University","account_number":"13719713158835300","swift_code":"SVBKUS6S","iban":"ABCDEFGHIJ123458923","bank_name":"Silicon Valley Bank","bank_country":"US","bank_address":"003 Tasman Drive, Santa Clar","address":"Harvard University","city":"Cambridge","state":"Massachusetts","country":"US","postal_code":"021384","routing_number":"121140399"}
+    const beneficiaryData = {
+      beneficiary_id: beneficiary_id,
+      account_holder_name: account_holder_name,
+      account_number: account_number,
+      swift_code: swift_code,
+      iban: iban,
+      bank_name: bank_name,
+      bank_country: bank_country,
+      bank_address: bank_address,
+      address: address,
+      city: city,
+      state: state,
+      country: country,
+      postal_code: postal_code,
+      routing_number: "121140399",
+    };
     
 
     const response = await axios.post(
@@ -242,44 +295,82 @@ app.post("/beneficiaries", async (req, res) => {
 
 app.get("/api/status/:orderid", async (req, res) => {
   const client_id = process.env.CLIENT_ID;
-  const client_secret =
-    process.env.CLIENT_SECRET;
-  console.log("runned");
+  const client_secret = process.env.CLIENT_SECRET;
   const orderid = req.params.orderid;
-  console.log("orderid", orderid);
 
-  console.log('line 176');
+  console.log("Endpoint hit with orderid:", orderid);
+
+  const options = {
+    method: "GET",
+    url: `https://sandbox.cashfree.com/pg/orders/${orderid}`,
+    headers: {
+      accept: "application/json",
+      "x-api-version": "2022-09-01",
+      "x-client-id": client_id,
+      "x-client-secret": client_secret,
+    },
+  };
+
   try {
-    const options = {
-      method: "GET",
-      url: `https://sandbox.cashfree.com/pg/orders/${orderid}`,
-      headers: {
-        accept: "application/json",
-        "x-api-version": "2022-09-01",
-        "x-client-id": client_id,
-        "x-client-secret": client_secret,
-      },
-    };
+    const response = await axios.request(options);
+    const orderStatus = response.data.order_status;
 
-    console.log('line 187');
+    console.log(
+      "Response received:",
+      response.data,
+      "order_status:",
+      orderStatus
+    );
 
-    axios
-      .request(options)
-      .then(function (response) {
-        console.log('response----------->',response.data,'order_status',response.data.order_status);
-        if (response.data.order_status === "PAID") {
-          console.log('success');
-        } else if (response.data.order_status === "ACTIVE") {
-          console.log('redicrect');
-        } else {
-          console.log('failed');
-        }
-      })
-      .catch(function (error) {
-        return console.error('error------>',error);
+    if (orderStatus === "PAID") {
+      console.log("Order status: PAID");
+      res.json({ status: "success", message: "Order is paid." });
+    } else if (orderStatus === "ACTIVE") {
+      console.log("Order status: ACTIVE");
+      res.json({
+        status: "redirect",
+        data:response.data,
+        message: "Order is active, please redirect.",
       });
+    } else {
+      console.log("Order status: FAILED");
+      res.json({ status: "failed", message: "Order has failed." });
+    }
   } catch (error) {
-    return console.error(error);
+    console.error("Error occurred:", error);
+    res
+      .status(500)
+      .json({ error: "An error occurred while fetching the order status." });
+  }
+});
+
+app.get("/remitters/:remitterID", async (req, res) => {
+  const { remitterID } = req.params;
+  console.log("Endpoint hit with remitterID:", remitterID);
+
+  const client_id = process.env.CLIENT_ID;
+  const client_secret = process.env.CLIENT_SECRET;
+
+  const options = {
+    method: "GET",
+    url: `https://sandbox.cashfree.com/pg/lrs/remitters/prod_cf_rem_005`,
+    headers: {
+      accept: "application/json",
+      "x-api-version": "2022-09-01",
+      "x-client-id": client_id,
+      "x-client-secret": client_secret,
+    },
+  };
+
+  try {
+    const response = await axios.request(options);
+    console.log("Response received:", response.data);
+    res.json(response.data);
+  } catch (error) {
+    console.error("Error occurred:", error);
+    res
+      .status(500)
+      .json({ error: "An error occurred while fetching remitter data" });
   }
 });
 
