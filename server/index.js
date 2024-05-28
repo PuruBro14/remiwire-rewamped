@@ -70,7 +70,7 @@ function generateOrderId() {
   return orderId.substring(0, 12);
 }
 
-let orders = []; // In-memory order storage. Replace this with a database in a real application.
+let orders = []; 
 
 app.post("/payment", async (req, res) => {
   try {
@@ -107,7 +107,6 @@ app.post("/payment", async (req, res) => {
     const response = await axios.request(options);
     console.log(response.data);
 
-    // Store order in in-memory array
     orders.push({
       orderId: orderId,
       customerId: customerId,
@@ -121,7 +120,6 @@ app.post("/payment", async (req, res) => {
   }
 });
 
-// Endpoint to list all orders
 app.get("/orders", (req, res) => {
   res.status(200).json(orders);
 });
