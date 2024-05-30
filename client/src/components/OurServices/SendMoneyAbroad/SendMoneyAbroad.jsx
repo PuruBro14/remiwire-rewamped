@@ -17,7 +17,7 @@ import SendMoneyRegister from "../../SendMoneyRegister";
 export default function SendMoneyAbroad() {
   const user=useSelector((state)=>state.profile.user?.email)
   const[isLoggedIn,setIsLoggedIn]=useState(false)
-  const [formStep, setformStep] = useState(4);
+  const [formStep, setformStep] = useState(0);
   const [showSignUp, setShowSignUp] = useState(false);
   const[showLoginModal,setShowLoginModal]=useState(true)
   const[tabName,setTabName]=useState("Login")
