@@ -9,7 +9,7 @@ const initialState = {
   receivingCurrency: "",
   sendingCurrencyIn: "INR",
   receivingAmountInEuro: "",
-  exchangeRate:"",
+  exchangeRate: "",
   receivingAmountInINR: "",
   oneEurotoINR: "",
   pancardNumber: "",
@@ -28,7 +28,7 @@ const initialState = {
   beneficiaryAccountNo: "",
   beneficiaryAccountNoRe: "",
   beneficiarySwiftCode: "",
-  beneficiaryIBANNo: "",
+  bankIdentifiers: "",
   beneficiaryCountry: "",
 };
 
@@ -59,7 +59,7 @@ const SendMoneySlice = createSlice({
         beneficiaryAccountNo,
         beneficiaryAccountNoRe,
         beneficiarySwiftCode,
-        beneficiaryIBANNo,
+        bankIdentifiers,
         beneficiaryCountry,
         receivingCurrency,
         addressProof,
@@ -125,10 +125,8 @@ const SendMoneySlice = createSlice({
         beneficiarySwiftCode !== undefined
           ? beneficiarySwiftCode
           : state.beneficiarySwiftCode;
-      state.beneficiaryIBANNo =
-        beneficiaryIBANNo !== undefined
-          ? beneficiaryIBANNo
-          : state.beneficiaryIBANNo;
+      state.bankIdentifiers =
+        bankIdentifiers !== undefined ? bankIdentifiers : state.bankIdentifiers;
       state.beneficiaryCountry =
         beneficiaryCountry !== undefined
           ? beneficiaryCountry

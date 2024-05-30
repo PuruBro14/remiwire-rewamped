@@ -8,12 +8,18 @@ import countriesList from "../../../utils/countryList";
 import currencyWithSymbol from "../../../utils/currencyWithSymbol";
 import SignUp from "../../pages/Signup";
 
-export default function SendMoneyForm1({ setformStep,isLoggedIn,setIsLoggedIn,getLoggedInData }) {
+export default function SendMoneyForm1({
+  setformStep,
+  isLoggedIn,
+  setIsLoggedIn,
+  getLoggedInData,
+  fetchChargesData
+}) {
   const [countryid, setCountryid] = useState(101);
   const [stateid, setstateid] = useState(0);
   const [selectedCurrencySymbol, setselectedCurrencySymbol] = useState("");
   const dispatch = useDispatch();
-  const user=useSelector((state)=>state.profile)
+  const user = useSelector((state) => state.profile);
 
   const [errors, setErrors] = useState({
     transferFromState: "",
@@ -29,15 +35,16 @@ export default function SendMoneyForm1({ setformStep,isLoggedIn,setIsLoggedIn,ge
   );
 
   const handleSubmit = (e) => {
-    console.log('clicked on handle submit');
+    console.log("clicked on handle submit");
     e.preventDefault();
+      fetchFxRate();
 
-     if (!user.user) {
-      getLoggedInData(true)
-      localStorage.setItem('sendmoneyloggedin',true)
+    if (!user.user) {
+      getLoggedInData(true);
+      localStorage.setItem("sendmoneyloggedin", true);
       return;
     }
-    console.log('user',user);
+    console.log("user", user);
     const newErrors = {};
 
     if (!sendMoneyAboroadForms.transferFromState) {
@@ -66,7 +73,6 @@ export default function SendMoneyForm1({ setformStep,isLoggedIn,setIsLoggedIn,ge
     if (!sendMoneyAboroadForms.receivingAmountInINR) {
       newErrors.receivingAmountInINR = "Amount in INR is required";
     }
-    
 
     setErrors(newErrors);
 
@@ -79,7 +85,6 @@ export default function SendMoneyForm1({ setformStep,isLoggedIn,setIsLoggedIn,ge
   const clearError = (fieldName) => {
     setErrors({ ...errors, [fieldName]: "" });
   };
-  
 
   const handleInputChange = (fieldName, value) => {
     dispatch(setformValue({ [fieldName]: value }));
@@ -108,6 +113,40 @@ export default function SendMoneyForm1({ setformStep,isLoggedIn,setIsLoggedIn,ge
     getCurrentRateINRtoEURO();
   }, [sendMoneyAboroadForms.receivingCurrency]);
 
+  const fetchFxRate = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:8100/api/fx-rate",
+        {
+          to_amount: 100,
+          to_currency: "USD",
+          purpose: "EDUCATION",
+          education_loan: true,
+          customer_declaration: 500000,
+          sender_pan_number: null,
+        },
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            "x-client-id": "{client_id_lrs}",
+            "x-client-secret": "{client_secret_lrs}",
+            "x-api-version": "2023-03-01",
+          },
+        }
+      );
+
+      console.log("Response from document verification API:", response.data);
+      fetchChargesData(response?.data)
+      return response.data;
+    } catch (error) {
+      console.error(
+        "Error during document verification:",
+        error.response?.data || error.message
+      );
+      throw error;
+    }
+  };
+
   return (
     <>
       {" "}
@@ -117,7 +156,7 @@ export default function SendMoneyForm1({ setformStep,isLoggedIn,setIsLoggedIn,ge
             <StateSelect
               countryid={countryid}
               onChange={(e) => {
-                console.log('countrhyid',e);
+                console.log("countrhyid", e);
                 setstateid(e.id);
                 handleInputChange("transferFromState", e.name);
                 clearError("transferFromState");
@@ -172,34 +211,34 @@ export default function SendMoneyForm1({ setformStep,isLoggedIn,setIsLoggedIn,ge
                 }}
               value={sendMoneyAboroadForms.transferToCountry}
               /> */}
-             
+
               <label
                 htmlFor="studyCountry"
                 className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-              > 
+              >
                 Transfer To
               </label>
 
-               <select
-               className="w-[100%] border mt-3 p-2"
-              onChange={(e) => {
+              <select
+                className="w-[100%] border mt-3 p-2"
+                onChange={(e) => {
                   handleInputChange("transferToCountry", e.target.value);
                   handleInputChange("beneficiaryCountry", e.target.value);
 
                   clearError("transferToCountry");
                 }}
-              value={sendMoneyAboroadForms.transferToCountry}
+                value={sendMoneyAboroadForms.transferToCountry}
               >
                 <option value="">Please select a country</option>
                 {countriesList.map((val, index) => {
                   return (
                     // <div key={val.value + index}>
-                      <option value={val.name}>{val.name}</option>
+                    <option value={val.name}>{val.name}</option>
                     // </div>
                   );
                 })}
-                </select>
-              
+              </select>
+
               {errors.transferToCountry && (
                 <span className="text-[red] text-[11px] italic">
                   {errors.transferToCountry}
@@ -341,9 +380,7 @@ export default function SendMoneyForm1({ setformStep,isLoggedIn,setIsLoggedIn,ge
             </div>
           </div>
 
-          <div>
-            Total : {sendMoneyAboroadForms.receivingAmountInINR} Rs
-          </div>
+          <div>Total : {sendMoneyAboroadForms.receivingAmountInINR} Rs</div>
           <button
             type="submit"
             className="mt-[30px] text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"

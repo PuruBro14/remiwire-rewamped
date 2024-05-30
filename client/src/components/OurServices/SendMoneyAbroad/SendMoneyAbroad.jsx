@@ -17,11 +17,12 @@ import SendMoneyRegister from "../../SendMoneyRegister";
 export default function SendMoneyAbroad() {
   const user=useSelector((state)=>state.profile.user?.email)
   const[isLoggedIn,setIsLoggedIn]=useState(false)
-  const [formStep, setformStep] = useState(0);
+  const [formStep, setformStep] = useState(4);
   const [showSignUp, setShowSignUp] = useState(false);
   const[showLoginModal,setShowLoginModal]=useState(true)
   const[tabName,setTabName]=useState("Login")
   const isUserLoggedIn=localStorage.getItem("sendmoneyloggedin")
+  const[chargesData,setChargesData]=useState();
 
   const [documentProof, setDocumentProofs] = useState({
     panCardImage: "",
@@ -47,6 +48,10 @@ export default function SendMoneyAbroad() {
       setIsLoggedIn(true)
     }
   },[user])
+
+  const fetchChargesData=(data)=>{
+    setChargesData(data)
+  }
 
   return (
     <div className="container mx-auto px-4">
@@ -74,7 +79,7 @@ export default function SendMoneyAbroad() {
                 {formStep === 0 && (
                   <>
                     {" "}
-                    <SendMoneyForm1 setformStep={setformStep} getLoggedInData={getLoggedInData}/>
+                    <SendMoneyForm1 setformStep={setformStep} getLoggedInData={getLoggedInData} fetchChargesData={fetchChargesData}/>
                   </>
                 )}
                 {formStep === 1 && isLoggedIn &&(
@@ -111,6 +116,7 @@ export default function SendMoneyAbroad() {
                     <SendMoneyBifurcation
                       setformStep={setformStep}
                       documentProof={documentProof}
+                      chargesData={chargesData}
                     />
                   </>
                 )}

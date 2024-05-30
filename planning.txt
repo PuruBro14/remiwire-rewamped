@@ -90,3 +90,33 @@ app.get("/remitters/:remitterID", async (req, res) => {
       .json({ error: "An error occurred while fetching remitter data" });
   }
 });
+
+100 orders 
+101 
+1oo orders.findById(101)-2 orders 
+
+pm2 restart index.js 
+sudo systemctl restart nginx
+
+api response 
+{
+    "tcs": 0.0000,
+    "gst": 45.0,
+    "to_amount": 100,
+    "fx_rate": 104.1156,
+    "amount_to_pay": 10987.56000000,
+    "handling_charges": 531.00000000,
+    "fx_rate_ibr": 83.2925
+}
+
+our response 
+
+{
+    "tcs": 0,
+    "gst": 45,
+    "to_amount": 100,
+    "fx_rate": 104.1156,
+    "amount_to_pay": 10987.56,
+    "handling_charges": 531,
+    "fx_rate_ibr": 83.2925
+}

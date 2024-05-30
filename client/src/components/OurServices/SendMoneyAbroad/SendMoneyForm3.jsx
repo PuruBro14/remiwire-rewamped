@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setformValue } from "../../features/SendMoneySlice";
 import axios from "axios";
@@ -11,7 +11,7 @@ export default function SendMoneyForm3({ setformStep,documentProof }) {
     beneficiaryAccountNo: "",
     beneficiaryAccountNoRe: "",
     beneficiarySwiftCode: "",
-    beneficiaryIBANNo: "",
+    bankIdentifiers: "",
     beneficiaryCountry: "",
   });
 
@@ -25,7 +25,7 @@ export default function SendMoneyForm3({ setformStep,documentProof }) {
 
         console.log('sendMoneyAboroadForms',sendMoneyAboroadForms);
         
-        const{beneficiaryName,beneficiaryAddress,beneficiaryAccountNo,beneficiaryAccountNoRe,beneficiarySwiftCode,beneficiaryIBANNo,beneficiaryCountry}=sendMoneyAboroadForms
+        const{beneficiaryName,beneficiaryAddress,beneficiaryAccountNo,beneficiaryAccountNoRe,beneficiarySwiftCode,bankIdentifiers,beneficiaryCountry}=sendMoneyAboroadForms
 
     const newErrors = {};
 
@@ -58,11 +58,6 @@ export default function SendMoneyForm3({ setformStep,documentProof }) {
     // Validate beneficiarySwiftCode
     if (!sendMoneyAboroadForms.beneficiarySwiftCode.trim()) {
       newErrors.beneficiarySwiftCode = "Beneficiary SWIFT code is required";
-    }
-
-    // Validate beneficiaryIBANNo
-    if (!sendMoneyAboroadForms.beneficiaryIBANNo.trim()) {
-      newErrors.beneficiaryIBANNo = "Beneficiary IBAN number is required";
     }
 
     // Validate beneficiaryCountry
@@ -105,6 +100,8 @@ export default function SendMoneyForm3({ setformStep,documentProof }) {
 
     dispatch(setformValue({ [fieldName]: sanitizedValue }));
   };
+
+
 
   return (
     <>
@@ -187,7 +184,7 @@ export default function SendMoneyForm3({ setformStep,documentProof }) {
                 htmlFor="course_details"
                 className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
               >
-                Beneficiary Account no
+                Beneficiary Account no / IBAN
               </label>
               {errors.beneficiaryAccountNo && (
                 <span className="text-[red] text-[11px] italic">
@@ -212,7 +209,7 @@ export default function SendMoneyForm3({ setformStep,documentProof }) {
                 htmlFor="course_details"
                 className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
               >
-                Reconfirm Beneficiary Account no
+                Reconfirm Beneficiary Account no / IBAN
               </label>
               {errors.beneficiaryAccountNoRe && (
                 <span className="text-[red] text-[11px] italic">
@@ -240,7 +237,7 @@ export default function SendMoneyForm3({ setformStep,documentProof }) {
                 htmlFor="course_details"
                 className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
               >
-                Swift Code
+                Swift Code  
               </label>
               {errors.beneficiarySwiftCode && (
                 <span className="text-[red] text-[11px] italic">
@@ -255,23 +252,18 @@ export default function SendMoneyForm3({ setformStep,documentProof }) {
                 id="course_details"
                 className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                 placeholder=" "
-                value={sendMoneyAboroadForms.beneficiaryIBANNo}
+                value={sendMoneyAboroadForms.bankIdentifiers}
                 onChange={(e) => {
-                  handleInputChange("beneficiaryIBANNo", e.target.value);
-                  clearError("beneficiaryIBANNo");
+                  handleInputChange("bankIdentifiers", e.target.value);
+                  clearError("bankIdentifiers");
                 }}
               />
               <label
                 htmlFor="course_details"
                 className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
               >
-                IBAN No
+                BSB / ABA / TRANSIT / FED WIRE CODE
               </label>
-              {errors.beneficiaryIBANNo && (
-                <span className="text-[red] text-[11px] italic">
-                  {errors.beneficiaryIBANNo}
-                </span>
-              )}
             </div>
           </div>
           <div>

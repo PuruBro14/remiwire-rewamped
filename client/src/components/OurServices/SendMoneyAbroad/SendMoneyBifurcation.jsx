@@ -3,12 +3,14 @@ import axios from "axios";
 import {load} from '@cashfreepayments/cashfree-js'
 import {useParams} from 'react-router-dom';
 import { useSelector } from "react-redux";
-export default function SendMoneyBifurcation({ setformStep, documentProof }) {
+export default function SendMoneyBifurcation({ setformStep, documentProof,chargesData }) {
 
     const [orderId, setOrderId] = useState("");
     const params=useParams();
     const isSessionId=params.sessionid
       const { oneEurotoINR,receivingAmountInEuro,receivingAmountInINR } = useSelector((state) => state.sendMoneyAboroadForms);
+
+      const[formData,setFormData]=useState();
 
     console.log('oneEurotoINR',oneEurotoINR,receivingAmountInEuro,receivingAmountInINR);
 
@@ -166,6 +168,8 @@ useEffect(()=>{
   setSessionId(isSessionId)
 },[isSessionId])
 
+console.log('chargesData',chargesData);
+
   return (
     <div>
       <div className="text-[18px]">Total Charges Bifurcation</div>
@@ -193,7 +197,7 @@ useEffect(()=>{
               </td>
               <td>
                 GST on Charge
-                <div className="font-bold">{((receivingAmountInINR*18)/100).toFixed(2)}</div>
+                <div className="font-bold">{chargesData?.gst}</div>
               </td>
               <td>
                 GST on Currency Conversion
@@ -203,7 +207,7 @@ useEffect(()=>{
             <tr>
               <td>
                 TCS
-                <div className="font-bold">100</div>
+                <div className="font-bold">{chargesData?.tcs}</div>
               </td>
               <td>
                 TCS Flag
