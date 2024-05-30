@@ -1,4 +1,4 @@
-const BASE_URL = "http://13.50.14.42:8100/";
+const BASE_URL = "http://13.50.14.42:8100";
 
 export const endpoints={
     SIGNUP_API:BASE_URL+"/auth/signup", 
