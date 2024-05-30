@@ -5,9 +5,12 @@ import IconBtn from '../components/common/IconBtn'
 import { VscAdd } from "react-icons/vsc"
 import OrdersTable from '../components/core/OrdersTable'
 import axios from "axios";
+import {toast} from 'react-hot-toast'
+import { apiConnector } from '../services/operations/apiconnector'
 
 const MyOrders = () => {
   const[orders,setOrders]=useState([]);
+  const[userOrders,setUserOrders]=useState([]);
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -33,6 +36,39 @@ const fetchOrderById = async () => {
     fetchOrderById(); 
   },[])
 
+//  useEffect(() => {
+//     const fetchOrders = async () => {
+//       try {
+//         const data = await fetchUserOrders(token);
+//         console.log('data', data);
+//         setOrders(data);
+//       } catch (error) {
+//         console.error('Error fetching user orders:', error);
+//       }
+//     };
+
+//     fetchOrders();
+//   }, [token]);
+
+const fetchUserOrders = async () => {
+  try {
+    const response = await apiConnector( "GET",
+      'http://localhost:8100/userOrders',
+      null,
+      {
+        Authorization: `Bearer ${token}`,
+      })
+    setUserOrders(response?.data?.data) 
+
+  } catch (error) {
+    console.log('Error:', error); 
+  }
+};
+
+  useEffect(()=>{
+    fetchUserOrders(); 
+  },[token])
+
   return (
     <div className='mb-14'>
         <div className='my-14 flex items-center justify-between w-11/12 mx-auto'>
@@ -44,7 +80,7 @@ const fetchOrderById = async () => {
                 <VscAdd/>
             </IconBtn>
         </div>
-        <OrdersTable orders={orders}/>
+        <OrdersTable userOrders={userOrders}/>
     </div>
   )
 }

@@ -53,6 +53,8 @@ export default function SendMoneyAbroad() {
     setChargesData(data)
   }
 
+  console.log('isLoggedIn',isLoggedIn);
+
   return (
     <div className="container mx-auto px-4">
       <h2 className="text-center my-4 text-3xl mt-10 mb-10">

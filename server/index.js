@@ -22,6 +22,7 @@ const FormData = require("form-data");
 const fs = require("fs");
 const path = require("path");
 const Order = require("./models/Order");
+const { auth } = require("./middlewares/auth");
 
 require('dotenv').config();
 const PORT = process.env.PORT || 4000;
@@ -152,6 +153,29 @@ app.get("/orders", async (req, res) => {
   } catch (error) {
     console.error("Error fetching orders:", error);
     res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+ app.get("/userOrders",auth,async (req, res) => {
+  console.log('req----->',req);
+  try {
+    const userId = req.user.id;
+
+    const userOrders = await Order.find({
+      user: userId,
+    }).sort({ createdAt: -1 });
+
+    res.status(200).json({
+      success: true,
+      data: userOrders,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to retrieve user orders",
+      error: error.message,
+    });
   }
 });
 

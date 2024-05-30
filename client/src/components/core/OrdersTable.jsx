@@ -4,7 +4,7 @@ import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css"
 import { FiEdit2 } from "react-icons/fi"
 import { HiClock } from "react-icons/hi"
 import { RiDeleteBin6Line } from "react-icons/ri"
-const OrdersTable = ({orders}) => {
+const OrdersTable = ({userOrders}) => {
        const[bookOrders,setBookOrders]=useState([]);
        const[orderSummaryDetails,setOrderSummaryDetails]=useState(()=>{
     const storedData=localStorage.getItem("convertEntries")
@@ -14,6 +14,12 @@ const OrdersTable = ({orders}) => {
 
        if(orderSummaryDetails?.length==0){
         return <h1 className='pl-14 text-3xl'>No Orders Found</h1>
+       }
+
+       console.log('userOrders',userOrders);
+
+       if(userOrders?.length==0){
+        return <div className='text-3xl text-center'>No orders found</div>
        }
   return (
      <div>
@@ -41,16 +47,8 @@ const OrdersTable = ({orders}) => {
             </Thead>
 
             <Tbody className='flex flex-col justify-center'>
-                {
-                    orders?.length===0?(
-                        <Tr classNamebg="bg-white">
-                            <Td className='text-lg font-medium text-richblack-600  border-none text-center'>
-                                No Orders found
-                            </Td>
-                        </Tr>
-                    )
-                    :(
-                        orders?.map((entry,index)=>{
+               {
+                        userOrders?.map((entry,index)=>{
                             console.log('entry',entry);
                            return <Tr key={index} className='flex items-center  bg-white border-b border-[#DDDDDD]  justify-between p-5'>
                                  <Td className='text-lg font-medium text-richblack-600  border-none text-center'>
@@ -60,24 +58,23 @@ const OrdersTable = ({orders}) => {
                                     {entry?.orderId}
                                 </Td>
                                 <Td className='text-lg font-medium text-richblack-600  border-none text-center relative md:right-28'>
-                                    {entry?.order_status}
+                                    {entry?.orderStatus}
                                 </Td>
                                 <Td className='text-lg font-medium text-richblack-600  border-none relative md:right-20'>
-                                    {entry?.created_at}
+                                    {entry?.orderDate}
                                 </Td>
                                 <Td className='text-lg font-medium text-richblack-600  border-none relative md:right-10'>
-                                    {entry?.order_amount}
+                                    {entry?.orderAmount}{entry?.currency}
                                 </Td>
                             </Tr>
-})
-                    )
-}
+                        })
+                    }
             </Tbody>
+
 
         </Table>
         
       </div>
-  )
+)
 }
-
 export default OrdersTable
