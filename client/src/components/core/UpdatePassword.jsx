@@ -108,9 +108,6 @@ function UpdatePassword() {
         
         <div className='flex justify-end gap-x-5 mr-14 mb-7'>
             <button 
-            onClick={()=>{
-              navigate("/dashboard/settings")
-            }}
             className='bg-richblack-900 text-white py-2 px-5 rounded-md'
             >
               Cancel
