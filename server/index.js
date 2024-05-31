@@ -65,7 +65,6 @@ app.use("/api/v1", ordersRoutes);
 app.use("/api/v1/address", addressRouter);
 app.use("/api/v1", contactRouter);
 app.use("/api/v1/profile", profileRoutes);
-// app.use("/api/v1/overseaEducationLoan", overSeaLoanRoutes);
 app.use("/api/v1", NRIRepatriationRoutes);
 app.use("/api/v1", sendMoneyRoutes);
 app.use("/api/v1", blockedAccountRoutes);
@@ -73,10 +72,10 @@ app.use("/api/v1", paymentRoutes);
 app.use("/api/v1", orderRoutes);
 app.use("/api/v1", documentRoutes);
 app.use("/api/v1", fxRateRoutes);
-app.use("/api", remitterRoutes);
-app.use("/api", beneficiaryRoutes);
-app.use("/api", verificationRoutes);
-app.use("/api", statusRoutes);
+app.use("/api/v1", remitterRoutes);
+app.use("/api/v1", beneficiaryRoutes);
+app.use("/api/v1", verificationRoutes);
+app.use("/api/v1", statusRoutes);
 
 function generateOrderId() {
   const uniqueId = crypto.randomBytes(16).toString("hex");

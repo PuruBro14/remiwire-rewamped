@@ -116,9 +116,10 @@ export default function SendMoneyForm2({
         console.error('API Error:', error);
         toast.success("Remitter Already Exist")
       }
-    }
 
         purposeOfTransfer==="Maintenance of Close relative Abroad"?setformStep(2):setformStep(3);
+    }
+
 
   };
 

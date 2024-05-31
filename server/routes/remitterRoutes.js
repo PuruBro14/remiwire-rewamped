@@ -7,7 +7,7 @@ const { auth } = require("../middlewares/auth");
 
 const router = express.Router();
 
-router.post("/registerRemitter",auth,registerRemitter);
-router.get("/remitters/:remitterID",auth, getRemitter);
+router.post("/registerRemitter",registerRemitter);
+router.get("/remitters/:remitterID", getRemitter);
 
 module.exports = router;

@@ -54,8 +54,7 @@ exports.registerRemitter = async (req, res) => {
       }
     );
 
-    // Save the remitter data to the database
-    const newRemitter = new Remitter(remitterData);
+    const newRemitter = new Remitter(remitterData);c
     await newRemitter.save();
 
     res.json(response.data);

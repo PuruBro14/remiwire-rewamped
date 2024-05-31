@@ -3,6 +3,6 @@ const router = express.Router();
 const beneficiaryController = require("../controllers/beneficiaryController");
 const { auth } = require("../middlewares/auth");
 
-router.post("/registerBeneficiary",auth,beneficiaryController.registerBeneficiary);
+router.post("/registerBeneficiary",beneficiaryController.registerBeneficiary);
 
 module.exports = router;

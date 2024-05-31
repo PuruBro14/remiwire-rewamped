@@ -76,6 +76,8 @@ export default function SendMoneyForm1({
 
     setErrors(newErrors);
 
+    console.log();
+
     // If no errors, submit the form
     if (Object.keys(newErrors).length === 0) {
       setformStep(1);
