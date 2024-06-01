@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { setformValue } from "../../features/SendMoneySlice";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { registerBeneficiary } from "../../../services/operations/SendMoneyApi";
 
 export default function SendMoneyForm3({ setformStep,documentProof }) {
   const [errors, setErrors] = useState({
@@ -20,75 +21,78 @@ export default function SendMoneyForm3({ setformStep,documentProof }) {
     (state) => state.sendMoneyAboroadForms
   );
 
-  const handleSubmit = async(e) => {
-    e.preventDefault();
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-        console.log('sendMoneyAboroadForms',sendMoneyAboroadForms);
-        
-        const{beneficiaryName,beneficiaryAddress,beneficiaryAccountNo,beneficiaryAccountNoRe,beneficiarySwiftCode,bankIdentifiers,beneficiaryCountry}=sendMoneyAboroadForms
+  console.log('called', sendMoneyAboroadForms);
 
-    const newErrors = {};
+  const {
+    beneficiaryName,
+    beneficiaryAddress,
+    beneficiaryAccountNo,
+    beneficiaryAccountNoRe,
+    beneficiarySwiftCode,
+    bankIdentifiers,
+    beneficiaryCountry,
+    beneficiaryIBANNo, // Ensure this is also in sendMoneyAboroadForms
+  } = sendMoneyAboroadForms;
 
-    // Validate beneficiaryName
-    if (!sendMoneyAboroadForms.beneficiaryName.trim()) {
-      newErrors.beneficiaryName = "Beneficiary name is required";
+  const newErrors = {};
+
+  // Validate beneficiaryName
+  if (!beneficiaryName.trim()) {
+    newErrors.beneficiaryName = "Beneficiary name is required";
+  }
+
+  // Validate beneficiaryAddress
+  if (!beneficiaryAddress.trim()) {
+    newErrors.beneficiaryAddress = "Beneficiary address is required";
+  }
+
+  // Validate beneficiaryAccountNo
+  if (!beneficiaryAccountNo.trim()) {
+    newErrors.beneficiaryAccountNo = "Beneficiary account number is required";
+  }
+
+  // Validate beneficiaryAccountNoRe
+  if (!beneficiaryAccountNoRe.trim()) {
+    newErrors.beneficiaryAccountNoRe = "Re-enter beneficiary account number is required";
+  } else if (beneficiaryAccountNo !== beneficiaryAccountNoRe) {
+    newErrors.beneficiaryAccountNoRe = "Account numbers do not match";
+  }
+
+  // Validate beneficiarySwiftCode
+  if (!beneficiarySwiftCode.trim()) {
+    newErrors.beneficiarySwiftCode = "Beneficiary SWIFT code is required";
+  }
+
+  // Validate beneficiaryCountry
+  // if (!beneficiaryCountry.trim()) {
+  //   newErrors.beneficiaryCountry = "Beneficiary country is required";
+  // }
+
+  // Update errors state
+  setErrors(newErrors);
+
+  console.log('newErrors',newErrors);
+
+  // If no errors, submit the form
+  if (Object.keys(newErrors).length === 0) {
+    try {
+      await registerBeneficiary({
+        beneficiaryName,
+        beneficiaryAddress,
+        beneficiaryAccountNo,
+        beneficiarySwiftCode,
+        beneficiaryIBANNo,
+      });
+    } catch (error) {
+      console.error("Error during beneficiary registration:", error);
     }
-
-    // Validate beneficiaryAddress
-    if (!sendMoneyAboroadForms.beneficiaryAddress.trim()) {
-      newErrors.beneficiaryAddress = "Beneficiary address is required";
-    }
-
-    // Validate beneficiaryAccountNo
-    if (!sendMoneyAboroadForms.beneficiaryAccountNo.trim()) {
-      newErrors.beneficiaryAccountNo = "Beneficiary account number is required";
-    }
-
-    // Validate beneficiaryAccountNoRe
-    if (!sendMoneyAboroadForms.beneficiaryAccountNoRe.trim()) {
-      newErrors.beneficiaryAccountNoRe =
-        "Re-enter beneficiary account number is required";
-    } else if (
-      sendMoneyAboroadForms.beneficiaryAccountNo !==
-      sendMoneyAboroadForms.beneficiaryAccountNoRe
-    ) {
-      newErrors.beneficiaryAccountNoRe = "Account numbers do not match";
-    }
-
-    // Validate beneficiarySwiftCode
-    if (!sendMoneyAboroadForms.beneficiarySwiftCode.trim()) {
-      newErrors.beneficiarySwiftCode = "Beneficiary SWIFT code is required";
-    }
-
-    // Validate beneficiaryCountry
-    if (!sendMoneyAboroadForms.beneficiaryCountry.trim()) {
-      newErrors.beneficiaryCountry = "Beneficiary country is required";
-    }
-
-    // Update errors state
-    setErrors(newErrors);
-
-    // If no errors, submit the form
-    if (Object.keys(newErrors).length === 0) {
-      try {
-        const response = await axios.post('http://localhost:8100/beneficiaries', {"beneficiary_id":"bene_004","account_holder_name":beneficiaryName,"account_number":beneficiaryAccountNo,"swift_code":beneficiarySwiftCode,"iban":beneficiaryIBANNo,"bank_name":"Silicon Valley Bank","bank_country":"US","bank_address":"003 Tasman Drive, Santa Clar","address":beneficiaryAddress,"city":"Cambridge","state":"Massachusetts","country":"US","postal_code":"021384","routing_number":"121140399"}, {
-          headers: {
-            'x-client-id': import.meta.env.VITE_CLIENT_ID,
-        'x-client-secret': import.meta.env.VITE_CLIENT_SECRET,
-        'x-api-version': import.meta.env.VITE_API_VERSION
-          }
-        });
-
-        console.log('API Response:', response.data);
-        toast.success("Beneficiary Created")
-      } catch (error) {
-        console.error('API Error:', error);
-        toast.success("Beneficiary already exist")
-      }
-    }
-
-        setformStep(4);
-  };
+      setformStep(4);
+  }
+};
+  
   const clearError = (fieldName) => {
     setErrors({ ...errors, [fieldName]: "" });
   };
@@ -274,7 +278,7 @@ export default function SendMoneyForm3({ setformStep,documentProof }) {
                 id="course_details"
                 className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                 placeholder=" "
-                readOnly={true}
+                // readOnly={true}
                 value={sendMoneyAboroadForms.beneficiaryCountry}
               />
               <label

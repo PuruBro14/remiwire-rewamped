@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { setformValue } from "../../features/SendMoneySlice";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { fetchFxRate, registerRemitter } from "../../../services/operations/SendMoneyApi";
 
 export default function SendMoneyForm2({
   setformStep,
@@ -22,106 +23,90 @@ export default function SendMoneyForm2({
     passportImage: "",
   });
 
-  const purposeOfTransfer=useSelector((state)=>state.purposeOfTransfer)
+  const purposeOfTransfer = useSelector((state) => state.purposeOfTransfer);
 
   const dispatch = useDispatch();
   const sendMoneyAboroadForms = useSelector(
     (state) => state.sendMoneyAboroadForms
   );
 
-  const[getRemitterDetails,setGetRemiiterDetails]=useState([]);
+  const [getRemitterDetails, setGetRemiiterDetails] = useState([]);
 
-  const handleSubmit = async(e) => {
-    e.preventDefault();
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    console.log('sendMoneyAboroadForms',sendMoneyAboroadForms);
+  console.log("sendMoneyAboroadForms", sendMoneyAboroadForms);
 
-      const{purposeOfTransfer,remiterAccountNo,remiterIFSCCode,pancardNumber,remiterFirstName,remiterMobileNo,remiterEmailID,transferFromState,addressProof,transferFromCity}=sendMoneyAboroadForms
+  const {
+    purposeOfTransfer,
+    remiterAccountNo,
+    remiterIFSCCode,
+    pancardNumber,
+    remiterFirstName,
+    transferToCountry,
+    receivingAmountInEuro,
+    receivingAmountInINR,
+    receivingCurrency,
+    remiterMobileNo,
+    remiterEmailID,
+    transferFromState,
+    addressProof,
+    transferFromCity,
+  } = sendMoneyAboroadForms;
 
-    const newErrors = {};
+  const newErrors = {};
 
-    // Example validations (replace with your actual validation logic)
-    if (!sendMoneyAboroadForms.pancardNumber) {
-      newErrors.pancardNumber = "PAN card number is required";
+  if (!sendMoneyAboroadForms.pancardNumber) {
+    newErrors.pancardNumber = "PAN card number is required";
+  }
+  if (!documentProof.passportImage) {
+    newErrors.passportImage = "Document is required";
+  }
+  if (!documentProof.panCardImage) {
+    newErrors.panCardImage = "PAN card image is required";
+  }
+  if (!sendMoneyAboroadForms.remiterFirstName) {
+    newErrors.remiterFirstName = "Remitter's first name is required";
+  }
+  if (!sendMoneyAboroadForms.remiterLastName) {
+    newErrors.remiterLastName = "Remitter's last name is required";
+  }
+  if (!sendMoneyAboroadForms.remiterAccountNo) {
+    newErrors.remiterAccountNo = "Remitter's account number is required";
+  }
+  if (!sendMoneyAboroadForms.remiterIFSCCode) {
+    newErrors.remiterIFSCCode = "Remitter's IFSC code is required";
+  }
+  if (!sendMoneyAboroadForms.remiterEmailID) {
+    newErrors.remiterEmailID = "Remitter's email ID is required";
+  }
+  if (!sendMoneyAboroadForms.remiterMobileNo) {
+    newErrors.remiterMobileNo = "Remitter's mobile number is required";
+  }
+
+  setErrors(newErrors);
+
+  if (Object.keys(newErrors).length === 0) {
+    try {
+      await fetchFxRate(
+        transferFromState,
+        transferFromCity,
+        purposeOfTransfer,
+        transferToCountry,
+        receivingAmountInEuro,
+        receivingAmountInINR,
+        receivingCurrency
+      );
+
+      await registerRemitter();
+    } catch (error) {
+      console.error("Error during form submission:", error);
     }
-    // if (!sendMoneyAboroadForms.passportNumber) {
-    //   newErrors.passportNumber =
-    //     "Passport/Aadhar/Driving License number is required";
-    // }
-
-    if (!documentProof.passportImage) {
-      newErrors.passportImage = "Document is required";
-    }
-
-    if (!documentProof.panCardImage) {
-      newErrors.panCardImage = "PAN card image is required";
-    }
-
-    if (!sendMoneyAboroadForms.remiterFirstName) {
-      newErrors.remiterFirstName = "Remitter's first name is required";
-    }
-
-    if (!sendMoneyAboroadForms.remiterLastName) {
-      newErrors.remiterLastName = "Remitter's last name is required";
-    }
-
-    if (!sendMoneyAboroadForms.remiterAccountNo) {
-      newErrors.remiterAccountNo = "Remitter's account number is required";
-    }
-
-    if (!sendMoneyAboroadForms.remiterIFSCCode) {
-      newErrors.remiterIFSCCode = "Remitter's IFSC code is required";
-    }
-
-    if (!sendMoneyAboroadForms.remiterEmailID) {
-      newErrors.remiterEmailID = "Remitter's email ID is required";
-    }
-
-    if (!sendMoneyAboroadForms.remiterMobileNo) {
-      newErrors.remiterMobileNo = "Remitter's mobile number is required";
-    }
-
-    // Update errors state
-    setErrors(newErrors);
-
-    // If no errors, submit the form
-     if (Object.keys(newErrors).length === 0) {
-      try {
-        const response = await axios.post('http://localhost:8100/registerRemitter',{
-   "purpose" : "EDUCATION",
-  "account_number" : "011234567991234" , 
-  "ifsc" : "SBIN0005943" ,
-  "pan" : "ABCDE1234F" ,
-  "remitter_id": "prod_cf_rem_005",
-  "name" : "Siddharth" ,
-  "address" : "ABC street" ,
-  "phone_number" : "9090909090" ,
-  "email" : "abc@b.com",
-  "nationality"  : "IN",
-  "postal_code":"474005",
-  "state":"madhya pradesh",
-  "city":"gwalior",
-  "bank_code":"3003" 
-}, {
-          headers: {
-          'x-client-id': import.meta.env.VITE_CLIENT_ID,
-        'x-client-secret': import.meta.env.VITE_CLIENT_SECRET,
-        'x-api-version': import.meta.env.VITE_API_VERSION
-          }
-        });
-
-        console.log('API Response:', response.data);
-        toast.success("Remitter Created");
-      } catch (error) {
-        console.error('API Error:', error);
-        toast.success("Remitter Already Exist")
-      }
-
-        purposeOfTransfer==="Maintenance of Close relative Abroad"?setformStep(2):setformStep(3);
-    }
+      purposeOfTransfer === "Maintenance of Close relative Abroad" ? setformStep(2) : setformStep(3);
+  }
+};
 
 
-  };
 
   // Clear error when input field is clicked
   const clearError = (fieldName) => {
@@ -131,9 +116,9 @@ export default function SendMoneyForm2({
   const handleInputChange = (fieldName, value) => {
     const trimmedValue = value.replace(/\s/g, "");
 
-    const sanitizedValue = trimmedValue.replace(/[^a-zA-Z0-9]/g, "");
+    // const sanitizedValue = trimmedValue.replace(/[^a-zA-Z0-9]/g, "");
 
-    dispatch(setformValue({ [fieldName]: sanitizedValue }));
+    dispatch(setformValue({ [fieldName]: value }));
   };
 
   const handleSubmitChangeFormDoc = (fieldName, value) => {
@@ -147,21 +132,31 @@ export default function SendMoneyForm2({
     setErrors({ ...errors, [fieldName]: "" });
   };
 
-  const fetchRemiiterDetails=async()=>{
-    const response=await fetch('http://localhost:8100/remitters/prod_cf_rem_005');
-    const data=await response.json();
+  const fetchRemiiterDetails = async () => {
+    const response = await fetch(
+      "http://localhost:8100/remitters/prod_cf_rem_005"
+    );
+    const data = await response.json();
 
-    console.log('data',data);
-    const{name,account_number,ifsc,email,phone_number}=data
-    dispatch(setformValue({remiterFirstName:name,remiterAccountNo:account_number,remiterIFSCCode:ifsc,remiterMobileNo:phone_number,remiterEmailID:data?.email}))
-    setGetRemiiterDetails(data)
-  }
+    console.log("data", data);
+    const { name, account_number, ifsc, email, phone_number } = data;
+    dispatch(
+      setformValue({
+        remiterFirstName: name,
+        remiterAccountNo: account_number,
+        remiterIFSCCode: ifsc,
+        remiterMobileNo: phone_number,
+        remiterEmailID: data?.email,
+      })
+    );
+    setGetRemiiterDetails(data);
+  };
 
-  useEffect(()=>{
-    fetchRemiiterDetails();
-  },[])
+  useEffect(() => {
+    // fetchRemiiterDetails();
+  }, []);
 
-  console.log('getRemiiterDetails',getRemitterDetails);
+  console.log("getRemiiterDetails", getRemitterDetails);
   return (
     <>
       <div className="mt-10">
@@ -226,21 +221,20 @@ export default function SendMoneyForm2({
               Address Proof
             </label>
             <select
-                className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                placeholder=" "
+              className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+              placeholder=" "
               onChange={(e) => {
                 handleInputChange("addressProof", e.target.value);
                 clearError("addressProof");
               }}
               // value={sendMoneyAboroadForms?.addressProof}
-              >
-                <option value="">--Select Address Proof--</option>
-                <option>Aadhar Card</option>
-                <option>Passport</option>
-                <option>Driving License</option>
-              </select>
+            >
+              <option value="">--Select Address Proof--</option>
+              <option>Aadhar Card</option>
+              <option>Passport</option>
+              <option>Driving License</option>
+            </select>
 
-            
             {errors.passportNumber && (
               <span className="text-[red] text-[11px] italic">
                 {errors.passportNumber}

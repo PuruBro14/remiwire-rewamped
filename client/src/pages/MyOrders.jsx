@@ -53,7 +53,7 @@ const fetchOrderById = async () => {
 const fetchUserOrders = async () => {
   try {
     const response = await apiConnector( "GET",
-      'http://localhost:8100/userOrders',
+      'http://localhost:8100/api/v1/userOrders',
       null,
       {
         Authorization: `Bearer ${token}`,

@@ -7,6 +7,7 @@ import axios from "axios";
 import countriesList from "../../../utils/countryList";
 import currencyWithSymbol from "../../../utils/currencyWithSymbol";
 import SignUp from "../../pages/Signup";
+import { fetchFxRate } from "../../../services/operations/SendMoneyApi";
 
 export default function SendMoneyForm1({
   setformStep,
@@ -37,7 +38,6 @@ export default function SendMoneyForm1({
   const handleSubmit = (e) => {
     console.log("clicked on handle submit");
     e.preventDefault();
-      fetchFxRate();
 
     if (!user.user) {
       getLoggedInData(true);
@@ -76,8 +76,6 @@ export default function SendMoneyForm1({
 
     setErrors(newErrors);
 
-    console.log();
-
     // If no errors, submit the form
     if (Object.keys(newErrors).length === 0) {
       setformStep(1);
@@ -114,40 +112,6 @@ export default function SendMoneyForm1({
   useEffect(() => {
     getCurrentRateINRtoEURO();
   }, [sendMoneyAboroadForms.receivingCurrency]);
-
-  const fetchFxRate = async () => {
-    try {
-      const response = await axios.post(
-        "http://localhost:8100/api/fx-rate",
-        {
-          to_amount: 100,
-          to_currency: "USD",
-          purpose: "EDUCATION",
-          education_loan: true,
-          customer_declaration: 500000,
-          sender_pan_number: null,
-        },
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            "x-client-id": "{client_id_lrs}",
-            "x-client-secret": "{client_secret_lrs}",
-            "x-api-version": "2023-03-01",
-          },
-        }
-      );
-
-      console.log("Response from document verification API:", response.data);
-      fetchChargesData(response?.data)
-      return response.data;
-    } catch (error) {
-      console.error(
-        "Error during document verification:",
-        error.response?.data || error.message
-      );
-      throw error;
-    }
-  };
 
   return (
     <>

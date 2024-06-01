@@ -23,6 +23,12 @@ const initialState = {
   remiterIFSCCode: "",
   remiterEmailID: "",
   remiterMobileNo: "",
+  customerName: "",
+  customerPassportImage: "",
+  customerPassportNumber: "",
+  placeOfIssue: "",
+  issueDate: "",
+  expireDate: "",
   beneficiaryName: "",
   beneficiaryAddress: "",
   beneficiaryAccountNo: "",
@@ -54,6 +60,12 @@ const SendMoneySlice = createSlice({
         remiterIFSCCode,
         remiterEmailID,
         remiterMobileNo,
+        customerName,
+        customerPassportImage,
+        customerPassportNumber,
+        placeOfIssue,
+        issueDate,
+        expireDate,
         beneficiaryName,
         beneficiaryAddress,
         beneficiaryAccountNo,
@@ -81,8 +93,8 @@ const SendMoneySlice = createSlice({
         receivingAmountInEuro !== undefined
           ? receivingAmountInEuro
           : state.receivingAmountInEuro;
-          state.exchangeRate =
-            exchangeRate !== undefined ? exchangeRate : state.exchangeRate;
+      state.exchangeRate =
+        exchangeRate !== undefined ? exchangeRate : state.exchangeRate;
       state.receivingAmountInINR =
         receivingAmountInINR !== undefined
           ? receivingAmountInINR
@@ -107,6 +119,21 @@ const SendMoneySlice = createSlice({
         remiterEmailID !== undefined ? remiterEmailID : state.remiterEmailID;
       state.remiterMobileNo =
         remiterMobileNo !== undefined ? remiterMobileNo : state.remiterMobileNo;
+      state.customerName =
+        customerName !== undefined ? customerName : state.customerName;
+      state.customerPassportImage =
+        customerPassportImage !== undefined
+          ? customerPassportImage
+          : state.customerPassportImage;
+      state.customerPassportNumber =
+        customerPassportNumber !== undefined
+          ? customerPassportNumber
+          : state.customerPassportNumber;
+      state.placeOfIssue =
+        placeOfIssue !== undefined ? placeOfIssue : state.placeOfIssue;
+      state.issueDate = issueDate !== undefined ? issueDate : state.issueDate;
+      state.expireDate =
+        expireDate !== undefined ? expireDate : state.expireDate;
       state.beneficiaryName =
         beneficiaryName !== undefined ? beneficiaryName : state.beneficiaryName;
       state.beneficiaryAddress =

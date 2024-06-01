@@ -6,10 +6,11 @@ import axios from "axios";
 export default function SendMoneyForm2Customer({ setformStep,documentProof ,setDocumentProofs,}) {
   const [errors, setErrors] = useState({
     customerName: "",
-    customerPanNumber: "",
-    customerPurpose: "",
-    customernationality: "",
-    customeraddress: ""
+    customerPassportImage: "",
+    customerPassportNumber: "",
+    placeOfIssue: "",
+    issueDate: "",
+    expireDate:""
   });
 
   const dispatch = useDispatch();
@@ -22,72 +23,36 @@ export default function SendMoneyForm2Customer({ setformStep,documentProof ,setD
 
         console.log('sendMoneyAboroadForms',sendMoneyAboroadForms);
         
-        const{beneficiaryName,beneficiaryAddress,beneficiaryAccountNo,beneficiaryAccountNoRe,beneficiarySwiftCode,beneficiaryIBANNo,beneficiaryCountry}=sendMoneyAboroadForms
-
     const newErrors = {};
 
-    // Validate beneficiaryName
-    if (!sendMoneyAboroadForms.beneficiaryName.trim()) {
-      newErrors.beneficiaryName = "Beneficiary name is required";
+    if (!sendMoneyAboroadForms.customerName.trim()) {
+      newErrors.customerName = "Customer name is required";
     }
 
-    // Validate beneficiaryAddress
-    if (!sendMoneyAboroadForms.beneficiaryAddress.trim()) {
-      newErrors.beneficiaryAddress = "Beneficiary address is required";
+    if (!sendMoneyAboroadForms.customerPassportNumber.trim()) {
+      newErrors.customerPassportNumber = "Customer Passport Number is required";
     }
 
-    // Validate beneficiaryAccountNo
-    if (!sendMoneyAboroadForms.beneficiaryAccountNo.trim()) {
-      newErrors.beneficiaryAccountNo = "Beneficiary account number is required";
+    if (!sendMoneyAboroadForms.placeOfIssue.trim()) {
+      newErrors.placeOfIssue = "Place Of Issue is required";
     }
 
-    // Validate beneficiaryAccountNoRe
-    if (!sendMoneyAboroadForms.beneficiaryAccountNoRe.trim()) {
-      newErrors.beneficiaryAccountNoRe =
-        "Re-enter beneficiary account number is required";
-    } else if (
-      sendMoneyAboroadForms.beneficiaryAccountNo !==
-      sendMoneyAboroadForms.beneficiaryAccountNoRe
-    ) {
-      newErrors.beneficiaryAccountNoRe = "Account numbers do not match";
+    if (!sendMoneyAboroadForms.issueDate.trim()) {
+      newErrors.issueDate =
+        "Issue Date is required";
     }
 
-    // Validate beneficiarySwiftCode
-    if (!sendMoneyAboroadForms.beneficiarySwiftCode.trim()) {
-      newErrors.beneficiarySwiftCode = "Beneficiary SWIFT code is required";
+    if (!sendMoneyAboroadForms.expireDate.trim()) {
+      newErrors.expireDate = "Expire Date is required";
     }
 
-    // Validate beneficiaryIBANNo
-    if (!sendMoneyAboroadForms?.beneficiaryIBANNo?.trim()) {
-      newErrors.beneficiaryIBANNo = "Beneficiary IBAN number is required";
-    }
-
-    // Validate beneficiaryCountry
-    if (!sendMoneyAboroadForms.beneficiaryCountry.trim()) {
-      newErrors.beneficiaryCountry = "Beneficiary country is required";
-    }
-
-    // Update errors state
     setErrors(newErrors);
 
     // If no errors, submit the form
     if (Object.keys(newErrors).length === 0) {
-      try {
-        const response = await axios.post('http://localhost:8100/beneficiaries', {"beneficiary_id":"bene_004","account_holder_name":beneficiaryName,"account_number":beneficiaryAccountNo,"swift_code":beneficiarySwiftCode,"iban":beneficiaryIBANNo,"bank_name":"Silicon Valley Bank","bank_country":"US","bank_address":"003 Tasman Drive, Santa Clar","address":beneficiaryAddress,"city":"Cambridge","state":"Massachusetts","country":"US","postal_code":"021384","routing_number":"121140399"}, {
-          headers: {
-            'x-client-id': import.meta.env.VITE_CLIENT_ID,
-        'x-client-secret': import.meta.env.VITE_CLIENT_SECRET,
-        'x-api-version': import.meta.env.VITE_API_VERSION
-          }
-        });
-
-        console.log('API Response:', response.data);
-      } catch (error) {
-        console.error('API Error:', error);
-      }
+        setformStep(3);
     }
 
-        setformStep(3);
   };
   const clearError = (fieldName) => {
     setErrors({ ...errors, [fieldName]: "" });
@@ -96,9 +61,9 @@ export default function SendMoneyForm2Customer({ setformStep,documentProof ,setD
   const handleInputChange = (fieldName, value) => {
     const trimmedValue = value.replace(/\s/g, "");
 
-    const sanitizedValue = trimmedValue.replace(/[^a-zA-Z0-9]/g, "");
+    // const sanitizedValue = trimmedValue.replace(/[^a-zA-Z0-9]/g, "");
 
-    dispatch(setformValue({ [fieldName]: sanitizedValue }));
+    dispatch(setformValue({ [fieldName]: value }));
   };
 
     const handleSubmitChangeFormDoc = (fieldName, value) => {
@@ -111,6 +76,8 @@ export default function SendMoneyForm2Customer({ setformStep,documentProof ,setD
   const clearErrorDoc = (fieldName) => {
     setErrors({ ...errors, [fieldName]: "" });
   };
+
+  console.log('errors',errors);
 
   return (
     <>
@@ -227,6 +194,7 @@ export default function SendMoneyForm2Customer({ setformStep,documentProof ,setD
       </div>
     </div>
   </div>
+
   <div className="grid md:grid-cols-2 md:gap-6">
     <div>
       <div className="relative z-0 w-full mb-5 group">
@@ -283,6 +251,7 @@ export default function SendMoneyForm2Customer({ setformStep,documentProof ,setD
       </div>
     </div>
   </div>
+
   <button
     type="submit"
     className="mt-[30px] text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"

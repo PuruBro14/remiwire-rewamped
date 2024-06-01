@@ -1,4 +1,4 @@
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const User = require("../models/User");
 // const OTP = require("../models/Otp");
 const jwt = require("jsonwebtoken");
@@ -10,27 +10,15 @@ require("dotenv").config();
 exports.signup = async (req, res) => {
   try {
     // Destructure fields from the request body
-    const {
-      username,
-      firstName,
-      lastName,
-      contactNo,
-      email,
-      password,
-    } = req.body;
+    const { username, firstName, lastName, contactNo, email, password } =
+      req.body;
     // Check if All Details are there or not
-    if (
-      !username ||
-      !firstName || 
-      !lastName ||
-      !email ||
-      !password
-    ) {
+    if (!username || !firstName || !lastName || !email || !password) {
       return res.status(403).send({
         success: false,
         message: "All Fields are required",
       });
-    }   
+    }
 
     // Check if user already exists
     const existingUser = await User.findOne({ email });
@@ -92,38 +80,36 @@ exports.signup = async (req, res) => {
 
 exports.login = async (req, res) => {
   try {
-    // Get email and password from request body
     const { email, password } = req.body;
 
     // Check if email or password is missing
     if (!email || !password) {
-      // Return 400 Bad Request status code with error message
       return res.status(400).json({
         success: false,
-        message: `Please Fill up All the Required Fields`,
+        message: "Please fill up all the required fields",
       });
     }
 
     // Find user with provided email
     const user = await User.findOne({ email }).populate("additionalDetails");
 
-    // If user not found with provided email
+    // If user not found
     if (!user) {
-      // Return 401 Unauthorized status code with error message
       return res.status(401).json({
         success: false,
-        message: `User is not Registered with Us Please SignUp to Continue`,
+        message: "User is not registered with us. Please sign up to continue",
       });
     }
 
-    // Generate JWT token and Compare Password
-    if (await bcrypt.compare(password, user.password)) {
+    // Compare password
+    const isPasswordMatch = await bcrypt.compare(password, user.password);
+
+    if (isPasswordMatch) {
+      // Generate JWT token
       const token = jwt.sign(
         { email: user.email, id: user._id, accountType: user.accountType },
         process.env.JWT_SECRET,
-        {
-          expiresIn: "24h",
-        }
+        { expiresIn: "72h" }
       );
 
       // Save token to user document in database
@@ -133,30 +119,35 @@ exports.login = async (req, res) => {
         lowerCaseAlphabets: false,
         specialChars: false,
       });
+      await user.save();
+
+      // Exclude password from the user object
       user.password = undefined;
+
       // Set cookie for token and return success response
       const options = {
-        expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
+        expires: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000),
         httpOnly: true,
+        secure: process.env.NODE_ENV === "production", // Ensures the cookie is sent over HTTPS in production
+        sameSite: "strict", // Helps prevent CSRF attacks
       };
       res.cookie("token", token, options).status(200).json({
         success: true,
         token,
         user,
-        message: `User Login Success`,
+        message: "User login successful",
       });
     } else {
       return res.status(401).json({
         success: false,
-        message: `Password is incorrect`,
+        message: "Password is incorrect",
       });
     }
   } catch (error) {
-    console.error(error);
-    // Return 500 Internal Server Error status code with error message
+    console.error("Login error:", error);
     return res.status(500).json({
       success: false,
-      message: `Login Failure Please Try Again`,
+      message: "Login failure. Please try again",
     });
   }
 };

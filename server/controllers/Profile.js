@@ -1,6 +1,6 @@
 const Profile=require("../models/Profile");
 const User=require("../models/User");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const mailSender=require("../utils/mailSender")
 exports.updateProfile=async(req,res)=>{
     try{
