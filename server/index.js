@@ -61,7 +61,7 @@ Cashfree.XEnvironment = Cashfree.Environment.SANDBOX;
 cloudinaryConnect();
 
 app.use("/api/v1/auth", userRoutes);
-app.use("/api/v1", ordersRoutes);
+app.use("/api/v1", ordersRoutes); 
 app.use("/api/v1/address", addressRouter);
 app.use("/api/v1", contactRouter);
 app.use("/api/v1/profile", profileRoutes);

@@ -39,14 +39,6 @@ const MyProfile = () => {
                 }
             </p>
         </div>
-        <IconBtn
-        text="Edit"
-        onclick={()=>{
-            navigate("/userprofile/profile-settings")
-        }}
-        >
-            <RiEditBoxLine/>
-            </IconBtn>
     </div>
    </div>
 

@@ -5,7 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setLogin } from '../services/operations/authAPI';
 
-const SendMoneyLogin = () => {
+const SendMoneyLogin = ({setIsLoggedIn}) => {
   const [rememberMe, setRememberMe] = useState(false);
 
   const handleCheckboxChange = (event) => {

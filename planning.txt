@@ -121,7 +121,7 @@ our response
     "fx_rate_ibr": 83.2925
 }
 
-validations -- fixed
-Modal height fix and scroll
-apis fix 
-
+Edit information api fix -- fixed
+Update Password api fix -- fixed
+Manage address fix 
+Send Money modal fix  

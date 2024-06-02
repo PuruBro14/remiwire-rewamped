@@ -21,6 +21,7 @@ export default function SendMoneyForm1({
   const [selectedCurrencySymbol, setselectedCurrencySymbol] = useState("");
   const dispatch = useDispatch();
   const user = useSelector((state) => state.profile);
+  console.log('user',user);
 
   const [errors, setErrors] = useState({
     transferFromState: "",
@@ -39,12 +40,17 @@ export default function SendMoneyForm1({
     console.log("clicked on handle submit");
     e.preventDefault();
 
-    if (!user.user) {
-      getLoggedInData(true);
-      localStorage.setItem("sendmoneyloggedin", true);
-      return;
+    if(!user?.user){
+      getLoggedInData(false)
+      localStorage.setItem("sendmoneyloggedin", false);
     }
-    console.log("user", user);
+
+    // if (!user.user) {
+    //   getLoggedInData(true);
+    //   localStorage.setItem("sendmoneyloggedin", true);
+    //   return;
+    // }
+    // console.log("user", user);
     const newErrors = {};
 
     if (!sendMoneyAboroadForms.transferFromState) {
@@ -78,7 +84,7 @@ export default function SendMoneyForm1({
 
     // If no errors, submit the form
     if (Object.keys(newErrors).length === 0) {
-      setformStep(1);
+      // setformStep(1);
     }
   };
   // Clear error when input field is clicked

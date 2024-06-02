@@ -2,6 +2,7 @@ import {toast} from 'react-hot-toast'
 import { apiConnector } from './apiconnector'
 import { settingsEndPoints } from "../apis";
 import { logout } from "./authAPI";
+import { setUser } from '../../utils/profileSlice';
 
 const {
   UPDATE_PROFILE_API,
@@ -12,7 +13,7 @@ const {
   DELETE_ADDRESS_API,
 } = settingsEndPoints;
 
-export function updateProfile(token, formData, navigate) {
+export function updateProfile(token, formData, navigate, user) {
   console.log("token", token, "formData", formData);
   return async (dispatch) => {
     const toastId = toast.loading("Loading...");
@@ -27,39 +28,49 @@ export function updateProfile(token, formData, navigate) {
 
       console.log("response", response);
 
-      dispatch(setUser({ ...response.data.updatedUserDetails }));
+      // Merge the existing user data with the updated profile data
+      const updatedUser = {
+        ...user,
+        additionalDetails: {
+          ...user.additionalDetails,
+          ...response.data.profile,
+        },
+      };
+
+      console.log("Updated user:", updatedUser);
+
+      dispatch(setUser(updatedUser));
 
       toast.success("Profile Updated Successfully");
-      navigate("/userprofile/my-profile")
+      navigate("/userprofile/my-profile");
     } catch (err) {
-      console.log("token", err);
+      console.error("Error updating profile:", err);
       toast.error("Could not update profile");
     }
     toast.dismiss(toastId);
   };
 }
 
-export async function changePassword(token,formData){
-    const toastId=toast.loading("Loading...")
-    try{
-        const response = await apiConnector(
-          "POST",
-          CHANGE_PASSWORD_API,
-          formData,
-          {
-            Authorization: `Bearer ${token}`,
-          }
-        );
 
-        if(!response.data.success){
-            throw new Error(response.data.message)
-        }
+export async function changePassword(token, formData) {
+  const toastId = toast.loading("Loading...");
+  try {
+    const response = await apiConnector("PUT", CHANGE_PASSWORD_API, formData, {
+      Authorization: `Bearer ${token}`,
+    });
 
-        toast.success("Password changed successfully")
-    }catch(err){
-        toast.error(err.response.data.message)
+    if (!response.data.success) {
+      throw new Error(response.data.message);
     }
-    toast.dismiss(toastId)
+
+    toast.success("Password changed successfully");
+  } catch (err) {
+    const errorMessage =
+      err.response?.data?.message || "Could not change password";
+    toast.error(errorMessage);
+  } finally {
+    toast.dismiss(toastId);
+  }
 }
 
 export function deleteProfile(token, navigate) {
