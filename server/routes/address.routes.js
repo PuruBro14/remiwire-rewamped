@@ -2,15 +2,16 @@ const express = require("express");
 const addressRouter = express.Router();
 const AddressController = require("../controllers/address/index");
 const SecureAuth = require("../middleware/jwtVerify");
+const { auth } = require("../middlewares/auth");
 
 addressRouter.post(
   "/createAddress",
-  SecureAuth,
+  auth,
   AddressController.createAddress
 );
 addressRouter.get(
   "/fetchAllAddress",
-  SecureAuth,
+  auth,
   AddressController.fetchAllAddress
 );
 addressRouter.get(
