@@ -15,7 +15,7 @@ import SendMoneyForm2Customer from "./SendMoneyForm2Customer";
 export default function SendMoneyAbroad() {
   const user = useSelector((state) => state.profile.user?.email);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [formStep, setformStep] = useState(4);
+  const [formStep, setformStep] = useState(0);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [tabName, setTabName] = useState("Login");
   const isUserLoggedIn = localStorage.getItem("sendmoneyloggedin") === 'true';
