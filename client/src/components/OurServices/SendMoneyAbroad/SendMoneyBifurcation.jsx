@@ -31,10 +31,10 @@ export default function SendMoneyBifurcation({ setformStep, documentProof }) {
 
   const getSessionId = async () => {
     try {
-      let res = await axios.post("http://localhost:8100/api/v1/payment");
-      console.log("res", res);
+      let res = await axios.post("http://13.50.14.42/api/v1/payment");
+      console.log("res---------->", sessionId,res);
       if (res.data) {
-        console.log("res", res);
+        console.log("res---------------->", res);
         setSessionId(res.data.payment_session_id);
         setOrderId(res.data.order_id);
         localStorage.setItem("orderId", res.data.order_id);
@@ -42,20 +42,6 @@ export default function SendMoneyBifurcation({ setformStep, documentProof }) {
       }
     } catch (error) {
       console.log("error----->", error);
-    }
-  };
-
-  const verifyPayment = async () => {
-    try {
-      let res = await axios.post("http://localhost:8100/api/v1/verify", {
-        orderId: orderId,
-      });
-
-      if (res && res.data) {
-        alert("payment verified");
-      }
-    } catch (error) {
-      console.log(error);
     }
   };
 
@@ -92,8 +78,24 @@ export default function SendMoneyBifurcation({ setformStep, documentProof }) {
 
   console.log("orderId", orderId);
 
+
+  const verifyPayment = async () => {
+    try {
+      let res = await axios.post("http://13.50.14.42/api/v1/verify", {
+        orderId: orderId,
+      });
+
+      if (res && res.data) {
+        alert("payment verified");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     setSessionId(isSessionId);
+    getSessionId();
   }, [isSessionId]);
 
   return (

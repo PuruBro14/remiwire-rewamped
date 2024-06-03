@@ -17,6 +17,8 @@ const ManageAddress = ({checkoutPageAddress,setAddAddress,setViewAddress,editAdd
   const[loading,setLoading]=useState(false);
   const[deliveryAddress,setDeliveryAddress]=useState([]);
 
+  console.log('user',user);
+
   const{
     register,
     handleSubmit,
@@ -64,6 +66,8 @@ const ManageAddress = ({checkoutPageAddress,setAddAddress,setViewAddress,editAdd
 
 
  const submitAddress=async(data)=>{
+   data.fullName=user.firstName
+   console.log('data',data);
     try{
       await createAddress(token,data)
       getDeliveryAddress()

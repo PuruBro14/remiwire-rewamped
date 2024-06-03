@@ -9,7 +9,7 @@ const addressValidation = Joi.object({
   state: Joi.string().required(),
   country: Joi.string().required(),
   zipcode: Joi.number().required(),
-  phone: Joi.number().required(),
+  phone: Joi.number().required()
 });
 
 exports.createAddress = async (req, res) => {

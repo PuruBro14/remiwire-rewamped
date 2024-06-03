@@ -10,7 +10,7 @@ addressRouter.post(
   AddressController.createAddress
 );
 addressRouter.get(
-  "/fetchAllAddress",
+  "/fetchUserAddress",
   auth,
   AddressController.fetchAllAddress
 );

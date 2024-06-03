@@ -21,35 +21,6 @@ const MyOrders = () => {
     window.scrollTo(0, 0);
   }, []);
 
-const fetchOrderById = async () => {
-  try {
-    const response = await axios.get(`http://localhost:8100/orders`);
-    console.log('Response:', response.data); 
-    setOrders(response.data);
-
-  } catch (error) {
-    console.log('Error:', error); 
-  }
-};
-
-  useEffect(()=>{
-    fetchOrderById(); 
-  },[])
-
-//  useEffect(() => {
-//     const fetchOrders = async () => {
-//       try {
-//         const data = await fetchUserOrders(token);
-//         console.log('data', data);
-//         setOrders(data);
-//       } catch (error) {
-//         console.error('Error fetching user orders:', error);
-//       }
-//     };
-
-//     fetchOrders();
-//   }, [token]);
-
 const fetchUserOrders = async () => {
   try {
     const response = await apiConnector( "GET",

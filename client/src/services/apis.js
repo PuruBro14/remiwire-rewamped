@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:8100/api/v1";
+const BASE_URL = "http://13.50.14.42/api/v1";
 
 export const endpoints={
     SIGNUP_API:BASE_URL+"/auth/signup", 
@@ -20,7 +20,7 @@ export const settingsEndPoints = {
   CHANGE_PASSWORD_API: BASE_URL + "/profile/changepassword",
   DELETE_PROFILE_API: BASE_URL + "/profile/deleteProfile",
   CREATE_ADDRESS_API: BASE_URL + "/address/createAddress",
-  GET_ADDRESS_API: BASE_URL + "/address/fetchAllAddress",
+  GET_ADDRESS_API: BASE_URL + "/address/fetchUserAddress",
   DELETE_ADDRESS_API: BASE_URL + "/address/deleteAddress",
 };
 

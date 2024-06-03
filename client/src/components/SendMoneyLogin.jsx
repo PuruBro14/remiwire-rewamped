@@ -5,7 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setLogin } from '../services/operations/authAPI';
 
-const SendMoneyLogin = ({setIsLoggedIn}) => {
+const SendMoneyLogin = ({setShowLoginModal}) => {
   const [rememberMe, setRememberMe] = useState(false);
 
   const handleCheckboxChange = (event) => {
@@ -30,7 +30,7 @@ const SendMoneyLogin = ({setIsLoggedIn}) => {
 
   const handleOnSubmit = (e) => {
     e.preventDefault();
-    dispatch(setLogin(email, password, navigate));
+    dispatch(setLogin(email, password, navigate,setShowLoginModal));
 
     setFormData({
       email: "",

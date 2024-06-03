@@ -25,6 +25,7 @@ const ShowUserAddress = ({deliveryAddress,setDeliveryAddress}) => {
     <div>
     {
         deliveryAddress?.slice(-3)?.map((currentItem,index)=>{
+            console.log('currentItem',currentItem);
             const isHovered = index === hoveredIndex;
             return (
                 <div className='flex flex-col text-richblack-5 border mt-7'
@@ -34,8 +35,8 @@ const ShowUserAddress = ({deliveryAddress,setDeliveryAddress}) => {
         <div className='flex flex-row justify-between items-center gap-5 p-5 border-b'>
             <div className='flex flex-col gap-5'>
                 <div className='flex flex-row gap-3 items-center text-richblack-800'>
-                    <p>{user?.firstName + " " + user?.lastName +","}</p>
-                    <p>9589068752</p>
+                    <p>{currentItem?.fullName}</p>
+                    <p>{currentItem?.phone}</p>
                 </div>
                 <div className='uppercase text-richblack-800'>
                     {currentItem?.address + "," + currentItem?.country}

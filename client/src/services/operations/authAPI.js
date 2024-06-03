@@ -55,8 +55,7 @@ export const setLogin = (
   email,
   password,
   navigate,
-  loginFromCheckout,
-  setIsLoggedIn
+  loginFromCheckout
 ) => {
   const sendMoneyLoggedIn = localStorage.getItem("sendmoneyloggedin");
   console.log("sendMoneyLoggedIn", sendMoneyLoggedIn);

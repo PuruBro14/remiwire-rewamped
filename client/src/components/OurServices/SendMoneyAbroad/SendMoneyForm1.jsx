@@ -14,6 +14,7 @@ export default function SendMoneyForm1({
   isLoggedIn,
   setIsLoggedIn,
   getLoggedInData,
+  setShowLoginModal,
   fetchChargesData
 }) {
   const [countryid, setCountryid] = useState(101);
@@ -36,21 +37,19 @@ export default function SendMoneyForm1({
     (state) => state.sendMoneyAboroadForms
   );
 
-  const handleSubmit = (e) => {
+ const handleSubmit = (e) => {
     console.log("clicked on handle submit");
     e.preventDefault();
 
-    if(!user?.user){
-      getLoggedInData(false)
-      localStorage.setItem("sendmoneyloggedin", false);
+    if(!isLoggedIn){
+      setShowLoginModal(true)
+      localStorage.setItem("sendmoneyloggedin", true);
     }
 
-    // if (!user.user) {
-    //   getLoggedInData(true);
-    //   localStorage.setItem("sendmoneyloggedin", true);
-    //   return;
-    // }
-    // console.log("user", user);
+    if (isLoggedIn) {
+        localStorage.setItem("sendmoneyloggedin", true);
+      }
+
     const newErrors = {};
 
     if (!sendMoneyAboroadForms.transferFromState) {
@@ -82,9 +81,11 @@ export default function SendMoneyForm1({
 
     setErrors(newErrors);
 
+    console.log('-------------------->',newErrors,isLoggedIn);
+
     // If no errors, submit the form
-    if (Object.keys(newErrors).length === 0) {
-      // setformStep(1);
+    if (Object.keys(newErrors).length === 0 && isLoggedIn) {
+      setformStep(1);
     }
   };
   // Clear error when input field is clicked

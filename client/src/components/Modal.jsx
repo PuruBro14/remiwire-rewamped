@@ -1,12 +1,24 @@
-import React from 'react';
-import Tab from './common/Tab';
+import React, { useEffect } from "react";
+import Tab from "./common/Tab";
 
 const Modal = ({ isVisible, onClose, children, setShowLoginModal, tabName, getTabName }) => {
+  useEffect(() => {
+    if (isVisible) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [isVisible]);
+
   if (!isVisible) return null;
 
   const handleClose = (e) => {
-    if (e.target.id === 'wrapper') onClose();
-  }
+    if (e.target.id === "wrapper") onClose();
+  };
 
   const tabData = [
     {
@@ -21,13 +33,15 @@ const Modal = ({ isVisible, onClose, children, setShowLoginModal, tabName, getTa
 
   return (
     <>
-      <div 
+      <div
         id="wrapper"
         className="md:fixed inset-0 top-[50px] bg-black bg-opacity-25 backdrop-blur-sm flex justify-center items-center"
         onClick={handleClose}
       >
-        <div className="w-[600px] flex flex-col max-h-[90vh] overflow-y-auto">
-          <button className="text-white text-xl place-self-end" onClick={onClose}>X</button>
+        <div className="w-[600px] flex flex-col max-h-[90vh] overflow-y-auto bg-white rounded">
+          <button className="text-xl place-self-end" onClick={onClose}>
+            X
+          </button>
           <div className="bg-white p-2 rounded">
             <Tab tabData={tabData} setShowLoginModal={setShowLoginModal} getTabName={getTabName} />
             {children}
@@ -35,7 +49,7 @@ const Modal = ({ isVisible, onClose, children, setShowLoginModal, tabName, getTa
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
 export default Modal;
