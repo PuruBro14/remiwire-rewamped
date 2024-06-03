@@ -31,7 +31,7 @@ export default function SendMoneyBifurcation({ setformStep, documentProof }) {
 
   const getSessionId = async () => {
     try {
-      let res = await axios.post("http://13.50.14.42/api/v1/payment");
+      let res = await axios.post("http://13.50.14.42:8100/api/v1/payment");
       console.log("res---------->", sessionId,res);
       if (res.data) {
         console.log("res---------------->", res);
@@ -81,7 +81,7 @@ export default function SendMoneyBifurcation({ setformStep, documentProof }) {
 
   const verifyPayment = async () => {
     try {
-      let res = await axios.post("http://13.50.14.42/api/v1/verify", {
+      let res = await axios.post("http://13.50.14.42:8100/api/v1/verify", {
         orderId: orderId,
       });
 
