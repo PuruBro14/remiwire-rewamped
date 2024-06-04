@@ -92,7 +92,7 @@ app.get("/", (req, res) => {
   console.log("this is running");
   return res.json({
     success: true,
-    message: "Your server is up and running....",
+    message: "Your server is up and runningggggg....",
   });
 });
 
