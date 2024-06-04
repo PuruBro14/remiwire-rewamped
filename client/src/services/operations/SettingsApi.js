@@ -31,6 +31,8 @@ export function updateProfile(token, formData, navigate, user) {
       // Merge the existing user data with the updated profile data
       const updatedUser = {
         ...user,
+        firstName: formData.firstName,
+        lastName: formData.lastName,
         additionalDetails: {
           ...user.additionalDetails,
           ...response.data.profile,
@@ -138,24 +140,25 @@ export const fetchDeliveryAddress = async (token, dispatch,user, setUser) => {
 
 
 export const deleteExistingAddress = async (data, token) => {
-  console.log('data',data);
-  const toastId = toast.loading("Loading...")
+  console.log("data", data);
+  const toastId = toast.loading("Loading...");
   try {
     const response = await apiConnector(
       "DELETE",
       `${DELETE_ADDRESS_API}/${data?.addressId}`,
+      null,
       {
         Authorization: `Bearer ${token}`,
-      },
-      data
+      }
     );
     if (!response?.data?.success) {
-      throw new Error("Could Not Delete address")
+      throw new Error("Could Not Delete address");
     }
-    toast.success("Address Deleted")
+    toast.success("Address Deleted");
   } catch (error) {
-    console.log("DELETE ADDRESS API ERROR............", error)
-    toast.error(error.message)
+    console.log("DELETE ADDRESS API ERROR............", error);
+    toast.error(error.message);
+  } finally {
+    toast.dismiss(toastId);
   }
-  toast.dismiss(toastId)
-}
+};

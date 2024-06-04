@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
 import { HiOutlineDotsVertical } from "react-icons/hi";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import { deleteExistingAddress, fetchDeliveryAddress } from '../../services/operations/SettingsApi';
+import { setUser } from '../../utils/profileSlice';
 
 const ShowUserAddress = ({deliveryAddress,setDeliveryAddress}) => {
+    const dispatch=useDispatch();
     const{user}=useSelector((state)=>state.profile)
     const [hoveredIndex, setHoveredIndex] = useState(null);
     const[loading,setLoading]=useState(false);
@@ -11,15 +13,20 @@ const ShowUserAddress = ({deliveryAddress,setDeliveryAddress}) => {
 
     console.log('deliveryAddress',deliveryAddress);
 
-    const deleteAddress = async (addressId) => {
-    setLoading(true)
-    await deleteExistingAddress({ addressId: addressId }, token)
-    const result = await fetchDeliveryAddress(token)
+const deleteAddress = async (addressId) => {  
+  try {
+    await deleteExistingAddress({ addressId }, token);
+
+    const result = await fetchDeliveryAddress(token,dispatch,user, setUser);
     if (result) {
-      setDeliveryAddress(result)
+      setDeliveryAddress(result);
     }
-    setLoading(false)
+  } catch (error) {
+    console.error("Error deleting address:", error);
+  } finally {
+    setLoading(false);
   }
+};
 
   return (
     <div>

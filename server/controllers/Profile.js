@@ -5,22 +5,35 @@ const mailSender=require("../utils/mailSender")
 
 exports.updateProfile = async (req, res) => {
   try {
-    const { gender = "", dateOfBirth = "", about, contactNumber } = req.body;
+    const {
+      gender = "",
+      dateOfBirth = "",
+      about,
+      contactNumber,
+      firstName,
+      lastName,
+    } = req.body;
     const id = req.user.id;
 
     const userDetails = await User.findById(id);
-    const profile = await Profile.findById(userDetails.additionalDetails);
 
+    if (firstName) userDetails.firstName = firstName;
+    if (lastName) userDetails.lastName = lastName;
+
+    await userDetails.save();
+
+    const profile = await Profile.findById(userDetails.additionalDetails);
     profile.dateOfBirth = dateOfBirth;
     profile.about = about;
     profile.contactNumber = contactNumber;
-    profile.gender=gender;
+    profile.gender = gender;
 
     await profile.save();
 
     return res.json({
       success: true,
       message: "Profile updated successfully",
+      user: userDetails,
       profile,
     });
   } catch (error) {
@@ -31,6 +44,7 @@ exports.updateProfile = async (req, res) => {
     });
   }
 };
+
 
 exports.deleteAccount=async(req,res)=>{
     try{

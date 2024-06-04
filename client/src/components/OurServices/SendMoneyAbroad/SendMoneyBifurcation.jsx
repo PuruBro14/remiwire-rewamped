@@ -3,7 +3,7 @@ import axios from "axios";
 import { load } from "@cashfreepayments/cashfree-js";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
-export default function SendMoneyBifurcation({ setformStep, documentProof }) {
+export default function SendMoneyBifurcation({ setFormStep, documentProof }) {
   const [orderId, setOrderId] = useState("");
   const params = useParams();
   const isSessionId = params.sessionid;

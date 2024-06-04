@@ -8,8 +8,6 @@ const Tab = ({ tabData, currentState, setCurrentState, setPassedFromSignup,setSh
     getTabName(tabName)
   };
 
-  console.log('tabName',tabName);
-
   return (
     <div className="flex justify-center my-4">
       <div className="flex cursor-pointer items-center gap-x-1 rounded-full bg-richblack-600 text-white p-2 max-w-max shadow-md">

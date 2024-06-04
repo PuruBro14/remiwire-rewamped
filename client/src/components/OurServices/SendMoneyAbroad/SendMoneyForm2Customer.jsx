@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { setformValue } from "../../features/SendMoneySlice";
 import axios from "axios";
 
-export default function SendMoneyForm2Customer({ setformStep,documentProof ,setDocumentProofs,}) {
+export default function SendMoneyForm2Customer({ setFormStep,documentProof ,setDocumentProofs,}) {
   const [errors, setErrors] = useState({
     customerName: "",
     customerPassportImage: "",
@@ -50,7 +50,7 @@ export default function SendMoneyForm2Customer({ setformStep,documentProof ,setD
 
     // If no errors, submit the form
     if (Object.keys(newErrors).length === 0) {
-        setformStep(3);
+        setFormStep(3);
     }
 
   };

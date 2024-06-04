@@ -57,7 +57,7 @@ export const setLogin = (
   navigate,
   loginFromCheckout
 ) => {
-  const sendMoneyLoggedIn = localStorage.getItem("sendmoneyloggedin");
+  const sendMoneyLoggedIn = localStorage.getItem("sendmoneyloggedIn");
   console.log("sendMoneyLoggedIn", sendMoneyLoggedIn);
   return async (dispatch) => {
     const toastId = toast.loading("Loading...");
@@ -108,6 +108,7 @@ export const logout=(navigate)=>{
       localStorage.removeItem("token");
       localStorage.removeItem("user")
       toast.success("Logged Out")
+      localStorage.removeItem("sendmoneyloggedIn");
       // navigate("/");
   }
 }

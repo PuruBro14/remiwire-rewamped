@@ -82,7 +82,6 @@ exports.createSendMoney = async (req, res) => {
         missingFields,
       });
     }
-transferFromCountry;
 
         const panImage = await uploadImageToCloudinary(
           pancardImage,

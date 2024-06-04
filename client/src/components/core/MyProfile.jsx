@@ -16,6 +16,8 @@ const MyProfile = () => {
     useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  console.log('user',user); 
     
   return (
    <>

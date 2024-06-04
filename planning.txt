@@ -121,7 +121,8 @@ our response
     "fx_rate_ibr": 83.2925
 }
 
-Edit information api fix -- fixed
-Update Password api fix -- fixed
-Manage address fix 
-Send Money modal fix  
+modal fix 
+edit profile api 
+remitter ppopuldate
+
+without localstorage refresh par modal

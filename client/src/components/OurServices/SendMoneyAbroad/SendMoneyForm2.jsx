@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 import { fetchFxRate, registerRemitter } from "../../../services/operations/SendMoneyApi";
 
 export default function SendMoneyForm2({
-  setformStep,
+  setFormStep,
   setDocumentProofs,
   documentProof,
 }) {
@@ -102,7 +102,7 @@ const handleSubmit = async (e) => {
     } catch (error) {
       console.error("Error during form submission:", error);
     }
-      purposeOfTransfer === "Maintenance of Close relative Abroad" ? setformStep(2) : setformStep(3);
+      purposeOfTransfer === "Maintenance of Close relative Abroad" ? setFormStep(2) : setFormStep(3);
   }
 };
 
@@ -134,7 +134,7 @@ const handleSubmit = async (e) => {
 
   const fetchRemiiterDetails = async () => {
     const response = await fetch(
-      "http://localhost:8100/remitters/prod_cf_rem_005"
+      "http://localhost:8100/api/v1/remitters/prod_cf_rem_005"
     );
     const data = await response.json();
 
@@ -153,7 +153,7 @@ const handleSubmit = async (e) => {
   };
 
   useEffect(() => {
-    // fetchRemiiterDetails();
+    fetchRemiiterDetails();
   }, []);
 
   console.log("getRemiiterDetails", getRemitterDetails);

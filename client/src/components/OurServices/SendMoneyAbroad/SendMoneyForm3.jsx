@@ -5,7 +5,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { registerBeneficiary } from "../../../services/operations/SendMoneyApi";
 
-export default function SendMoneyForm3({ setformStep,documentProof }) {
+export default function SendMoneyForm3({ setFormStep,documentProof }) {
   const [errors, setErrors] = useState({
     beneficiaryName: "",
     beneficiaryAddress: "",
@@ -89,7 +89,7 @@ const handleSubmit = async (e) => {
     } catch (error) {
       console.error("Error during beneficiary registration:", error);
     }
-      setformStep(4);
+      setFormStep(4);
   }
 };
   

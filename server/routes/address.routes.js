@@ -20,12 +20,12 @@ addressRouter.get(
 );
 addressRouter.put(
   "/updateAddress/:id",
-  SecureAuth,
+  auth,
   AddressController.updateAddressById
 );
 addressRouter.delete(
   "/deleteAddress/:id",
-  SecureAuth,
+  auth,
   AddressController.deleteAddressById
 );
 

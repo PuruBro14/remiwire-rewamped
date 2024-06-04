@@ -10,11 +10,12 @@ import SignUp from "../../pages/Signup";
 import { fetchFxRate } from "../../../services/operations/SendMoneyApi";
 
 export default function SendMoneyForm1({
-  setformStep,
+  setFormStep,
   isLoggedIn,
   setIsLoggedIn,
   getLoggedInData,
   setShowLoginModal,
+  getShowModalData,
   fetchChargesData
 }) {
   const [countryid, setCountryid] = useState(101);
@@ -22,7 +23,6 @@ export default function SendMoneyForm1({
   const [selectedCurrencySymbol, setselectedCurrencySymbol] = useState("");
   const dispatch = useDispatch();
   const user = useSelector((state) => state.profile);
-  console.log('user',user);
 
   const [errors, setErrors] = useState({
     transferFromState: "",
@@ -37,18 +37,9 @@ export default function SendMoneyForm1({
     (state) => state.sendMoneyAboroadForms
   );
 
- const handleSubmit = (e) => {
-    console.log("clicked on handle submit");
+const handleSubmit = (e) => {
     e.preventDefault();
 
-    if(!isLoggedIn){
-      setShowLoginModal(true)
-      localStorage.setItem("sendmoneyloggedin", true);
-    }
-
-    if (isLoggedIn) {
-        localStorage.setItem("sendmoneyloggedin", true);
-      }
 
     const newErrors = {};
 
@@ -81,11 +72,13 @@ export default function SendMoneyForm1({
 
     setErrors(newErrors);
 
-    console.log('-------------------->',newErrors,isLoggedIn);
+    if(!isLoggedIn){
+      getShowModalData(true)
+      localStorage.setItem('sendmoneyloggedIn',true)
+    }
 
-    // If no errors, submit the form
     if (Object.keys(newErrors).length === 0 && isLoggedIn) {
-      setformStep(1);
+      setFormStep(1);
     }
   };
   // Clear error when input field is clicked
@@ -129,7 +122,6 @@ export default function SendMoneyForm1({
             <StateSelect
               countryid={countryid}
               onChange={(e) => {
-                console.log("countrhyid", e);
                 setstateid(e.id);
                 handleInputChange("transferFromState", e.name);
                 clearError("transferFromState");

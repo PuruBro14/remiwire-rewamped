@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "../assets/css/ourservices.css";
 import image1 from "../assets/img/send.jpeg";
-import countriesList from "../../../utils/countryList";
 import SendMoneyForm1 from "./SendMoneyForm1";
 import SendMoneyForm2 from "./SendMoneyForm2";
 import SendMoneyForm3 from "./SendMoneyForm3";
@@ -14,11 +13,15 @@ import SendMoneyForm2Customer from "./SendMoneyForm2Customer";
 
 export default function SendMoneyAbroad() {
   const user = useSelector((state) => state.profile.user?.email);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [formStep, setformStep] = useState(0);
+  const {token}=useSelector((state)=>state.auth)
+  const [isLoggedIn, setIsLoggedIn] = useState(() => {
+    const token = JSON.parse(localStorage.getItem("token"));
+    return token || false;
+  });
+  const [formStep, setFormStep] = useState(0);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [tabName, setTabName] = useState("Login");
-  const isUserLoggedIn = localStorage.getItem("sendmoneyloggedin") === 'true';
+  const isUserLoggedIn = localStorage.getItem("sendmoneyloggedIn") === 'true';
   const [chargesData, setChargesData] = useState();
 
   const [documentProof, setDocumentProofs] = useState({
@@ -29,8 +32,12 @@ export default function SendMoneyAbroad() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    setIsLoggedIn(isUserLoggedIn);
-  }, [isUserLoggedIn]);
+    if (token) {
+      console.log('runned------>');
+      setIsLoggedIn(true)
+      setShowLoginModal(false)
+    }
+  }, [token]);
 
   const getTabName = (data) => {
     setTabName(data);
@@ -39,6 +46,13 @@ export default function SendMoneyAbroad() {
   const fetchChargesData = (data) => {
     setChargesData(data);
   };
+
+  const getShowModalData=(data)=>{
+    console.log('-------------->data',data);
+    setShowLoginModal(data)
+  }
+
+  console.log('isLoggedIn', isLoggedIn, showLoginModal, 'formStep', formStep, isUserLoggedIn);
 
   return (
     <div className="container mx-auto px-4">
@@ -61,17 +75,18 @@ export default function SendMoneyAbroad() {
                 {formStep === 0 && (
                   <>
                     <SendMoneyForm1
-                      setformStep={setformStep}
+                      setFormStep={setFormStep}
                       isLoggedIn={isLoggedIn}
                       fetchChargesData={fetchChargesData}
                       setShowLoginModal={setShowLoginModal}
+                      getShowModalData={getShowModalData}
                     />
                   </>
                 )}
                 {formStep === 1 && isLoggedIn && (
                   <>
                     <SendMoneyForm2
-                      setformStep={setformStep}
+                      setFormStep={setFormStep}
                       documentProof={documentProof}
                       setDocumentProofs={setDocumentProofs}
                     />
@@ -81,7 +96,7 @@ export default function SendMoneyAbroad() {
                 {formStep === 2 && isLoggedIn && (
                   <>
                     <SendMoneyForm2Customer
-                      setformStep={setformStep}
+                      setFormStep={setFormStep}
                       documentProof={documentProof}
                       setDocumentProofs={setDocumentProofs}
                     />
@@ -90,14 +105,14 @@ export default function SendMoneyAbroad() {
 
                 {formStep === 3 && isLoggedIn && (
                   <>
-                    <SendMoneyForm3 setformStep={setformStep} documentProof={documentProof} />
+                    <SendMoneyForm3 setFormStep={setFormStep} documentProof={documentProof} />
                   </>
                 )}
 
                 {formStep === 4 && isLoggedIn && (
                   <>
                     <SendMoneyBifurcation
-                      setformStep={setformStep}
+                      setFormStep={setFormStep}
                       documentProof={documentProof}
                       chargesData={chargesData}
                     />
@@ -112,7 +127,7 @@ export default function SendMoneyAbroad() {
         </div>
       </div>
 
-      { !isLoggedIn && showLoginModal && (
+      {!isLoggedIn && showLoginModal && (
         <Modal
           isVisible={true}
           onClose={() => setShowLoginModal(false)}
