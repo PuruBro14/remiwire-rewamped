@@ -56,7 +56,7 @@ export default function SendMoneyAbroad() {
 
   return (
     <div className="container mx-auto px-4">
-      <h2 className="text-center my-4 text-3xl mt-10 mb-10">SEND MONEY ABROAD</h2>
+      <h2 className="text-center my-4 text-3xl mt-10 mb-10">SEND MONEY ABROAD1</h2>
 
       <div className="bg-[#e7e7e7] p-5">
         <p>
