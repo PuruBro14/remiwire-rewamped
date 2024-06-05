@@ -1,4 +1,4 @@
-const BASE_URL = "http://13.50.14.42:8100/api/v1";
+const BASE_URL = "http://localhost:8100/api/v1";
 
 export const endpoints={
     SIGNUP_API:BASE_URL+"/auth/signup", 
@@ -25,3 +25,5 @@ export const settingsEndPoints = {
 };
 
 //const BASE_URL = "http://localhost:8100/api/v1";
+
+// http://13.50.14.42:8100

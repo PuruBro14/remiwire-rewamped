@@ -5,11 +5,12 @@ const addressValidation = Joi.object({
   fullName: Joi.string().required(),
   address: Joi.string().required(),
   city: Joi.string().required(),
+  locality: Joi.string().required(), 
   landmark: Joi.string().required(),
   state: Joi.string().required(),
   country: Joi.string().required(),
-  zipcode: Joi.number().required(),
-  phone: Joi.number().required()
+  zipcode: Joi.string().required(),
+  phone: Joi.string().required(),
 });
 
 exports.createAddress = async (req, res) => {
@@ -19,7 +20,6 @@ exports.createAddress = async (req, res) => {
     let allDetails = error.details.map((item) => item.message);
     return res.status(400).json({
       success: false,
-
       message: error.details[0].message,
     });
   }
@@ -28,6 +28,7 @@ exports.createAddress = async (req, res) => {
       fullName: value.fullName,
       address: value.address,
       city: value.city,
+      locality: value.locality, 
       landmark: value.landmark,
       state: value.state,
       country: value.country,

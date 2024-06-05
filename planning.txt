@@ -126,3 +126,10 @@ edit profile api
 remitter ppopuldate
 
 without localstorage refresh par modal
+
+tracking details me chipak jara -- fixed
+after login footer links not working -- fixed
+loader not working on user orders 
+edit profile not working on refresh
+address field sequence and full name on it 
+no need of order id in tracking--fixed

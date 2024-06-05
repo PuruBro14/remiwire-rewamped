@@ -19,6 +19,11 @@ const addressSchema = new mongoose.Schema({
     required: true,
   },
 
+  locality:{
+    type:String,
+    required:true
+  },
+
   landmark: {
     type: String,
     required: true,

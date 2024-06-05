@@ -22,7 +22,7 @@ const TrackShipment = () => {
 
       const response = await apiConnector(
         "GET",
-        `http://13.50.14.42:8100/api/v1/trackingorder?orderId=${trackingNumber}`,
+        `http://localhost:8100/api/v1/trackingorder?orderId=${trackingNumber}`,
         null,
         headers
       );
@@ -63,14 +63,14 @@ const TrackShipment = () => {
         {error && <p className="text-red-500">{error}</p>}
         {trackingResult && <p className="text-xl font-semibold">Order Details </p>}
         {trackingResult && (
-          <div className="my-8 flex flex-col gap-2 border w-full md:w-9/12">
+          <div className="my-8 flex flex-col gap-2 border w-full md:w-10/12">
             <h3 className="text-lg font-semibold text-center mt-4"></h3>
               <Table className=' mt-7 mx-auto flex flex-col border-none' >
 
             <Thead className="bg-white border-none">
                 <Tr className='flex items-center rounded-t-md border-b border-[#DDDDDD]  justify-between p-3'>
                     <Th className='text-left text-lg font-medium uppercase text-richblack-600 border-none'>
-                        Order ID
+                        Customer ID
                     </Th>
                     <Th className='text-left text-lg font-medium uppercase text-richblack-600 border-none'>
                         Order Status
@@ -90,12 +90,12 @@ const TrackShipment = () => {
             <Tbody className='flex flex-col justify-center'>
                             <Tr className='flex items-center  bg-white border-[#DDDDDD]  justify-between p-5'>
                                 <Td className='text-lg font-medium text-richblack-600  border-none text-center relative md:right-5'>
-                                    {trackingResult.orderId}
+                                    {trackingResult.customerId}
                                 </Td>
-                                <Td className='text-lg font-medium text-richblack-600  border-none text-center relative md:right-28'>
+                                <Td className='text-lg font-medium text-richblack-600  border-none text-center relative md:right-20'>
                                     {trackingResult.orderStatus}
                                 </Td>
-                                <Td className='text-lg font-medium text-richblack-600  border-none relative md:right-16'>
+                                <Td className='text-lg font-medium text-richblack-600  border-none relative'>
                                    {trackingResult.orderAmount}&#x20B9;
                                 </Td>
                                 <Td className='text-lg font-medium text-richblack-600  border-none relative md:left-10'>

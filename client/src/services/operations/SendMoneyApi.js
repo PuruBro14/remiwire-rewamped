@@ -15,7 +15,7 @@ export const fetchFxRate = (
     try {
       const response = await apiConnector(
         "POST",
-        "http://13.50.14.42:8100/api/v1/fx-rate",
+        "http://localhost:8100/api/v1/fx-rate",
         {
           to_amount: 100,
           to_currency: "USD",
@@ -53,7 +53,7 @@ export const registerRemitter = () => {
     try {
       const response = await apiConnector(
         "POST",
-        "http://13.50.14.42:8100/api/v1/registerRemitter",
+        "http://localhost:8100/api/v1/registerRemitter",
         {
           purpose: "EDUCATION",
           account_number: "011234567991234",
@@ -96,7 +96,7 @@ export const registerBeneficiary = (beneficiaryData) => {
     try {
       const response = await apiConnector(
         "POST",
-        "http://13.50.14.42:8100/api/v1/registerBeneficiary",
+        "http://localhost:8100/api/v1/registerBeneficiary",
         {
           beneficiary_id: "bene_004",
           account_holder_name: beneficiaryData.beneficiaryName,

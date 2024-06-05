@@ -14,26 +14,20 @@ const Footer = () => {
         <div className="border-b w-[80%] mx-auto flex flex-col lg:flex-row pb-5 border-richblack-900">
           {/* Section 1 */}
           <div className=" flex flex-wrap flex-row justify-between pl-3 lg:pr-5 gap-3  w-full">
-            {/* <div className="w-[50%] flex flex-col gap-3 lg:w-[30%] mb-7 lg:pl-0">
-              <p>Address</p>
-              <p>P-701 to P-705 lorem ipsum , 7th floor, 11th tower, panchsheel primerose, vatista , Gurugram, Hariyana</p>
-              <div></div>
-            </div> */}
-
             <div className="w-[100%] lg:w-[25%] mb-7 lg:pl-0">
               <h1 className="text-richblack-900 font-semibold text-[16px]">
                 Our Services
               </h1>
 
               <div className="flex flex-col gap-2 mt-2">
-                <Link to="sendmoneyabroad">Send Money Abroad</Link>
-                <Link to="prepaidtravelcard">Prepaid Travel Card</Link>
-                <Link to="forexcurrency">Forex Currency</Link>
-                <Link to="NRIRepatriation">NRI Repatriation</Link>
-                <Link to="BlockedAccountPayment">Blocked Account Payment</Link>
-                <Link to="gicaccountpayment">GIC Account Payment</Link>
-                <Link to="OverseasEducationLoan">Overseas Education Loan</Link>
-                <Link to="creategicaccount">Create GIC Account</Link>
+                <Link to="/sendmoneyabroad">Send Money Abroad</Link>
+                <Link to="/prepaidtravelcard">Prepaid Travel Card</Link>
+                <Link to="/forexcurrency">Forex Currency</Link>
+                <Link to="/NRIRepatriation">NRI Repatriation</Link>
+                <Link to="/BlockedAccountPayment">Blocked Account Payment</Link> 
+                <Link to="/gicaccountpayment">GIC Account Payment</Link>
+                <Link to="/OverseasEducationLoan">Overseas Education Loan</Link>
+                <Link to="/creategicaccount">Create GIC Account</Link>
               </div>
             </div>
 
@@ -43,9 +37,9 @@ const Footer = () => {
               </h1>
 
               <div className="flex flex-col gap-2 mt-2">
-                <Link to="termsofuse">Terms Of Use</Link>
-                <Link to="privacypolicy">Privacy Policy</Link>
-                <Link to="cookie">Cookies Policy</Link>
+                <Link to="/termsofuse">Terms Of Use</Link>
+                <Link to="/privacypolicy">Privacy Policy</Link>
+                <Link to="/cookie">Cookies Policy</Link>
               </div>
             </div>
           </div>

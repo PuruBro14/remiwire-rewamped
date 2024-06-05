@@ -10,6 +10,7 @@ import { apiConnector } from '../services/operations/apiconnector'
 
 const MyOrders = () => {
   const[orders,setOrders]=useState([]);
+  const[loading,setLoading]=useState(false)
   const[userOrders,setUserOrders]=useState([]);
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -22,18 +23,23 @@ const MyOrders = () => {
   }, []);
 
 const fetchUserOrders = async () => {
+  const toastId = toast.loading("Loading...");
+  setLoading(true);
   try {
     const response = await apiConnector( "GET",
-      'http://13.50.14.42:8100/api/v1/userOrders',
+      'http://localhost:8100/api/v1/userOrders',
       null,
       {
         Authorization: `Bearer ${token}`,
       })
+      setLoading(false)
+      toast.dismiss(toastId);
     setUserOrders(response?.data?.data) 
-
   } catch (error) {
     console.log('Error:', error); 
   }
+  toast.dismiss(toastId);
+  setLoading(false);
 };
 
   useEffect(()=>{
@@ -51,7 +57,7 @@ const fetchUserOrders = async () => {
                 <VscAdd/>
             </IconBtn>
         </div>
-        <OrdersTable userOrders={userOrders}/>
+        <OrdersTable userOrders={userOrders} loading={loading}/>
     </div>
   )
 }

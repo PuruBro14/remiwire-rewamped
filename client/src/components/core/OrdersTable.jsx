@@ -4,7 +4,7 @@ import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css"
 import { FiEdit2 } from "react-icons/fi"
 import { HiClock } from "react-icons/hi"
 import { RiDeleteBin6Line } from "react-icons/ri"
-const OrdersTable = ({userOrders}) => {
+const OrdersTable = ({userOrders,loading}) => {
        const[bookOrders,setBookOrders]=useState([]);
        const[orderSummaryDetails,setOrderSummaryDetails]=useState(()=>{
     const storedData=localStorage.getItem("convertEntries")
@@ -18,7 +18,7 @@ const OrdersTable = ({userOrders}) => {
 
        console.log('userOrders',userOrders);
 
-       if(userOrders?.length==0){
+       if(!loading && userOrders?.length==0){
         return <div className='text-3xl text-center'>No orders found</div>
        }
   return (

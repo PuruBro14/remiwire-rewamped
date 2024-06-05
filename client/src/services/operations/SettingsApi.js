@@ -28,7 +28,6 @@ export function updateProfile(token, formData, navigate, user) {
 
       console.log("response", response);
 
-      // Merge the existing user data with the updated profile data
       const updatedUser = {
         ...user,
         firstName: formData.firstName,

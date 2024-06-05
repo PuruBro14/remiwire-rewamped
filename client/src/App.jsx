@@ -50,38 +50,34 @@ function App() {
           element={
             <OpenRoute>
               <Signup />
-            </OpenRoute>
+              </OpenRoute>
           }
         ></Route>
         <Route
           path="/cookie"
           element={
-            <OpenRoute>
               <CookiePolicy />
-            </OpenRoute>
           }
         ></Route>
         <Route
           path="/privacypolicy"
           element={
-            <OpenRoute>
               <PrivacyPolicy />
-            </OpenRoute>
           }
         ></Route>
         <Route
           path="/termsofuse"
           element={
-            <OpenRoute>
               <TermsOfUse />
-            </OpenRoute>
           }
         ></Route>
 
         <Route
           path="/login"
           element={
+            <OpenRoute>
               <Login />
+              </OpenRoute>
           }
         ></Route>
         <Route path="creategicaccount" element={<CreateGICAccount />}></Route>
