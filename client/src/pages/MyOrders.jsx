@@ -24,7 +24,7 @@ const MyOrders = () => {
 const fetchUserOrders = async () => {
   try {
     const response = await apiConnector( "GET",
-      'http://localhost:8100/api/v1/userOrders',
+      'http://13.50.14.42:8100/api/v1/userOrders',
       null,
       {
         Authorization: `Bearer ${token}`,
