@@ -109,7 +109,7 @@ export const logout=(navigate)=>{
       localStorage.removeItem("user")
       toast.success("Logged Out")
       localStorage.removeItem("sendmoneyloggedIn");
-      // navigate("/");
+      navigate("/");
   }
 }
 

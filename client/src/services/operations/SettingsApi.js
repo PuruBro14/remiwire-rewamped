@@ -6,6 +6,7 @@ import { setUser } from '../../utils/profileSlice';
 
 const {
   UPDATE_PROFILE_API,
+  FETCH_PROFILE_API,
   CHANGE_PASSWORD_API,
   DELETE_PROFILE_API,
   CREATE_ADDRESS_API,
@@ -51,6 +52,23 @@ export function updateProfile(token, formData, navigate, user) {
     toast.dismiss(toastId);
   };
 }
+
+export const fetchUserProfile = (token) => async (dispatch) => {
+  const result=[]
+  try {
+    const response = await apiConnector("GET", FETCH_PROFILE_API, null, {
+      Authorization: `Bearer ${token}`,
+    });
+
+    if (!response.data.success) {
+      throw new Error(response.data.message);
+    }
+
+    dispatch(setUser(response.data.profile));
+  } catch (err) {
+    console.error("Error fetching profile:", err);
+  }
+};
 
 
 export async function changePassword(token, formData) {

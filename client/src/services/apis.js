@@ -17,6 +17,7 @@ export const contactUsEndPoint={
 
 export const settingsEndPoints = {
   UPDATE_PROFILE_API: BASE_URL + "/profile/updateProfile",
+  FETCH_PROFILE_API : '/profile/fetch-profile',
   CHANGE_PASSWORD_API: BASE_URL + "/profile/changepassword",
   DELETE_PROFILE_API: BASE_URL + "/profile/deleteProfile",
   CREATE_ADDRESS_API: BASE_URL + "/address/createAddress",
