@@ -1,5 +1,5 @@
 import { apiConnector } from "./apiconnector";
-import toast from "react-hot-toast";
+import {toast} from "react-hot-toast";
 
 export const fetchFxRate = (
   transferFromState,
@@ -11,10 +11,11 @@ export const fetchFxRate = (
   receivingCurrency
 ) => {
   return new Promise(async (resolve, reject) => {
+    const toastId = toast.loading("Loading...");
     try {
       const response = await apiConnector(
         "POST",
-        "http://13.50.14.42:8100/api/v1/fx-rate",
+        "http://localhost:8100/api/v1/fx-rate",
         {
           to_amount: 100,
           to_currency: "USD",
@@ -33,6 +34,8 @@ export const fetchFxRate = (
 
       console.log("Response from FX rate API:", response.data);
       resolve(response.data);
+      toast.dismiss(toastId);
+      return resolve.data
     } catch (error) {
       console.error(
         "Error during FX rate fetch:",
@@ -40,6 +43,7 @@ export const fetchFxRate = (
       );
       reject(error);
     }
+        toast.dismiss(toastId);
   });
 };
 
@@ -49,7 +53,7 @@ export const registerRemitter = () => {
     try {
       const response = await apiConnector(
         "POST",
-        "http://13.50.14.42:8100/api/v1/registerRemitter",
+        "http://localhost:8100/api/v1/registerRemitter",
         {
           purpose: "EDUCATION",
           account_number: "011234567991234",
@@ -92,7 +96,7 @@ export const registerBeneficiary = (beneficiaryData) => {
     try {
       const response = await apiConnector(
         "POST",
-        "http://13.50.14.42:8100/api/v1/registerBeneficiary",
+        "http://localhost:8100/api/v1/registerBeneficiary",
         {
           beneficiary_id: "bene_004",
           account_holder_name: beneficiaryData.beneficiaryName,

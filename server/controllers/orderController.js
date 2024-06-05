@@ -13,6 +13,7 @@ exports.getAllOrders = async (req, res) => {
 exports.getUserOrders = async (req, res) => {
   try {
     const userId = req.user.id;
+    console.log('userId',userId);
 
     const userOrders = await Order.find({ user: userId }).sort({
       createdAt: -1,
@@ -27,6 +28,43 @@ exports.getUserOrders = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Failed to retrieve user orders",
+      error: error.message,
+    });
+  }
+};
+
+
+exports.getTrackingOrder = async (req, res) => {
+  try {
+    const { orderId } = req.query;
+
+    if (!orderId) {
+      return res.status(400).json({
+        success: false,
+        message: "orderId query parameter is required",
+      });
+    }
+
+    console.log("orderId", orderId);
+
+    const order = await Order.findOne({ orderId: orderId });
+
+    if (!order) {
+      return res.status(404).json({
+        success: false,
+        message: "Order not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: order,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to retrieve the order",
       error: error.message,
     });
   }

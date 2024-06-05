@@ -2,6 +2,8 @@ const axios = require("axios");
 const Order = require("../models/Order");
 
 exports.createPayment = async (req, res) => {
+  console.log('-->req,user',req.body);
+  const userId=req.user.id
   try {
     const orderId = "TORID665456" + Date.now();
     const customerId = "CID89898" + Date.now();
@@ -40,7 +42,7 @@ exports.createPayment = async (req, res) => {
     const newOrder = new Order({
       orderId: orderId,
       customerId: customerId,
-      user: "66349af8293fa499048702cb",
+      user: userId,
       orderStatus: "Paid",
       orderDate: new Date(),
       orderAmount: 1,

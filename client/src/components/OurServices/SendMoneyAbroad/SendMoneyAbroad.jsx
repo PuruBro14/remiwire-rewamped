@@ -23,6 +23,7 @@ export default function SendMoneyAbroad() {
   const [tabName, setTabName] = useState("Login");
   const isUserLoggedIn = localStorage.getItem("sendmoneyloggedIn") === 'true';
   const [chargesData, setChargesData] = useState();
+  const[fxRate,setFxRate]=useState();
 
   const [documentProof, setDocumentProofs] = useState({
     panCardImage: "",
@@ -53,6 +54,10 @@ export default function SendMoneyAbroad() {
   }
 
   console.log('isLoggedIn', isLoggedIn, showLoginModal, 'formStep', formStep, isUserLoggedIn);
+
+  const fetchFxDetails=(data)=>{
+    setFxRate(data)
+  }
 
   return (
     <div className="container mx-auto px-4">
@@ -89,6 +94,7 @@ export default function SendMoneyAbroad() {
                       setFormStep={setFormStep}
                       documentProof={documentProof}
                       setDocumentProofs={setDocumentProofs}
+                      fetchFxDetails={fetchFxDetails}
                     />
                   </>
                 )}
@@ -115,6 +121,7 @@ export default function SendMoneyAbroad() {
                       setFormStep={setFormStep}
                       documentProof={documentProof}
                       chargesData={chargesData}
+                      fxRate={fxRate}
                     />
                   </>
                 )}

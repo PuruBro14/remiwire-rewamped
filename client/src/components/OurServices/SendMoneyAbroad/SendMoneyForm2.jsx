@@ -9,6 +9,7 @@ export default function SendMoneyForm2({
   setFormStep,
   setDocumentProofs,
   documentProof,
+  fetchFxDetails
 }) {
   const [errors, setErrors] = useState({
     pancardNumber: "",
@@ -25,12 +26,20 @@ export default function SendMoneyForm2({
 
   const purposeOfTransfer = useSelector((state) => state.purposeOfTransfer);
 
+  const[fxRateDetails,setFxRateDetails]=useState()
+
   const dispatch = useDispatch();
   const sendMoneyAboroadForms = useSelector(
     (state) => state.sendMoneyAboroadForms
   );
 
   const [getRemitterDetails, setGetRemiiterDetails] = useState([]);
+
+
+  function isValidPAN(pan) {
+  const panRegex = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
+  return panRegex.test(pan);
+}
 
 const handleSubmit = async (e) => {
   e.preventDefault();
@@ -58,6 +67,8 @@ const handleSubmit = async (e) => {
 
   if (!sendMoneyAboroadForms.pancardNumber) {
     newErrors.pancardNumber = "PAN card number is required";
+  } else if (!isValidPAN(sendMoneyAboroadForms.pancardNumber)) {
+    newErrors.pancardNumber = "Invalid PAN card number format";
   }
   if (!documentProof.passportImage) {
     newErrors.passportImage = "Document is required";
@@ -88,7 +99,7 @@ const handleSubmit = async (e) => {
 
   if (Object.keys(newErrors).length === 0) {
     try {
-      await fetchFxRate(
+      const response=await fetchFxRate(
         transferFromState,
         transferFromCity,
         purposeOfTransfer,
@@ -97,6 +108,10 @@ const handleSubmit = async (e) => {
         receivingAmountInINR,
         receivingCurrency
       );
+
+      console.log('response',response);
+      setFxRateDetails(response)
+      fetchFxDetails(response)
 
       await registerRemitter();
     } catch (error) {
@@ -155,6 +170,8 @@ const handleSubmit = async (e) => {
   useEffect(() => {
     fetchRemiiterDetails();
   }, []);
+
+
 
   console.log("getRemiiterDetails", getRemitterDetails);
   return (
