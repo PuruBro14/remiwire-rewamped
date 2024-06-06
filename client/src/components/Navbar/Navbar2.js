@@ -1,15 +1,14 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { NavbarLinks } from "../../data/NavbarLinks";
 import { useLocation, matchPath } from "react-router-dom";
-import { IoIosArrowDropdownCircle, IoMdClose } from "react-icons/io";
+import { IoMdClose } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import ProfileDropDown from "../ProfileDropDown";
 import { logout } from "../../services/operations/authAPI";
 import { RxHamburgerMenu } from "react-icons/rx";
-import {
-  setScrollToComponentContact,
-} from "../../utils/scrollSlice";
+import { setScrollToComponentContact } from "../../utils/scrollSlice";
+
 const subLinksData = [
   {
     title: "Send Money Abroad",
@@ -31,7 +30,6 @@ const subLinksData = [
     title: "Blocked Account Payment",
     link: "BlockedAccountPayment",
   },
-  ,
   {
     title: "GIC Account Payment",
     link: "gicaccountpayment",
@@ -40,7 +38,6 @@ const subLinksData = [
     title: "Overseas Education Loan",
     link: "OverseasEducationLoan",
   },
-  ,
   {
     title: "Create GIC Account",
     link: "creategicaccount",
@@ -56,14 +53,16 @@ const Navbar = () => {
   const { token } = useSelector((state) => state.auth);
   const { user } = useSelector((state) => state.profile);
 
+  const matchRoute = (route) => {
+    return matchPath({ path: route }, location.pathname);
+  };
+
   const toggleNavbar = () => {
     setIsOpen(!isOpen);
   };
 
   const closeNavbar = () => {
-    if (window.innerWidth < 768) {
-      setIsOpen(false);
-    }
+    setIsOpen(false);
   };
 
   useEffect(() => {
@@ -79,23 +78,21 @@ const Navbar = () => {
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, [window.innerWidth]);
+  }, []);
 
   const handleContactus = (e) => {
-    console.log("clicked");
     e.preventDefault();
     if (location.pathname !== "/") {
       navigate("/");
     }
     dispatch(setScrollToComponentContact(true));
   };
-  
 
   return (
     <div className="flex flex-row md:h-20 flex-wrap items-center w-full">
-      <div className=" w-11/12 mx-auto items-center justify-between ">
+      <div className="w-11/12 mx-auto items-center justify-between">
         {showHamburger && (
-          <div className=" mt-5 md:mt-0  text-right">
+          <div className="mt-5 md:mt-0 text-right">
             <button onClick={toggleNavbar}>
               {isOpen ? (
                 <IoMdClose size={30} color="black" />
@@ -107,14 +104,12 @@ const Navbar = () => {
         )}
 
         <div className={`navbar-drawer ${isOpen ? "open" : ""}`}>
-          {showHamburger &&
           <div className="drawer-header flex justify-between items-center p-4">
             <h2 className="text-xl font-bold">Menu</h2>
             <button onClick={closeNavbar}>
               <IoMdClose size={30} color="black" />
             </button>
           </div>
-}
 
           <div className="flex flex-col md:flex-row w-full justify-between items-start md:items-center gap-5 p-4">
             <nav>
@@ -185,12 +180,12 @@ const Navbar = () => {
               )}
             </div>
           </div>
-
+          
         </div>
-        
       </div>
     </div>
   );
 };
 
 export default Navbar;
+

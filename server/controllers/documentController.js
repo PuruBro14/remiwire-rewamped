@@ -1,24 +1,29 @@
 const axios = require("axios");
-const fs = require("fs");
-const path = require("path");
 const FormData = require("form-data");
+const { uploadImageToCloudinary } = require("../utils/imageUploader");
 
 exports.uploadDocument = async (req, res) => {
-  const orderId = req.params.orderid;
-  console.log("orderId", orderId);
-
-  const url = `https://sandbox.cashfree.com/pg/lrs/orders/${orderId}/documents/upload`;
+  const url = `https://sandbox.cashfree.com/pg/lrs/orders/documents/upload`;
   const client_id = process.env.CLIENT_ID;
   const client_secret = process.env.CLIENT_SECRET;
   const api_version = process.env.API_VERSION;
-  const filePath = path.join(
-    __dirname,
-    "../../../Downloads/KYC_PASSPORT_STUDENT_1.pdf"
-  );
 
   try {
+    if (!req.files || !req.files.files) {
+      return res.status(400).json({ error: "No files uploaded" });
+    }
+
+    const file = req.files.files;
+    console.log("file", file.name);
+
+    const uploadedFile = await uploadImageToCloudinary(
+      file.tempFilePath,
+      process.env.FOLDER_NAME
+    );
+    console.log("Uploaded file URL:", uploadedFile.url);
+
     const form = new FormData();
-    form.append("files", fs.createReadStream(filePath));
+    form.append("file", uploadedFile.url);
 
     const response = await axios.post(url, form, {
       headers: {

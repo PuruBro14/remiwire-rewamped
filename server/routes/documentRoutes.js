@@ -3,6 +3,6 @@ const { uploadDocument } = require("../controllers/documentController");
 
 const router = express.Router();
 
-router.post("/upload-document/:orderid", uploadDocument);
+router.post("/upload-document", uploadDocument);
 
 module.exports = router;
