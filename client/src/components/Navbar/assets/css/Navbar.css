@@ -40,7 +40,6 @@
   }
 }
 
-/* Additional styles for making the navbar more attractive */
 .navbar-drawer ul {
   list-style-type: none;
   padding: 0;
@@ -60,7 +59,6 @@
   text-decoration: underline;
 }
 
-/* Profile dropdown and logout button styles */
 .profile-dropdown,
 .logout-button {
   background-color: #10122b;
@@ -86,7 +84,6 @@
   }
 }
 
-/* Custom styles for the new desktop layout */
 .navbar-desktop {
   display: flex;
   justify-content: space-between;
