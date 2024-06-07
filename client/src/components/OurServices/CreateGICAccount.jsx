@@ -65,7 +65,7 @@ export default function CreateGICAccount() {
         <div className="p-4">
           <div className="p-4">
             <div className="sma_pclara bg-white shadow-lg rounded-lg p-6">
-              <div>
+              <div>ng GIC Account:
                 <p className="text-[20px]">
                   For getting assistance in Opening GIC Account:
                 </p>

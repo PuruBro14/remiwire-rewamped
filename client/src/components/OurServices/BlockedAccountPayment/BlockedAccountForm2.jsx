@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setformValue } from "../../features/BlockedAccountSlice";
+import { fetchFxRate, registerRemitter } from "../../../services/operations/SendMoneyApi";
 
 export default function BlockedAccountForm2({
-  setformStep,
+  setFormStep,
   setDocumentProofs,
   documentProof,
+  fetchFxDetails
 }) {
   const [errors, setErrors] = useState({
     pancardNumber: "",
@@ -23,15 +25,45 @@ export default function BlockedAccountForm2({
 
   const dispatch = useDispatch();
   const blockeAccountForms = useSelector((state) => state.blockeAccountForms);
-  const handleSubmit = (e) => {
+
+  const [getRemitterDetails, setGetRemiiterDetails] = useState([]);
+
+
+  function isValidPAN(pan) {
+  const panRegex = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
+  return panRegex.test(pan);
+}
+
+
+  const handleSubmit = async(e) => {
     e.preventDefault();
+
+    const {
+    purposeOfTransfer,
+    remiterAccountNo,
+    remiterIFSCCode,
+    pancardNumber,
+    remiterFirstName,
+    transferToCountry,
+    receivingAmountInEuro,
+    receivingAmountInINR,
+    receivingCurrency,
+    remiterMobileNo,
+    remiterEmailID,
+    transferFromState,
+    addressProof,
+    transferFromCity,
+  } = blockeAccountForms;
+
+  console.log('purposeOfTransfer',purposeOfTransfer);
 
     const newErrors = {};
 
-    // Example validations (replace with your actual validation logic)
-    if (!blockeAccountForms.pancardNumber) {
-      newErrors.pancardNumber = "PAN card number is required";
-    }
+   if (!blockeAccountForms.pancardNumber) {
+    newErrors.pancardNumber = "PAN card number is required";
+  } else if (!isValidPAN(blockeAccountForms.pancardNumber)) {
+    newErrors.pancardNumber = "Invalid PAN card number format";
+  }
 
     if (!documentProof.panCardImage) {
       newErrors.panCardImage = "PAN card document is required";
@@ -77,10 +109,29 @@ export default function BlockedAccountForm2({
     // Update errors state
     setErrors(newErrors);
 
-    // If no errors, submit the form
     if (Object.keys(newErrors).length === 0) {
-      setformStep(2); // Proceed to next step
+    try {
+      const response=await fetchFxRate(
+        transferFromState,
+        transferFromCity,
+        purposeOfTransfer,
+        transferToCountry,
+        receivingAmountInEuro,
+        receivingAmountInINR,
+        receivingCurrency
+      );
+
+      console.log('response',response);
+      fetchFxDetails(response)
+
+      await registerRemitter();
+
+    } catch (error) {
+      console.error("Error during form submission:", error);
     }
+      setFormStep(2)
+  }
+
   };
 
   // Clear error when input field is clicked
@@ -93,7 +144,7 @@ export default function BlockedAccountForm2({
 
     const sanitizedValue = trimmedValue.replace(/[^a-zA-Z0-9]/g, "");
 
-    dispatch(setformValue({ [fieldName]: sanitizedValue }));
+    dispatch(setformValue({ [fieldName]: value }));
   };
 
   const handleSubmitChangeFormDoc = (fieldName, value) => {
@@ -106,6 +157,31 @@ export default function BlockedAccountForm2({
   const clearErrorDoc = (fieldName) => {
     setErrors({ ...errors, [fieldName]: "" });
   };
+
+  const fetchRemiiterDetails = async () => {
+    const response = await fetch(
+      "http://13.50.14.42:8100/api/v1/remitters/prod_cf_rem_005"
+    );
+    const data = await response.json();
+
+    console.log("data", data);
+    const { name, account_number, ifsc, email, phone_number } = data;
+    dispatch(
+      setformValue({
+        remiterFirstName: name,
+        remiterAccountNo: account_number,
+        remiterIFSCCode: ifsc,
+        remiterMobileNo: phone_number,
+        remiterEmailID: data?.email,
+      })
+    );
+    setGetRemiiterDetails(data);
+  };
+
+  useEffect(() => {
+    fetchRemiiterDetails();
+  }, []);
+
   return (
     <>
       <div className="mt-10">
@@ -353,6 +429,7 @@ export default function BlockedAccountForm2({
                 id="course_details"
                 className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                 placeholder=" "
+                value={blockeAccountForms.remiterEmailID}
                 onChange={(e) => {
                   handleInputChange("remiterEmailID", e.target.value);
                   clearError("remiterEmailID");
@@ -378,6 +455,7 @@ export default function BlockedAccountForm2({
                 id="course_details"
                 className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                 placeholder=" "
+                value={blockeAccountForms.remiterMobileNo}
                 onChange={(e) => {
                   handleInputChange("remiterMobileNo", e.target.value);
                   clearError("remiterMobileNo");

@@ -5,8 +5,19 @@ import countriesList from "../../../utils/countryList";
 import GICAccountForm1 from "./GICAccountForm1";
 import GICAccountForm2 from "./GICAccountForm2";
 import GICAccountForm3 from "./GICAccountForm3";
+import SendMoneyLogin from "../../SendMoneyLogin";
+import SendMoneyRegister from "../../SendMoneyRegister";
+import { useSelector } from "react-redux";
+import GicAccountBifurcation from "./GicAccountBifurcation";
 
 export default function GICAccountHome() {
+   const {token}=useSelector((state)=>state.auth)
+    const [tabName, setTabName] = useState("Login");
+  const [isLoggedIn, setIsLoggedIn] = useState(() => {
+    const token = JSON.parse(localStorage.getItem("token"));
+    return token || false;
+  });
+  const isUserLoggedIn = localStorage.getItem("sendmoneyloggedIn") === 'true';
   const [formData, setFormData] = useState({
     transferFromCountry: "India",
     transferFromState: "",
@@ -15,13 +26,19 @@ export default function GICAccountHome() {
     transferTo: "Canada",
     receivingCurrency: "Cad",
   });
-  const [formStep, setformStep] = useState(0);
+  const [formStep, setFormStep] = useState(0);
+
+  const [showLoginModal, setShowLoginModal] = useState(false);
 
   const [documentProof, setDocumentProofs] = useState({
     panCardImage: "",
     passportImage: "",
     blockACSheetDoc: "",
   });
+
+   const [chargesData, setChargesData] = useState();
+   
+   const[fxRate,setFxRate]=useState();
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -34,6 +51,36 @@ export default function GICAccountHome() {
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
   };
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    if (token) {
+      console.log('runned------>');
+      setIsLoggedIn(true)
+      setShowLoginModal(false)
+    }
+  }, [token]);
+
+  const getTabName = (data) => {
+    setTabName(data);
+  };
+
+  const fetchChargesData = (data) => {
+    setChargesData(data);
+  };
+
+  const getShowModalData=(data)=>{
+    console.log('-------------->data',data);
+    setShowLoginModal(data)
+  }
+
+  console.log('isLoggedIn', isLoggedIn, showLoginModal, 'formStep', formStep, isUserLoggedIn);
+
+  const fetchFxDetails=(data)=>{
+    console.log('data',data);
+    setFxRate(data)
+  }
+
 
   return (
     <div className="container mx-auto px-4">
@@ -50,7 +97,7 @@ export default function GICAccountHome() {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-5">
         <div className="p-4">
-          {formStep !== 3 && (
+          {formStep !== 4 && (
             <>
               <div className="sma_pclara bg-white shadow-lg rounded-lg p-6">
                 <div>
@@ -66,15 +113,20 @@ export default function GICAccountHome() {
                 {formStep === 0 && (
                   <>
                     {" "}
-                    <GICAccountForm1 setformStep={setformStep} />
+                    <GICAccountForm1 setFormStep={setFormStep}
+                      isLoggedIn={isLoggedIn}
+                      fetchChargesData={fetchChargesData}
+                      setShowLoginModal={setShowLoginModal}
+                      getShowModalData={getShowModalData} />
                   </>
                 )}
                 {formStep === 1 && (
                   <>
                     <GICAccountForm2
-                      setformStep={setformStep}
+                      setFormStep={setFormStep}
                       documentProof={documentProof}
                       setDocumentProofs={setDocumentProofs}
+                      fetchFxDetails={fetchFxDetails}
                     />{" "}
                   </>
                 )}
@@ -82,11 +134,24 @@ export default function GICAccountHome() {
                 {formStep === 2 && (
                   <>
                     <GICAccountForm3
-                      setformStep={setformStep}
+                      setFormStep={setFormStep}
                       documentProof={documentProof}
                     />
                   </>
                 )}
+
+                  {formStep === 3 && (
+                  <>
+                    <GicAccountBifurcation
+                      setFormStep={setFormStep}
+                      documentProof={documentProof}
+                      setDocumentProofs={setDocumentProofs}
+                      fetchFxDetails={fetchFxDetails}
+                      fxRate={fxRate}
+                    />{" "}
+                  </>
+                )}
+                
               </div>
             </>
           )}
@@ -95,6 +160,21 @@ export default function GICAccountHome() {
           <img src={image1} alt="Prepaid Travel Card" className="w-full" />
         </div>
       </div>
+      {!isLoggedIn && showLoginModal && (
+        <Modal
+          isVisible={true}
+          onClose={() => setShowLoginModal(false)}
+          setShowLoginModal={setShowLoginModal}
+          tabName={tabName}
+          getTabName={getTabName}
+        >
+          {tabName === "Login" ? (
+            <SendMoneyLogin setIsLoggedIn={setIsLoggedIn} setShowLoginModal={setShowLoginModal}/>
+          ) : (
+            <SendMoneyRegister />
+          )}
+        </Modal>
+      )}
     </div>
   );
 }

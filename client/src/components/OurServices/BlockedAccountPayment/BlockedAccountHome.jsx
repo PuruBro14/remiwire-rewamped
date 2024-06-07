@@ -5,8 +5,20 @@ import countriesList from "../../../utils/countryList";
 import BlockedAccountForm1 from "./BlockedAccountForm1";
 import BlockedAccountForm2 from "./BlockedAccountForm2";
 import BlockedAccountForm3 from "./BlockedAccountForm3";
+import Modal from "../../Modal";
+import SendMoneyLogin from "../../SendMoneyLogin";
+import SendMoneyRegister from "../../SendMoneyRegister";
+import { useSelector } from "react-redux";
+import BlockedAccountBifurcation from "./BlockedAccountBifurcation";
 
 export default function BlockedAccountHome() {
+  const {token}=useSelector((state)=>state.auth)
+    const [tabName, setTabName] = useState("Login");
+  const [isLoggedIn, setIsLoggedIn] = useState(() => {
+    const token = JSON.parse(localStorage.getItem("token"));
+    return token || false;
+  });
+  const isUserLoggedIn = localStorage.getItem("sendmoneyloggedIn") === 'true';
   const [formData, setFormData] = useState({
     transferFromCountry: "India",
     transferFromState: "",
@@ -15,13 +27,18 @@ export default function BlockedAccountHome() {
     transferTo: "Germany",
     receivingCurrency: "Euro",
   });
-  const [formStep, setformStep] = useState(0);
+    const [formStep, setFormStep] = useState(0);
+
+  const [showLoginModal, setShowLoginModal] = useState(false);
 
   const [documentProof, setDocumentProofs] = useState({
     panCardImage: "",
     passportImage: "",
     blockACSheetDoc: "",
   });
+
+  const [chargesData, setChargesData] = useState();
+  const[fxRate,setFxRate]=useState();
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -33,6 +50,36 @@ export default function BlockedAccountHome() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    if (token) {
+      console.log('runned------>');
+      setIsLoggedIn(true)
+      setShowLoginModal(false)
+    }
+  }, [token]);
+
+  const getTabName = (data) => {
+    setTabName(data);
+  };
+
+  const fetchChargesData = (data) => {
+    setChargesData(data);
+  };
+
+  const getShowModalData=(data)=>{
+    console.log('-------------->data',data);
+    setShowLoginModal(data)
+  }
+
+  console.log('isLoggedIn', isLoggedIn, showLoginModal, 'formStep', formStep, isUserLoggedIn);
+
+  const fetchFxDetails=(data)=>{
+    console.log('data',data);
+    setFxRate(data)
+  }
+
 
   return (
     <div className="container mx-auto px-4">
@@ -49,7 +96,7 @@ export default function BlockedAccountHome() {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-5">
         <div className="p-4">
-          {formStep !== 3 && (
+          {formStep !== 4 && (
             <>
               <div className="sma_pclara bg-white shadow-lg rounded-lg p-6">
                 <div>
@@ -65,15 +112,21 @@ export default function BlockedAccountHome() {
                 {formStep === 0 && (
                   <>
                     {" "}
-                    <BlockedAccountForm1 setformStep={setformStep} />
+                    <BlockedAccountForm1 setFormStep={setFormStep}
+                      isLoggedIn={isLoggedIn}
+                      fetchChargesData={fetchChargesData}
+                      setShowLoginModal={setShowLoginModal}
+                      getShowModalData={getShowModalData} />
                   </>
                 )}
+
                 {formStep === 1 && (
                   <>
                     <BlockedAccountForm2
-                      setformStep={setformStep}
+                      setFormStep={setFormStep}
                       documentProof={documentProof}
                       setDocumentProofs={setDocumentProofs}
+                      fetchFxDetails={fetchFxDetails}
                     />{" "}
                   </>
                 )}
@@ -81,11 +134,26 @@ export default function BlockedAccountHome() {
                 {formStep === 2 && (
                   <>
                     <BlockedAccountForm3
-                      setformStep={setformStep}
+                      setFormStep={setFormStep}
                       documentProof={documentProof}
                     />
                   </>
                 )}
+
+                {formStep === 3 && (
+                  <>
+                    <BlockedAccountBifurcation
+                      setFormStep={setFormStep}
+                      documentProof={documentProof}
+                      setDocumentProofs={setDocumentProofs}
+                      fetchFxDetails={fetchFxDetails}
+                      fxRate={fxRate}
+                    />{" "}
+                  </>
+                )}
+
+
+
               </div>
             </>
           )}
@@ -94,6 +162,21 @@ export default function BlockedAccountHome() {
           <img src={image1} alt="Prepaid Travel Card" className="w-full" />
         </div>
       </div>
+      {!isLoggedIn && showLoginModal && (
+        <Modal
+          isVisible={true}
+          onClose={() => setShowLoginModal(false)}
+          setShowLoginModal={setShowLoginModal}
+          tabName={tabName}
+          getTabName={getTabName}
+        >
+          {tabName === "Login" ? (
+            <SendMoneyLogin setIsLoggedIn={setIsLoggedIn} setShowLoginModal={setShowLoginModal}/>
+          ) : (
+            <SendMoneyRegister />
+          )}
+        </Modal>
+      )}
     </div>
   );
 }

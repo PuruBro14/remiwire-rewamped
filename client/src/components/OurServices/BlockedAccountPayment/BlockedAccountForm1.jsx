@@ -4,7 +4,13 @@ import "react-country-state-city/dist/react-country-state-city.css";
 import { useSelector, useDispatch } from "react-redux";
 import { setformValue } from "../../features/BlockedAccountSlice";
 import axios from "axios";
-export default function BlockedAccountForm1({ setformStep }) {
+export default function BlockedAccountForm1({ setFormStep,
+  isLoggedIn,
+  setIsLoggedIn,
+  getLoggedInData,
+  setShowLoginModal,
+  getShowModalData,
+  fetchChargesData }) {
   const [countryid, setCountryid] = useState(101);
   const [stateid, setstateid] = useState(0);
   const dispatch = useDispatch();
@@ -39,9 +45,14 @@ export default function BlockedAccountForm1({ setformStep }) {
 
     setErrors(newErrors);
 
+    if(!isLoggedIn){
+      getShowModalData(true)
+      localStorage.setItem('sendmoneyloggedIn',true)
+    }
+
     // If no errors, submit the form
     if (Object.keys(newErrors).length === 0) {
-      setformStep(1);
+      setFormStep(1);
     }
   };
   // Clear error when input field is clicked

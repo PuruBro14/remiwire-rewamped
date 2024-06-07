@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setformValue } from "../../features/GICAccountSlice";
+import { registerBeneficiary } from "../../../services/operations/SendMoneyApi";
 
-export default function GICAccountForm3({ documentProof }) {
+export default function GICAccountForm3({ setFormStep,documentProof }) {
   const [errors, setErrors] = useState({
     beneficiaryName: "",
     beneficiaryAddress: "",
@@ -16,8 +17,19 @@ export default function GICAccountForm3({ documentProof }) {
   const dispatch = useDispatch();
   const gicAccountForms = useSelector((state) => state.gicAccountForms);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
+
+    const {
+    beneficiaryName,
+    beneficiaryAddress,
+    beneficiaryAccountNo,
+    beneficiaryAccountNoRe,
+    beneficiarySwiftCode,
+    bankIdentifiers,
+    beneficiaryCountry,
+    beneficiaryIBANNo, 
+  } = gicAccountForms;
 
     const newErrors = {};
 
@@ -67,8 +79,19 @@ export default function GICAccountForm3({ documentProof }) {
 
     // If no errors, submit the form
     if (Object.keys(newErrors).length === 0) {
-      setformStep(2); // Proceed to next step
+    try {
+      await registerBeneficiary({
+        beneficiaryName,
+        beneficiaryAddress,
+        beneficiaryAccountNo,
+        beneficiarySwiftCode,
+        beneficiaryIBANNo,
+      });
+    } catch (error) {
+      console.error("Error during beneficiary registration:", error);
     }
+      setFormStep(3);
+  }
   };
   const clearError = (fieldName) => {
     setErrors({ ...errors, [fieldName]: "" });
