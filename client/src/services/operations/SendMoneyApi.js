@@ -140,7 +140,7 @@ export const uploadDocument = (formData) => {
     try {
       const response = await apiConnector(
         "POST",
-        "http://localhost:8100/api/v1/upload-document",
+        "http://http://13.50.14.42:8100/api/v1/upload-document",
         formData,
         {
           "x-client-id": import.meta.env.VITE_CLIENT_ID,
