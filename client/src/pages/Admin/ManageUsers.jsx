@@ -26,7 +26,7 @@ const ManageUsers = () => {
     const toastId = toast.loading("Loading Forex orders...");
     setLoading(true);
     try {
-      const response = await apiConnector("GET", 'http://http://13.50.14.42:8100/api/v1/fetchAllUsers', null, {
+      const response = await apiConnector("GET", 'http://13.50.14.42:8100/api/v1/fetchAllUsers', null, {
         Authorization: `Bearer ${token}`,
       });
       setLoading(false);
