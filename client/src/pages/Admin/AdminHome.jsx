@@ -3,6 +3,10 @@ import Sidebar from "./Layout/SideBar";
 import MenuBarMobile from "./Layout/MenuBarMobile";
 import ManageOrder from "./ManageOrder";
 import ManageUsers from "./ManageUsers";
+import {toast} from 'react-hot-toast'
+import {useSelector} from 'react-redux'
+import { apiConnector } from '../../services/operations/apiconnector';
+import AdminDashboard from "./AdminDashboard";
 
 function AdminHome() {
   const [showSidebar, setShowSidebar] = useState(false);
@@ -12,7 +16,7 @@ function AdminHome() {
   const showMainDiv = () => {
     switch (showScreen) {
       case 0:
-        return "Dashboard";
+        return <AdminDashboard/>
       case 1:
         return (
           <>
@@ -25,15 +29,19 @@ function AdminHome() {
             <ManageUsers />
           </>
         );
+        case 3:
+          return "Update Profile"
+        case 4:
+          return "Contact US"
       default:
-        return null; // Add default case or return null if no match
+        return null; 
     }
   };
 
   useEffect(() => {
     showMainDiv();
-  }, [showScreen]); // Add `showScreen` as a dependency for useEffect
-
+  }, [showScreen]);
+  
   return (
     <div className="min-h-screen">
       <div className="flex">

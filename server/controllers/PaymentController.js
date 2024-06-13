@@ -1,12 +1,19 @@
 const axios = require("axios");
 const Order = require("../models/Order");
 
+const generateOrderId = (prefix) => {
+  const randomNumber = Math.floor(Math.random() * 10000); // Generate a random 4-digit number
+  const timestamp = Date.now(); // Get the current timestamp
+  return `${prefix}${timestamp}${randomNumber}`;
+};
+
 exports.createPayment = async (req, res) => {
-  console.log('-->req,user',req.body);
-  const userId=req.user.id
+  const userId = req.user.id;
+  const { serviceType } = req.body; 
+  console.log('req.body',req.body,serviceType);
   try {
-    const orderId = "TORID665456" + Date.now();
-    const customerId = "CID89898" + Date.now();
+    const orderId = generateOrderId("TORID"); // Example prefix "TORID"
+    const customerId = generateOrderId("CID"); // Example prefix "CID"
     const options = {
       method: "POST",
       url: "https://sandbox.cashfree.com/pg/orders",
@@ -37,7 +44,6 @@ exports.createPayment = async (req, res) => {
     };
 
     const response = await axios.request(options);
-    console.log(response.data);
 
     const newOrder = new Order({
       orderId: orderId,
@@ -62,7 +68,8 @@ exports.createPayment = async (req, res) => {
         postalCode: "62701",
         country: "USA",
       },
-      orderNote: "Remiwire order",
+      orderNote: "Remiwire order1",
+      serviceType: serviceType,
     });
 
     await newOrder.save();

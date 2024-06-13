@@ -44,7 +44,7 @@ export default function SendMoneyForm2({
 const handleSubmit = async (e) => {
   e.preventDefault();
 
-  console.log("sendMoneyAboroadForms", sendMoneyAboroadForms);
+  console.log("runned-------->");
 
   const {
     purposeOfTransfer,
@@ -98,29 +98,44 @@ const handleSubmit = async (e) => {
   setErrors(newErrors);
 
   if (Object.keys(newErrors).length === 0) {
+    const fetchFxRatePromise = fetchFxRate(
+      transferFromState,
+      transferFromCity,
+      purposeOfTransfer,
+      transferToCountry,
+      receivingAmountInEuro,
+      receivingAmountInINR,
+      receivingCurrency
+    );
+
+    const registerRemitterPromise = registerRemitter();
+
     try {
-      const response=await fetchFxRate(
-        transferFromState,
-        transferFromCity,
-        purposeOfTransfer,
-        transferToCountry,
-        receivingAmountInEuro,
-        receivingAmountInINR,
-        receivingCurrency
-      );
+      const [fxRateResult, remitterResult] = await Promise.all([
+        fetchFxRatePromise.catch(error => ({ error })),
+        registerRemitterPromise.catch(error => ({ error }))
+      ]);
 
-      console.log('response',response);
-      setFxRateDetails(response)
-      fetchFxDetails(response)
+      if (!fxRateResult.error) {
+        console.log('response', fxRateResult);
+        setFxRateDetails(fxRateResult);
+        fetchFxDetails(fxRateResult);
+      } else {
+        console.error("Error in fetchFxRate:", fxRateResult.error);
+      }
 
-      await registerRemitter();
+      if (!remitterResult.error) {
+        console.log("Remitter registered successfully");
+      } else {
+        console.error("Error in registerRemitter:", remitterResult.error);
+      }
     } catch (error) {
-      console.error("Error during form submission:", error);
-    }
+      console.error("Unexpected error during form submission:", error);
+    } finally {
       purposeOfTransfer === "Maintenance of Close relative Abroad" ? setFormStep(2) : setFormStep(3);
+    }
   }
 };
-
 
 
   // Clear error when input field is clicked
@@ -230,6 +245,7 @@ const handleSubmit = async (e) => {
               )}
             </div>
           </div>
+
           <div className="relative z-0 w-full mb-5 group">
             <label
               htmlFor="course_details"
@@ -258,6 +274,7 @@ const handleSubmit = async (e) => {
               </span>
             )}
           </div>
+          
           <div className="relative z-0 w-full mb-5 group">
             <div>
               <label
@@ -349,7 +366,6 @@ const handleSubmit = async (e) => {
                   clearError("remiterAccountNo");
                 }}
               />
-remiterEmailID
               <label
                 htmlFor="course_details"
                 className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"

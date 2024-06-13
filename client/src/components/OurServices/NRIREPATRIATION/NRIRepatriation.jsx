@@ -5,9 +5,25 @@ import countriesList from "../../../utils/countryList";
 import NRIRepatriationForm1 from "./NRIRepatriationForm1";
 import NRIRepatriationForm2 from "./NRIRepatriationForm2";
 import NRIRepatriationForm3 from "./NRIRepatriationForm3";
+import SendMoneyLogin from "../../SendMoneyLogin";
+import SendMoneyRegister from "../../SendMoneyRegister";
+import NRIRepatrirationCustomer from "./NRIRepatriration";
+import NRIRepatriationBifurcation from "./NRIRepatriationBifurcation";
+import { useSelector } from "react-redux";
+
 
 export default function NRIRepatriation() {
-  const [formStep, setformStep] = useState(0);
+  const user = useSelector((state) => state.profile.user?.email);
+  const {token}=useSelector((state)=>state.auth)
+  const [chargesData, setChargesData] = useState();
+  const [tabName, setTabName] = useState("Login");
+  const [isLoggedIn, setIsLoggedIn] = useState(() => {
+  const token = JSON.parse(localStorage.getItem("token"));
+    return token || false;
+  });
+  const [formStep, setFormStep] = useState(0);
+
+  const [showLoginModal, setShowLoginModal] = useState(false);
 
   const [documentProof, setDocumentProofs] = useState({
     panCardImage: "",
@@ -15,9 +31,40 @@ export default function NRIRepatriation() {
     blockACSheetDoc: "",
   });
 
+  const[fxRate,setFxRate]=useState();
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+   useEffect(() => {
+    window.scrollTo(0, 0);
+    if (token) {
+      console.log('runned------>');
+      setIsLoggedIn(true)
+      setShowLoginModal(false)
+    }
+  }, [token]);
+
+  const getTabName = (data) => {
+    setTabName(data);
+  };
+
+  const fetchChargesData = (data) => {
+    setChargesData(data);
+  };
+
+  const getShowModalData=(data)=>{
+    console.log('-------------->data',data);
+    setShowLoginModal(data)
+  }
+
+  console.log('isLoggedIn', isLoggedIn, showLoginModal, 'formStep', formStep);
+
+  const fetchFxDetails=(data)=>{
+    console.log('data',data);
+    setFxRate(data)
+  }
 
   return (
     <div className="container mx-auto px-4">
@@ -36,7 +83,7 @@ export default function NRIRepatriation() {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-5">
         <div className="p-4">
-          {formStep !== 3 && (
+          {formStep !== 5 && (
             <>
               <div className="sma_pclara bg-white shadow-lg rounded-lg p-6">
                 <div>
@@ -48,24 +95,51 @@ export default function NRIRepatriation() {
                 {formStep === 0 && (
                   <>
                     {" "}
-                    <NRIRepatriationForm1 setformStep={setformStep} />
+                    <NRIRepatriationForm1 setFormStep={setFormStep}
+                      isLoggedIn={isLoggedIn}
+                      fetchChargesData={fetchChargesData}
+                      setShowLoginModal={setShowLoginModal}
+                      getShowModalData={getShowModalData} />
                   </>
                 )}
                 {formStep === 1 && (
                   <>
                     <NRIRepatriationForm2
-                      setformStep={setformStep}
+                       setFormStep={setFormStep}
                       documentProof={documentProof}
                       setDocumentProofs={setDocumentProofs}
+                      fetchFxDetails={fetchFxDetails}
                     />{" "}
                   </>
                 )}
 
-                {formStep === 2 && (
+                  {formStep === 2 && isLoggedIn && (
+                  <>
+                    <NRIRepatrirationCustomer
+                      setFormStep={setFormStep}
+                      documentProof={documentProof}
+                      setDocumentProofs={setDocumentProofs}
+                    />
+                  </>
+                )}
+                
+
+                {formStep === 3 && (
                   <>
                     <NRIRepatriationForm3
-                      setformStep={setformStep}
+                      setFormStep={setFormStep}
                       documentProof={documentProof}
+                    />
+                  </>
+                )}
+
+                {formStep === 4 && isLoggedIn && (
+                  <>
+                    <NRIRepatriationBifurcation
+                      setFormStep={setFormStep}
+                      documentProof={documentProof}
+                      chargesData={chargesData}
+                      fxRate={fxRate}
                     />
                   </>
                 )}
@@ -77,6 +151,21 @@ export default function NRIRepatriation() {
           <img src={image1} alt="Prepaid Travel Card" className="w-full" />
         </div>
       </div>
+      {!isLoggedIn && showLoginModal && (
+        <Modal
+          isVisible={true}
+          onClose={() => setShowLoginModal(false)}
+          setShowLoginModal={setShowLoginModal}
+          tabName={tabName}
+          getTabName={getTabName}
+        >
+          {tabName === "Login" ? (
+            <SendMoneyLogin setIsLoggedIn={setIsLoggedIn} setShowLoginModal={setShowLoginModal}/>
+          ) : (
+            <SendMoneyRegister />
+          )}
+        </Modal>
+      )}
     </div>
   );
 }

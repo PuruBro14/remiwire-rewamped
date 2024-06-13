@@ -16,26 +16,7 @@ const Checkout = () => {
   const dispatch=useDispatch()
   const[loading,setLoading]=useState(false);
 
-   const steps=[
-        {
-            id:1,
-            title:"Add Currencies"
-        },
-        {
-            id:2,
-            title:"Login/Register"
-        },
-        {
-            id:3,
-            title:"Add/Manage Address"
-        },
-        {
-            id:4,
-            title:"Book Order"
-        }
-    ]
-
-     const getDeliveryAddress = async () => {
+    const getDeliveryAddress = async () => {
     setLoading(true)
     const result = await fetchDeliveryAddress(token,dispatch,user,setUser)
     if (result) {
@@ -52,7 +33,6 @@ const Checkout = () => {
     <div>
     <div className='w-11/12 mx-auto max-w-[900px]'>
       <div className='flex flex-col gap-5 py-16 pb-48 '>
-        {/* first div  */}
         <div>
 
           <LoginCheckout/>
@@ -67,25 +47,26 @@ const Checkout = () => {
         </div>
 
         <hr className='text-[#DDDDDD]'/>
-        {/* second div  */}
-        <div className='w-11/12 mx-auto flex flex-row justify-between'>
+
+        <div className='w-11/12 mx-auto flex flex-row justify-between text-richblack-900'>
           <div className=' flex flex-row justify-between w-full'>
             <div>
               <ul className='flex flex-row gap-x-2'>
-                <li className='text-richblack-5'>Policies:</li>
-                <li className='text-richblack-5'>Return Policy | </li>
-                <li className='text-richblack-5'>Security </li>
+                <li className='text-richblack-900'>Policies:</li>
+                <li className='text-richblack-900'>Return Policy | </li>
+                <li className='text-richblack-900'>Security </li>
               </ul>
             </div>
-            <div className='flex flex-row text-richblack-5 mr-10'>
+            <div className='flex flex-row text-richblack-900 mr-10'>
               2020-2024 Remiwire.com
             </div>
           </div>
 
           <Link to="/">
-            <p className='text-richblack-5 tracking-wide'>Need help?Visit the help center or Contact Us</p>
+            <p className='text-richblack-900 tracking-wide'>Need help?Visit the help center or Contact Us</p>
           </Link>
         </div>
+
       </div>
     </div>
     </div>

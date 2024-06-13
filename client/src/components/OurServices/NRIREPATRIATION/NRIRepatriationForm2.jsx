@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setformValue } from "../../features/NRIRepatriationSlice";
+import { fetchFxRate, registerRemitter } from "../../../services/operations/SendMoneyApi";
 
 export default function NRIRepatriationForm2({
-  setformStep,
+  setFormStep,
   setDocumentProofs,
   documentProof,
+  fetchFxDetails
 }) {
   const [errors, setErrors] = useState({
     pancardNumber: "",
@@ -25,15 +27,41 @@ export default function NRIRepatriationForm2({
     (state) => state.NRIRepatriationForms
   );
 
-  const handleSubmit = (e) => {
+  const [getRemitterDetails, setGetRemiiterDetails] = useState([]);
+
+
+  function isValidPAN(pan) {
+  const panRegex = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
+  return panRegex.test(pan);
+}
+
+  const handleSubmit = async(e) => {
     e.preventDefault();
+
+    const {
+    purposeOfTransfer,
+    remiterAccountNo,
+    remiterIFSCCode,
+    pancardNumber,
+    remiterFirstName,
+    transferToCountry,
+    receivingAmountInEuro,
+    receivingAmountInINR,
+    receivingCurrency,
+    remiterMobileNo,
+    remiterEmailID,
+    transferFromState,
+    addressProof,
+    transferFromCity,
+  } = NRIRepatriationForms;
 
     const newErrors = {};
 
-    // Example validations (replace with your actual validation logic)
     if (!NRIRepatriationForms.pancardNumber) {
-      newErrors.pancardNumber = "PAN card number is required";
-    }
+    newErrors.pancardNumber = "PAN card number is required";
+  } else if (!isValidPAN(NRIRepatriationForms.pancardNumber)) {
+    newErrors.pancardNumber = "Invalid PAN card number format";
+  }
 
     if (!documentProof.panCardImage) {
       newErrors.panCardImage = "PAN card image is required";
@@ -45,11 +73,6 @@ export default function NRIRepatriationForm2({
 
     if (!NRIRepatriationForms.remiterLastName) {
       newErrors.remiterLastName = "Remitter's last name is required";
-    }
-
-    if (!NRIRepatriationForms.passportNumber) {
-      newErrors.passportNumber =
-        "Passport/Aadhar/Driving License number is required";
     }
 
     if (!documentProof.passportImage) {
@@ -74,16 +97,51 @@ export default function NRIRepatriationForm2({
       newErrors.remiterMobileNo = "Remitter's mobile number is required";
     }
 
-    // Update errors state
     setErrors(newErrors);
 
-    // If no errors, submit the form
     if (Object.keys(newErrors).length === 0) {
-      setformStep(2); // Proceed to next step
+  
+      const fetchFxRatePromise = fetchFxRate(
+      transferFromState,
+      transferFromCity,
+      purposeOfTransfer,
+      transferToCountry,
+      receivingAmountInEuro,
+      receivingAmountInINR,
+      receivingCurrency
+    );
+
+     const registerRemitterPromise = registerRemitter();
+
+     try {
+      const [fxRateResult, remitterResult] = await Promise.all([
+        fetchFxRatePromise.catch(error => ({ error })),
+        registerRemitterPromise.catch(error => ({ error }))
+      ]);
+
+      if (!fxRateResult.error) {
+        console.log('response', fxRateResult);
+        setFxRateDetails(fxRateResult);
+        fetchFxDetails(fxRateResult);
+      } else {
+        console.error("Error in fetchFxRate:", fxRateResult.error);
+      }
+
+      if (!remitterResult.error) {
+        console.log("Remitter registered successfully");
+      } else {
+        console.error("Error in registerRemitter:", remitterResult.error);
+      }
+    } 
+    catch (error) {
+      console.error("Error during form submission:", error);
+    }finally {
+      purposeOfTransfer === "Maintenance of Close relative Abroad" ? setFormStep(2) : setFormStep(3);
     }
+  }
+
   };
 
-  // Clear error when input field is clicked
   const clearError = (fieldName) => {
     setErrors({ ...errors, [fieldName]: "" });
   };
@@ -106,6 +164,31 @@ export default function NRIRepatriationForm2({
   const clearErrorDoc = (fieldName) => {
     setErrors({ ...errors, [fieldName]: "" });
   };
+
+  const fetchRemiiterDetails = async () => {
+    const response = await fetch(
+      "http://13.50.14.42:8100/api/v1/remitters/prod_cf_rem_005"
+    );
+    const data = await response.json();
+
+    console.log("data", data);
+    const { name, account_number, ifsc, email, phone_number } = data;
+    dispatch(
+      setformValue({
+        remiterFirstName: name,
+        remiterAccountNo: account_number,
+        remiterIFSCCode: ifsc,
+        remiterMobileNo: phone_number,
+        remiterEmailID: data?.email,
+      })
+    );
+    setGetRemiiterDetails(data);
+  };
+
+  useEffect(() => {
+    fetchRemiiterDetails();
+  }, []);
+
   return (
     <>
       <div className="mt-10">
@@ -162,32 +245,36 @@ export default function NRIRepatriationForm2({
               )}
             </div>
           </div>
-          <div className="relative z-0 w-full mb-5 group">
-            <input
-              type="text"
-              name="courseDetails"
-              id="course_details"
-              className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-              placeholder=" "
-              value={NRIRepatriationForms.passportNumber}
-              onChange={(e) => {
-                handleInputChange("passportNumber", e.target.value);
-                clearError("passportNumber");
-              }}
-            />
 
+          <div className="relative z-0 w-full mb-5 group">
             <label
               htmlFor="course_details"
               className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
             >
-              Passport / Aadhar Card / Driving License Number
+              Address Proof
             </label>
+            <select
+              className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+              placeholder=" "
+              onChange={(e) => {
+                handleInputChange("addressProof", e.target.value);
+                clearError("addressProof");
+              }}
+              // value={sendMoneyAboroadForms?.addressProof}
+            >
+              <option value="">--Select Address Proof--</option>
+              <option>Aadhar Card</option>
+              <option>Passport</option>
+              <option>Driving License</option>
+            </select>
+
             {errors.passportNumber && (
               <span className="text-[red] text-[11px] italic">
                 {errors.passportNumber}
               </span>
             )}
           </div>
+
           <div className="relative z-0 w-full mb-5 group">
             <div>
               <label
@@ -299,7 +386,6 @@ export default function NRIRepatriationForm2({
                 id="course_details"
                 className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                 placeholder=" "
-                value={NRIRepatriationForms.remiterIFSCCode}
                 onChange={(e) => {
                   handleInputChange("remiterIFSCCode", e.target.value);
                   clearError("remiterIFSCCode");
@@ -326,6 +412,7 @@ export default function NRIRepatriationForm2({
                 id="course_details"
                 className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                 placeholder=" "
+                value={NRIRepatriationForms.remiterEmailID}
                 onChange={(e) => {
                   handleInputChange("remiterEmailID", e.target.value);
                   clearError("remiterEmailID");
@@ -351,6 +438,7 @@ export default function NRIRepatriationForm2({
                 id="course_details"
                 className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                 placeholder=" "
+                value={NRIRepatriationForms.remiterMobileNo}
                 onChange={(e) => {
                   handleInputChange("remiterMobileNo", e.target.value);
                   clearError("remiterMobileNo");

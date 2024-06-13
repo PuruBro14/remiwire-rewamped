@@ -1,15 +1,14 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { NavbarLinks } from "../../data/NavbarLinks";
-import { useLocation, matchPath } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { IoIosArrowDropdownCircle, IoMdClose } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import ProfileDropDown from "../ProfileDropDown";
 import { logout } from "../../services/operations/authAPI";
 import { RxHamburgerMenu } from "react-icons/rx";
-import {
-  setScrollToComponentContact,
-} from "../../utils/scrollSlice";
+import { setScrollToComponentContact } from "../../utils/scrollSlice";
+
 const subLinksData = [
   {
     title: "Send Money Abroad",
@@ -31,7 +30,6 @@ const subLinksData = [
     title: "Blocked Account Payment",
     link: "BlockedAccountPayment",
   },
-  ,
   {
     title: "GIC Account Payment",
     link: "gicaccountpayment",
@@ -40,7 +38,6 @@ const subLinksData = [
     title: "Overseas Education Loan",
     link: "OverseasEducationLoan",
   },
-  ,
   {
     title: "Create GIC Account",
     link: "creategicaccount",
@@ -82,20 +79,18 @@ const Navbar = () => {
   }, [window.innerWidth]);
 
   const handleContactus = (e) => {
-    console.log("clicked");
     e.preventDefault();
     if (location.pathname !== "/") {
       navigate("/");
     }
     dispatch(setScrollToComponentContact(true));
   };
-  
 
   return (
-    <div className="flex flex-row md:h-20 flex-wrap items-center w-full">
-      <div className=" w-11/12 mx-auto items-center justify-between ">
+    <div className="flex h-20 items-center w-full justify-center transition-all duration-200">
+      <div className="w-11/12 mx-auto items-center justify-between">
         {showHamburger && (
-          <div className=" mt-5 md:mt-0  text-right">
+          <div className="mt-5 md:mt-0 text-right">
             <button onClick={toggleNavbar}>
               {isOpen ? (
                 <IoMdClose size={30} color="black" />
@@ -107,19 +102,18 @@ const Navbar = () => {
         )}
 
         <div className={`navbar-drawer ${isOpen ? "open" : ""}`}>
-          {showHamburger &&
-          <div className="drawer-header flex justify-between items-center p-4">
-            <h2 className="text-xl font-bold">Menu</h2>
-            <button onClick={closeNavbar}>
-              <IoMdClose size={30} color="black" />
-            </button>
-          </div>
-}
+          {showHamburger && (
+            <div className="drawer-header flex justify-between items-center p-4">
+              <h2 className="text-xl font-bold">Menu</h2>
+              <button onClick={closeNavbar}>
+                <IoMdClose size={30} color="black" />
+              </button>
+            </div>
+          )}
 
-          <div className="flex flex-col md:flex-row w-full justify-between items-start md:items-center gap-5 p-4 md:h-24 md:mt-2">
+          <div className="flex flex-col md:flex-row w-full justify-between items-start md:items-center mt-5 gap-2">
             <nav>
-
-              <ul className="flex md:flex-row flex-col gap-3 lg:gap-5 text-black text-sm">
+              <ul className="flex md:flex-row flex-col gap-1 lg:gap-3 text-black justify-center items-center text-sm">
                 {NavbarLinks?.map((ele, index) => {
                   if (ele?.title === "Settings" && !token) {
                     return null;
@@ -127,43 +121,37 @@ const Navbar = () => {
                   if (ele?.title === "My Orders" && !token) {
                     return null;
                   }
-                  if(showHamburger){
-                    return <li key={index} onClick={closeNavbar}>
-                      {ele?.title === "Services" ? (
-                        ''
-                      ) : (
-                        <Link to={ele?.title !== "Contact Us" ? ele?.path : ""}>
-                          <p
-                            onClick={(e) => {
-                              if (ele?.title === "Contact Us") {
-                                handleContactus(e);
-                              }
-                            }}
-                          >
-                            {ele.title}
-                          </p>
-                        </Link>
-                      )}
-                    </li>
-                  }
-                  else{
-                  return (
-                    <li key={index} onClick={closeNavbar}>
-                      {ele?.title === "Services" ? (
-                        <div>
-                          <div
-                            className="relative flex flex-row gap-2 items-center group"
-                            onClick={() =>
-                              setShowMobileServices(!showMobileServices)
-                            }
-                          >
+                  if (showHamburger) {
+                    return (
+                      <li key={index} onClick={closeNavbar}>
+                        {ele?.title === "Services" ? (
+                          <div className="showHam"></div>
+                        ) : (
+                          <Link to={ele?.title !== "Contact Us" ? ele?.path : ""}>
+                            <p
+                              className={`py-2 ${ele?.title==="Settings"?'relative bottom-3':''}`}
+                              onClick={(e) => {
+                                if (ele?.title === "Contact Us") {
+                                  handleContactus(e);
+                                }
+                              }}
+                            >
+                              {ele.title}
+                            </p>
+                          </Link>
+                        )}
+                      </li>
+                    );
+                  } else {
+                    return (
+                      <li key={index} onClick={closeNavbar}>
+                        {ele?.title === "Services" ? (
+                          <div className="relative flex flex-row gap-2 items-center group">
                             <p>{ele?.title}</p>
                             <IoIosArrowDropdownCircle />
-                            <div className="z-20 invisible absolute left-[50%] top-[0%] opacity-0 md:top-[50%] -translate-x-[50%] md:translate-y-[20%] flex flex-col rounded-md bg-richblack-5 p-4 text-richblack-900 transition-all duration-200 group-hover:visible group-hover:opacity-100 lg:w-[300px]">
-                              <div className="absolute left-[50%] translate-x-[80%] -translate-y-[45%] top-0 h-6 w-6  rounded rotate-45 bg-richblack-5"></div>
+                            <div className="absolute invisible left-1/2 transform -translate-x-1/2 top-full mt-2 flex flex-col rounded-md bg-richblack-5 p-4 text-richblack-900 transition-all duration-200 group-hover:visible group-hover:opacity-100 lg:w-[300px]">
+                              <div className="absolute left-[60%] transform -translate-x-1/2 -translate-y-1/2 top-0 h-6 w-6 rotate-45 bg-richblack-5"></div>
                               {subLinksData?.map((ele, index) => {
-                                {
-                                }
                                 return (
                                   <Link
                                     className="p-2 border-b-2 no-underline hover:no-underline"
@@ -176,40 +164,40 @@ const Navbar = () => {
                               })}
                             </div>
                           </div>
-                        </div>
-                      ) : (
-                        <Link to={ele?.title !== "Contact Us" ? ele?.path : ""}>
-                          <p
-                            onClick={(e) => {
-                              if (ele?.title === "Contact Us") {
-                                handleContactus(e);
-                              }
-                            }}
-                          >
-                            {ele.title}
-                          </p>
-                        </Link>
-                      )}
-                    </li>
-                  );
-                }
+                        ) : (
+                          <Link to={ele?.title !== "Contact Us" ? ele?.path : ""}>
+                            <p
+                              className="py-2"
+                              onClick={(e) => {
+                                if (ele?.title === "Contact Us") {
+                                  handleContactus(e);
+                                }
+                              }}
+                            >
+                              {ele.title}
+                            </p>
+                          </Link>
+                        )}
+                      </li>
+                    );
+                  }
                 })}
-                {showHamburger && subLinksData.map((subEle, subIndex) => (
-                  <li key={subIndex} onClick={closeNavbar}>
-                    <Link to={subEle?.link}>
-                      <p>{subEle?.title}</p>
-                    </Link>
-                  </li>
-                ))}
+                {showHamburger &&
+                  subLinksData.map((subEle, subIndex) => (
+                    <li key={subIndex} onClick={closeNavbar}>
+                      <Link to={subEle?.link}>
+                        <p className="py-2 relative">{subEle?.title}</p>
+                      </Link>
+                    </li>
+                  ))}
               </ul>
-
             </nav>
 
-            <div className="flex flex-col gap-y-4 md:flex-row md:gap-y-0 my-7 gap-x-1 lg:gap-x-4 items-center">
+            <div className="flex flex-col gap-y-2 md:flex-row md:gap-y-0 mb-2 gap-x-1 lg:gap-x-3 items-center">
               {token === null && (
                 <Link to="/login">
                   <button
-                    className="border border-richblack-700 text-white bg-[#d40511]  px-[12px] py-[8px] text-richblack-100 rounded-md  hover:bg-[#d40511]"
+                    className="border border-richblack-700 text-white bg-[#d40511] px-[12px] py-[8px] rounded-md hover:bg-[#b3050f]"
                     onClick={closeNavbar}
                   >
                     Log in
@@ -219,7 +207,7 @@ const Navbar = () => {
               {token === null && (
                 <Link to="/signup">
                   <button
-                    className="border border-richblack-700 text-white bg-[#d40511] px-[12px] py-[8px] text-richblack-100 rounded-md hover:bg-[#d40511]"
+                    className="border border-richblack-700 text-white bg-[#d40511] px-[12px] py-[8px] rounded-md hover:bg-[#b3050f]"
                     onClick={closeNavbar}
                   >
                     Sign up
@@ -229,7 +217,7 @@ const Navbar = () => {
               {token !== null && <ProfileDropDown closeNavbar={closeNavbar} />}
               {token !== null && (
                 <button
-                  className="border border-richblack-700 bg-richblack-800  px-[12px] py-[8px] text-richblack-100 rounded-md"
+                  className="border border-richblack-700 bg-richblack-800 px-[12px] py-[8px] text-richblack-100 rounded-md"
                   onClick={() => dispatch(logout(navigate))}
                 >
                   Logout
@@ -237,9 +225,7 @@ const Navbar = () => {
               )}
             </div>
           </div>
-
         </div>
-        
       </div>
     </div>
   );

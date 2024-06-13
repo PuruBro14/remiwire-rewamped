@@ -27,7 +27,7 @@ export default function BlockedAccountHome() {
     transferTo: "Germany",
     receivingCurrency: "Euro",
   });
-    const [formStep, setFormStep] = useState(0);
+    const [formStep, setFormStep] = useState(3);
 
   const [showLoginModal, setShowLoginModal] = useState(false);
 
@@ -130,6 +130,7 @@ export default function BlockedAccountHome() {
                     />{" "}
                   </>
                 )}
+                
 
                 {formStep === 2 && (
                   <>

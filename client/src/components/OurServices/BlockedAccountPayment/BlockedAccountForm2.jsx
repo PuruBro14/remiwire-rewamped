@@ -110,26 +110,42 @@ export default function BlockedAccountForm2({
     setErrors(newErrors);
 
     if (Object.keys(newErrors).length === 0) {
+    const fetchFxRatePromise = fetchFxRate(
+      transferFromState,
+      transferFromCity,
+      purposeOfTransfer,
+      transferToCountry,
+      receivingAmountInEuro,
+      receivingAmountInINR,
+      receivingCurrency
+    );
+
+    const registerRemitterPromise = registerRemitter();
+
     try {
-      const response=await fetchFxRate(
-        transferFromState,
-        transferFromCity,
-        purposeOfTransfer,
-        transferToCountry,
-        receivingAmountInEuro,
-        receivingAmountInINR,
-        receivingCurrency
-      );
+      const [fxRateResult, remitterResult] = await Promise.all([
+        fetchFxRatePromise.catch(error => ({ error })),
+        registerRemitterPromise.catch(error => ({ error }))
+      ]);
 
-      console.log('response',response);
-      fetchFxDetails(response)
+      if (!fxRateResult.error) {
+        console.log('response', fxRateResult);
+        setFxRateDetails(fxRateResult);
+        fetchFxDetails(fxRateResult);
+      } else {
+        console.error("Error in fetchFxRate:", fxRateResult.error);
+      }
 
-      await registerRemitter();
-
+      if (!remitterResult.error) {
+        console.log("Remitter registered successfully");
+      } else {
+        console.error("Error in registerRemitter:", remitterResult.error);
+      }
     } catch (error) {
-      console.error("Error during form submission:", error);
-    }
+      console.error("Unexpected error during form submission:", error);
+    } finally {
       setFormStep(2)
+    }
   }
 
   };

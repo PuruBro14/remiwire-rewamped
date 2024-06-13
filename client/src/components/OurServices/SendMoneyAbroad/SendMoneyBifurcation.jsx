@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { load } from "@cashfreepayments/cashfree-js";
-import { useParams, useNavigate } from "react-router-dom"; // Import useNavigate for navigation
+import { useParams, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { apiConnector } from "../../../services/operations/apiconnector";
 
@@ -10,32 +10,37 @@ export default function SendMoneyBifurcation({ setFormStep, documentProof, fxRat
   const [customerId, setCustomerId] = useState("");
   const [isPaymentVerified, setIsPaymentVerified] = useState(false);
   const params = useParams();
-  const navigate = useNavigate(); // Use useNavigate for navigation
+  const navigate = useNavigate();
   const isSessionId = params.sessionid;
   const { oneEurotoINR, receivingAmountInEuro, receivingAmountInINR } = useSelector((state) => state.sendMoneyAboroadForms);
   const { token } = useSelector((state) => state.auth);
 
   const [sessionId, setSessionId] = useState("");
 
-  let cashfree;
+  const [cashfree, setCashfree] = useState(null);
 
   const initializeSDK = async () => {
-    cashfree = await load({
-      mode: "sandbox",
-    });
+    try {
+      const cashfree = await load({ mode: "sandbox" });
+      setCashfree(cashfree);
+    } catch (error) {
+      console.error("Failed to load Cashfree SDK:", error);
+    }
   };
 
-  initializeSDK();
+  useEffect(() => {
+    initializeSDK();
+  }, []);
 
   const getSessionId = async () => {
     try {
-      const res = await apiConnector('POST', 'http://13.50.14.42:8100/api/v1/payment', null, {
+      const res = await apiConnector('POST', 'http://localhost:8100/api/v1/payment', {serviceType:"SendMoneyAbroad"}, {
         Authorization: `Bearer ${token}`,
       });
       if (res.data) {
         setSessionId(res.data.payment_session_id);
         setOrderId(res.data.order_id);
-        setCustomerId(res.data.customer_id); // Set customer ID
+        setCustomerId(res.data.customer_id);
         localStorage.setItem('orderId', res.data.order_id);
         return res.data.payment_session_id;
       }
@@ -47,6 +52,11 @@ export default function SendMoneyBifurcation({ setFormStep, documentProof, fxRat
   const handlePayment = async (e) => {
     e?.preventDefault();
     try {
+      if (!cashfree) {
+        console.error("Cashfree SDK not initialized");
+        return;
+      }
+
       let sessionId = await getSessionId();
       console.log("sessionId", sessionId, cashfree);
 
@@ -75,12 +85,10 @@ export default function SendMoneyBifurcation({ setFormStep, documentProof, fxRat
     }
   };
 
-  console.log("orderId", orderId);
-
   const verifyPayment = async () => {
     try {
       let res = await axios.post("http://13.50.14.42:8100/api/v1/verify", {
-        orderId: orderId,
+        orderId: localStorage.getItem('orderId'),
       });
 
       if (res && res.data) {
@@ -94,10 +102,9 @@ export default function SendMoneyBifurcation({ setFormStep, documentProof, fxRat
 
   useEffect(() => {
     setSessionId(isSessionId);
-    getSessionId();
   }, [isSessionId]);
 
-  console.log('fxRate----------->', fxRate,isPaymentVerified);
+  console.log('fxRate----------->', fxRate, isPaymentVerified);
 
   return (
     <div>
@@ -106,7 +113,7 @@ export default function SendMoneyBifurcation({ setFormStep, documentProof, fxRat
           Thank you for your payment! Your order is placed successfully.<br />
           Your Order ID: {orderId}
           <button
-            onClick={() => navigate('/my-orders')} 
+            onClick={() => navigate('/my-orders')}
             className="mt-4 text-blue-600 underline"
           >
             Go to My Orders to track your recent orders.

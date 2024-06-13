@@ -1,8 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { FaEye, FaEdit } from "react-icons/fa";
+import {toast} from 'react-hot-toast'
+import {useSelector} from 'react-redux'
+import { apiConnector } from '../../services/operations/apiconnector';
 const ManageOrder = () => {
+  const {token}=useSelector((state)=>state.auth)
+  const [orders, setOrders] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isViewModalOpen, setisViewModalOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(5);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -20,6 +29,41 @@ const ManageOrder = () => {
     "Number Unreachable",
     "Wrong Address",
   ];
+
+  const fetchUserOrders = async () => {
+    const toastId = toast.loading("Loading Forex orders...");
+    setLoading(true);
+    try {
+      const response = await apiConnector("GET", 'http://localhost:8100/api/v1/fetchAllOrders', null, {
+        Authorization: `Bearer ${token}`,
+      });
+      setLoading(false);
+      toast.dismiss(toastId);
+      setOrders(response?.data?.data);
+    } catch (error) {
+      console.log('Error:', error);
+      toast.dismiss(toastId);
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchUserOrders();
+  }, [token]);
+
+  console.log('orders',orders);
+
+  const filteredOrders = orders.filter(order => 
+    order.orderId.includes(searchQuery) ||
+    order.placedBy.includes(searchQuery)
+  );
+
+   const totalPages = Math.ceil(filteredOrders.length / itemsPerPage);
+  const displayedOrders = filteredOrders.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
   return (
     <>
       <body className="antialiased font-sans bg-gray-200">
@@ -31,7 +75,10 @@ const ManageOrder = () => {
             <div className="my-2 flex sm:flex-row flex-col">
               <div className="flex flex-row mb-1 sm:mb-0">
                 <div className="relative">
-                  <select className="appearance-none h-full rounded-l border block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                  <select className="appearance-none h-full rounded-l border block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  value={itemsPerPage}
+                  onChange={(e) => setItemsPerPage(Number(e.target.value))}
+                  >
                     <option>5</option>
                     <option>10</option>
                     <option>20</option>
@@ -75,6 +122,8 @@ const ManageOrder = () => {
                 <input
                   placeholder="Search"
                   className="appearance-none rounded-r rounded-l sm:rounded-l-none border border-gray-400 border-b block pl-8 pr-6 py-2 w-full bg-white text-sm placeholder-gray-400 text-gray-700 focus:bg-white focus:placeholder-gray-600 focus:text-gray-700 focus:outline-none"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
                 />
               </div>
             </div>
@@ -108,12 +157,15 @@ const ManageOrder = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
+                    {
+                      displayedOrders?.map((currItem)=>{
+                        return(
+ <tr>
                       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                         <div className="flex items-center">
                           <div className="ml-3">
                             <p className="text-gray-900 whitespace-no-wrap">
-                              15412145354
+                              {currItem?.orderId}
                             </p>
                           </div>
                         </div>
@@ -122,24 +174,24 @@ const ManageOrder = () => {
                         <div className="flex items-center">
                           <div className="ml-3">
                             <p className="text-gray-900 whitespace-no-wrap">
-                              Vera Carpenter
+                              {currItem?.placedBy}
                             </p>
                           </div>
                         </div>
                       </td>
                       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                         <p className="text-gray-900 whitespace-no-wrap">
-                          Forex Buy
+                          {currItem?.placedBy}
                         </p>
                       </td>
                       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                         <p className="text-gray-900 whitespace-no-wrap">
-                          Jan 21, 2020
+                          {currItem?.createdAt}
                         </p>
                       </td>
                       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                         <p className="text-gray-900 whitespace-no-wrap">
-                          Jan 23, 2020
+                          {currItem?.estimatedDelivery}
                         </p>
                       </td>
                       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
@@ -148,7 +200,7 @@ const ManageOrder = () => {
                             aria-hidden
                             className="absolute inset-0 bg-green-200 opacity-50 rounded-full"
                           ></span>
-                          <span className="relative">Placed</span>
+                          <span className="relative">{currItem?.status}</span>
                         </span>
                       </td>
                       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
@@ -168,17 +220,28 @@ const ManageOrder = () => {
                         </div>
                       </td>
                     </tr>
+                        )
+                      })
+                   
+}
+                    
                   </tbody>
                 </table>
-                <div className="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between          ">
+                <div className="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between">
                   <span className="text-xs xs:text-sm text-gray-900">
-                    Showing 1 to 4 of 50 Entries
+                   Showing {currentPage} of {totalPages} Pages
                   </span>
                   <div className="inline-flex mt-2 xs:mt-0">
-                    <button className="text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-l">
+                    <button className="text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-l"
+                    disabled={currentPage === 1}
+                      onClick={() => setCurrentPage(currentPage - 1)}
+                    >
                       Prev
                     </button>
-                    <button className="text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-r">
+                    <button className="text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-r"
+                     disabled={currentPage === totalPages}
+                      onClick={() => setCurrentPage(currentPage + 1)}
+                    >
                       Next
                     </button>
                   </div>

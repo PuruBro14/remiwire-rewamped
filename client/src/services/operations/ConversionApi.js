@@ -1,21 +1,52 @@
 import { toast } from "react-hot-toast";
 import { apiConnector } from "./apiconnector";
-export async function bookOrder(token, formData) {
-  const toastId = toast.loading("Loading...");
-  try {
-    // const response = await apiConnector("POST", CREATE_ADDRESS_API, formData, {
-    //   Authorization: `Bearer ${token}`,
-    // });
+import { bookOrderEndpoints } from "../apis";
 
-    if (!response.data.success) {
-      throw new Error(response.data.message);
-    }
+const { CREATE_ORDER } = bookOrderEndpoints;
 
-    toast.success("Order placed successfully");
-    navigate("/my-orders")
-  } catch (err) {
-    toast.error(err.response.data.message);
+export const bookOrder = (token, formData, navigate) => {
+  const formData1 = {
+    customerId: "CUSTOM1",
+    currencyData: [
+      {
+        amount: 100,
+        from: "USD",
+        to: "EUR",
+        currentRate: 0.85,
+      },
+      {
+        amount: 200,
+        from: "EUR",
+        to: "GBP",
+        currentRate: 0.91,
+      },
+    ],
+  };
+
+  return async (dispatch) => {
+    const toastId = toast.loading("Loading...");
+    try {
+      const response = await apiConnector("POST", CREATE_ORDER, formData1, {
+        Authorization: `Bearer ${token}`,
+      });
+
+      if (!response.data.success) {
+        throw new Error(response.data.message);
+      }
+
+      toast.success("Order placed successfully");
+      console.log("result", response);
+
+      dispatch({ type: "BOOK_ORDER_SUCCESS", payload: response.data });
+
       navigate("/my-orders");
-  }
-  toast.dismiss(toastId);
-}
+      localStorage.removeItem("convertEntries");
+    } catch (err) {
+      toast.error(err.response.data.message);
+      console.log("Error message - ", err.message);
+      dispatch({ type: "BOOK_ORDER_FAILURE", payload: err.message });
+    } finally {
+      toast.dismiss(toastId);
+    }
+  };
+};

@@ -7,7 +7,7 @@ const mailSender = require("../utils/mailSender");
 
 exports.createSendMoney = async (req, res) => {
   try {
-    // const userId = req.user.id;
+    const userId = req.user.id;
 
     const {
       transferFromCountry,
@@ -40,38 +40,12 @@ exports.createSendMoney = async (req, res) => {
 
     const { pancardImage, passportImage } = req.files;
 
-
-    // Validate required fields
     const requiredFields = [
-      transferFromCountry,
-      transferFromState,
-      transferFromCity,
-      transferToCountry,
-      purposeOfTransfer,
-      receivingCurrency,
-      sendingCurrencyIn,
-      receivingAmountInEuro,
-      receivingAmountInINR,
-      oneEurotoINR,
-      pancardNumber,
       pancardImage,
-      passportNumber,
-      passportImage,
-      blockACSheetDoc,
-      remiterFirstName,
-      remiterLastName,
-      remiterAccountNo,
-      remiterIFSCCode,
-      remiterEmailID,
-      remiterMobileNo,
-      beneficiaryName,
-      beneficiaryAddress,
-      beneficiaryAccountNo,
-      beneficiaryAccountNoRe,
-      beneficiarySwiftCode,
-      beneficiaryIBANNo,
-      beneficiaryCountry,
+      passportImage
     ];
+
+    console.log('passportImage',passportImage);
 
     console.log(transferFromCountry,pancardImage);
     const missingFields = requiredFields.filter((field) => !field);
@@ -93,35 +67,9 @@ exports.createSendMoney = async (req, res) => {
     );
 
     const newSendMoney = await SendMoney.create({
-      // userId,
-      transferFromCountry,
-      transferFromState,
-      transferFromCity,
-      transferToCountry,
-      purposeOfTransfer,
-      receivingCurrency,
-      sendingCurrencyIn,
-      receivingAmountInEuro,
-      receivingAmountInINR,
-      oneEurotoINR,
-      pancardNumber,
+      userId,
       pancardImage: panImage.url,
-      passportNumber,
       passportImage: passportImg.url,
-      blockACSheetDoc,
-      remiterFirstName,
-      remiterLastName,
-      remiterAccountNo,
-      remiterIFSCCode,
-      remiterEmailID,
-      remiterMobileNo,
-      beneficiaryName,
-      beneficiaryAddress,
-      beneficiaryAccountNo,
-      beneficiaryAccountNoRe,
-      beneficiarySwiftCode,
-      beneficiaryIBANNo,
-      beneficiaryCountry,
     });
 
      let adminTemplate = await adminOverseaUserTemplate(req.body);

@@ -27,7 +27,6 @@ const OrderSummary = () => {
     dispatch(setStep(4))
   }
 
-  console.log('orderSummaryDetails',orderSummaryDetails);
   return (
     <div className='flex flex-col mt-7'>
 
@@ -100,7 +99,7 @@ const OrderSummary = () => {
                     )
                 }
           <div className='w-full bg-white mt-7 p-5'>
-          <p>Delivery by Thu May 5 | Free</p>
+          <p>Delivery by Thu Jul 10 | Free</p>
            <p>
              <span>Note:</span>
              Free cancellation up to 12 hours. A cancellation fee of 100 (per qty) may be applicable after that

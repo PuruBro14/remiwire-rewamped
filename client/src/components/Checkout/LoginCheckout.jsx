@@ -39,9 +39,11 @@ const   LoginCheckout = () => {
     }))
   }
 
-  const loginHandler=()=>{
-    setLoginFromCheckout(true)
-     dispatch(setLogin(email, password, navigate))
+   const loginHandler = () => {
+    setLoginFromCheckout(true);
+    setTimeout(() => {
+      dispatch(setLogin(email, password, navigate, true));
+    }, 0);
   }
 
   const redirectToLogin=(e)=>{
@@ -50,7 +52,6 @@ const   LoginCheckout = () => {
     navigate('/signup')
   }
 
-  console.log('isLoggedIn',isLoggedIn,'loginFromCheckout',loginFromCheckout);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -68,7 +69,6 @@ const   LoginCheckout = () => {
       {showAccordionData && 
       <div className='flex flex-col gap-y-5 p-8 shadow-md bg-white text-richblack-800'>
 
-        {/* before note  */}
         <div className='flex flex-row justify-between'>
 
           {isLoggedIn ?
@@ -87,7 +87,7 @@ const   LoginCheckout = () => {
             {user?.additionalDetails?.contactNumber &&
             <div className='flex flex-row gap-x-2'>
               <span className=' text-[18px]'>Phone:</span>
-              <span className=' text-[18px]'>{user?.phoneNo}</span>
+              <span className=' text-[18px]'>{user?.additionalDetails?.contactNumber}</span>
             </div>
 }
 
@@ -130,8 +130,6 @@ const   LoginCheckout = () => {
           </div>
 
         </div>
-
-        {/* after div  */}
 
         <div>
           <p className=' text-[18px]'>Note that upon clicking <span className='font-bold'>Logout</span> you will lose all items you booked and will be redirected to Remiwire home page.</p>

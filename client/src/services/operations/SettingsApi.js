@@ -15,7 +15,6 @@ const {
 } = settingsEndPoints;
 
 export function updateProfile(token, formData, navigate, user) {
-  console.log("token", token, "formData", formData);
   return async (dispatch) => {
     const toastId = toast.loading("Loading...");
     try {
@@ -27,7 +26,6 @@ export function updateProfile(token, formData, navigate, user) {
         throw new Error(response.data.message);
       }
 
-      console.log("response", response);
 
       const updatedUser = {
         ...user,
@@ -39,7 +37,6 @@ export function updateProfile(token, formData, navigate, user) {
         },
       };
 
-      console.log("Updated user:", updatedUser);
 
       dispatch(setUser(updatedUser));
 
@@ -139,12 +136,10 @@ export const fetchDeliveryAddress = async (token, dispatch,user, setUser) => {
     const response = await apiConnector("GET", GET_ADDRESS_API, null, {
       Authorization: `Bearer ${token}`,
     });
-    console.log("Delivery Address API RESPONSE............", response);
     if (!response?.data?.success) {
       throw new Error("Could Not Fetch delivery address");
     }
 
-    console.log('response?.data',response?.data?.data,user);
     result = response?.data?.data;
     dispatch(setUser({ ...user, address: response?.data?.data }));
   } catch (error) {

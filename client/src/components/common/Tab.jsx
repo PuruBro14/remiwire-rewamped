@@ -1,12 +1,10 @@
 import React from "react";
 
-const Tab = ({ tabData, currentState, setCurrentState, setPassedFromSignup,setShowLoginModal,tabName,getTabName }) => {
-  const handleTabClick = (tabName) => {
-    // setCurrentState(tabName);
-    // setPassedFromSignup(true);
-    console.log('tabName',tabName);
-    getTabName(tabName)
-  };
+const Tab = ({ tabData, currentState, setCurrentState, setPassedFromSignup,setShowLoginModal,tabName }) => {
+const handleTabClick = (tabName) => {
+  setCurrentState(tabName);
+};
+
 
   return (
     <div className="flex justify-center my-4">

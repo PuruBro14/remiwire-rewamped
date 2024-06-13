@@ -1,6 +1,8 @@
 const axios = require("axios");
 const FormData = require("form-data");
+const fs = require("fs");
 const { uploadImageToCloudinary } = require("../utils/imageUploader");
+const Document = require("../models/Document");
 
 exports.uploadDocument = async (req, res) => {
   const url = `https://sandbox.cashfree.com/pg/lrs/orders/documents/upload`;
@@ -9,35 +11,65 @@ exports.uploadDocument = async (req, res) => {
   const api_version = process.env.API_VERSION;
 
   try {
-    if (!req.files || !req.files.files) {
+    if (!req.files || !req.files.customerPassportImage) {
       return res.status(400).json({ error: "No files uploaded" });
     }
 
-    const file = req.files.files;
-    console.log("file", file.name);
+    const {
+      customerName,
+      customerPassportNumber,
+      placeOfIssue,
+      issueDate,
+      expireDate,
+    } = req.body;
+    const customerPassportImage = req.files.customerPassportImage;
 
+    // Upload the file to Cloudinary
     const uploadedFile = await uploadImageToCloudinary(
-      file.tempFilePath,
+      customerPassportImage,
       process.env.FOLDER_NAME
     );
-    console.log("Uploaded file URL:", uploadedFile.url);
+
+    const fileData = fs.readFileSync(customerPassportImage.tempFilePath);
 
     const form = new FormData();
-    form.append("file", uploadedFile.url);
+    form.append("files", fileData, customerPassportImage.name);
 
-    const response = await axios.post(url, form, {
-      headers: {
-        ...form.getHeaders(),
-        "x-client-id": client_id,
-        "x-client-secret": client_secret,
-        "x-api-version": api_version,
-      },
+    let response;
+    try {
+      response = await axios.post(url, form, {
+        headers: {
+          ...form.getHeaders(),
+          "x-client-id": client_id,
+          "x-client-secret": client_secret,
+          "x-api-version": api_version,
+        },
+      });
+    } catch (error) {
+      console.error("Error making POST request:", error);
+      throw new Error("Failed to make POST request");
+    }
+
+    console.log('response',response.data);
+
+    try{
+    const newDocument = new Document({
+      customerName,
+      customerPassportImage: uploadedFile.url,
+      customerPassportNumber,
+      placeOfIssue,
+      issueDate,
+      expireDate,
+      createdAt: new Date(),
     });
+    await newDocument.save();
 
-    console.log("Response:", response.data);
     res.status(200).json(response.data);
+  }catch(error){
+    console.log("error in storing in db",error);
+  }
+
   } catch (error) {
-    console.error("Error:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 };

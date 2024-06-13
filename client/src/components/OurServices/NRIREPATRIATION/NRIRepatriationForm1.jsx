@@ -7,7 +7,13 @@ import axios from "axios";
 import countriesList from "../../../utils/countryList";
 import currencyWithSymbol from "../../../utils/currencyWithSymbol";
 
-export default function NRIRepatriationForm1({ setformStep }) {
+export default function NRIRepatriationForm1({  setFormStep,
+  isLoggedIn,
+  setIsLoggedIn,
+  getLoggedInData,
+  setShowLoginModal,
+  getShowModalData,
+  fetchChargesData }) {
   const [countryid, setCountryid] = useState(101);
   const [stateid, setstateid] = useState(0);
   const [selectedCurrencySymbol, setselectedCurrencySymbol] = useState("");
@@ -59,9 +65,14 @@ export default function NRIRepatriationForm1({ setformStep }) {
 
     setErrors(newErrors);
 
+    if(!isLoggedIn){
+      getShowModalData(true)
+      localStorage.setItem('sendmoneyloggedIn',true)
+    }
+
     // If no errors, submit the form
     if (Object.keys(newErrors).length === 0) {
-      setformStep(1);
+      setFormStep(1);
     }
   };
   // Clear error when input field is clicked
@@ -142,21 +153,8 @@ export default function NRIRepatriationForm1({ setformStep }) {
             </label>
           </div>
           <div>
-            <div className="relative z-0 w-full mb-5 group">
-              <input
-                type="text"
-                name="studyCountry"
-                id="studyCountry"
-                list="studyCountryList"
-                className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                placeholder=" "
-                onChange={(e) => {
-                  handleInputChange("transferToCountry", e.target.value);
-                  handleInputChange("beneficiaryCountry", e.target.value);
 
-                  clearError("transferToCountry");
-                }}
-              />
+             <div className="relative z-0 w-full mb-5 group mt-3">
               <label
                 htmlFor="studyCountry"
                 className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
@@ -164,21 +162,33 @@ export default function NRIRepatriationForm1({ setformStep }) {
                 Transfer To
               </label>
 
-              <datalist id="studyCountryList">
+              <select
+                className="w-[100%] border mt-3 p-2"
+                onChange={(e) => {
+                  handleInputChange("transferToCountry", e.target.value);
+                  handleInputChange("beneficiaryCountry", e.target.value);
+
+                  clearError("transferToCountry");
+                }}
+                value={NRIRepatriationForms.transferToCountry}
+              >
+                <option value="">Please select a country</option>
                 {countriesList.map((val, index) => {
                   return (
-                    <div key={val.value + index}>
-                      <option value={val.name}>{val.name}</option>
-                    </div>
+                    // <div key={val.value + index}>
+                    <option value={val.name}>{val.name}</option>
+                    // </div>
                   );
                 })}
-              </datalist>
+              </select>
+
               {errors.transferToCountry && (
                 <span className="text-[red] text-[11px] italic">
                   {errors.transferToCountry}
                 </span>
               )}
             </div>
+
           </div>
           <div className="mt-5">
             <div className="w-full mb-5 group">

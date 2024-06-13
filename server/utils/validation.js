@@ -1,14 +1,17 @@
-const joi = require("joi");
+const Joi = require("joi");
 
-const ordervalidation = joi.object({
-  amount: joi.number().required(),
-  from: joi.string().required(),
-  to: joi.string().required(),
-  currentRate: joi.number().required(),
+const ordervalidation = Joi.object({
+  customerId: Joi.string().required(),
+  currencyData: Joi.array()
+    .items(
+      Joi.object({
+        amount: Joi.number().required(),
+        from: Joi.string().required(),
+        to: Joi.string().required(),
+        currentRate: Joi.number().required(),
+      })
+    )
+    .required(),
 });
 
-const bookValidation = joi.object().keys({
-  currencyData: joi.array().required().items(ordervalidation),
-});
-
-module.exports = { bookValidation };
+module.exports = { ordervalidation };

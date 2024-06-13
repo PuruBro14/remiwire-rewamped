@@ -32,8 +32,6 @@ const ManageDeliveryAddress = () => {
     setCheckoutPageAddress(true)
   }
 
-  console.log('viewAddress',viewAddress);
-
   return (
     <div className='flex flex-col space-y-2 mt-7'>
     <div className='flex flex-col '>

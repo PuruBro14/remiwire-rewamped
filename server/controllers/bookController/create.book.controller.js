@@ -1,37 +1,46 @@
 const BookModel = require("../../models/bookOrder.model");
-const { bookValidation } = require("../../utils/validation");
+const { ordervalidation } = require("../../utils/validation");
+const { v4: uuidv4 } = require("uuid");
 
 exports.createBookOrders = async (req, res) => {
-  // let loginId = req.user.id;
-  const { error, value } = bookValidation.validate(req.body);
+  const { error, value } = ordervalidation.validate(req.body);
   if (error) {
     return res.status(400).json({
       success: false,
       message: error.details[0].message,
     });
   }
+
   try {
-    let createOrder = await Promise.all(
-      value.currencyData.map(async (data) => {
-        await BookModel.create({
-          amount: data.amount,
-          from: data.from,
-          to: data.to,
-          currentRate: data.currentRate,
-        });
-      })
-    );
+    const userId = req.user.id;
+    const customerId = req.body.customerId;
+
+    console.log("value", value);
+
+    const orderId = uuidv4(); // Generate orderId here
+
+    const createOrder = await BookModel.create({
+      orderId: orderId,
+      customerId: customerId,
+      currencies: value.currencyData.map((data) => ({
+        amount: data.amount,
+        from: data.from,
+        to: data.to,
+        currentRate: data.currentRate,
+      })),
+      userId: userId,
+    });
 
     return res.status(201).json({
       success: true,
-      message: `Order Successfully Added.`,
+      message: "Order Successfully Added.",
       data: createOrder,
     });
   } catch (error) {
-    console.log("::===> interla ", error.message);
+    console.log("::===> internal ", error.message);
     return res.status(500).json({
       success: false,
-      message: `Internal Server Error.`,
+      message: "Internal Server Error.",
     });
   }
 };

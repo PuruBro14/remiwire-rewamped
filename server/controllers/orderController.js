@@ -13,15 +13,40 @@ exports.getAllOrders = async (req, res) => {
 exports.getUserOrders = async (req, res) => {
   try {
     const userId = req.user.id;
-    console.log('userId',userId);
 
     const userOrders = await Order.find({ user: userId }).sort({
       createdAt: -1,
     });
 
+    const SendMoneyAbroad = userOrders.filter(
+      (order) => order.serviceType === "SendMoneyAbroad"
+    );
+
+    const NRIRepatriation = userOrders.filter(
+      (order) => order.serviceType === "NRIRepatriation"
+    );
+
+    const BlockedAccountPayment = userOrders.filter(
+      (order) => order.serviceType === "BlockedAccountPayment"
+    );
+
+    const GICAccountPayment = userOrders.filter(
+      (order) => order.serviceType === "GICAccountPayment"
+    );
+
+    const OverseasEducationLoan = userOrders.filter(
+      (order) => order.serviceType === "OverseasEducationLoan"
+    );
+
     res.status(200).json({
       success: true,
-      data: userOrders,
+      data: {
+        SendMoneyAbroad,
+        NRIRepatriation,
+        BlockedAccountPayment,
+        GICAccountPayment,
+        OverseasEducationLoan,
+      },
     });
   } catch (error) {
     console.error(error);
@@ -32,7 +57,6 @@ exports.getUserOrders = async (req, res) => {
     });
   }
 };
-
 
 exports.getTrackingOrder = async (req, res) => {
   try {
@@ -47,7 +71,7 @@ exports.getTrackingOrder = async (req, res) => {
 
     console.log("orderId", orderId);
 
-    const order = await Order.findOne({ orderId: orderId });
+    const order = await Order.findOne(orderId);
 
     if (!order) {
       return res.status(404).json({

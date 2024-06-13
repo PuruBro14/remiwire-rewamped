@@ -19,6 +19,7 @@ const verificationRoutes = require("./routes/verificationRoutes");
 const statusRoutes = require("./routes/statusRoutes");
 const NRIRepatriationRoutes = require("./routes/nriRepatriatoin");
 const sendMoneyRoutes = require("./routes/sendMoney");
+const adminRoutes = require("./routes/adminRoutes");
 const blockedAccountRoutes = require("./routes/blockedAccount");
 const { cloudinaryConnect } = require("./config/cloudinary");
 const fileUpload = require("express-fileupload");
@@ -67,15 +68,15 @@ app.use("/api/v1", contactRouter);
 app.use("/api/v1/profile", profileRoutes);
 app.use("/api/v1", NRIRepatriationRoutes);
 app.use("/api/v1", sendMoneyRoutes);
-app.use("/api/v1", blockedAccountRoutes);
-app.use("/api/v1", paymentRoutes);
 app.use("/api/v1", orderRoutes);
-app.use("/api/v1", documentRoutes);
 app.use("/api/v1", fxRateRoutes);
 app.use("/api/v1", remitterRoutes);
+app.use("/api/v1", documentRoutes);
 app.use("/api/v1", beneficiaryRoutes);
+app.use("/api/v1", paymentRoutes);
 app.use("/api/v1", verificationRoutes);
 app.use("/api/v1", statusRoutes);
+app.use("/api/v1", adminRoutes);
 
 function generateOrderId() {
   const uniqueId = crypto.randomBytes(16).toString("hex");

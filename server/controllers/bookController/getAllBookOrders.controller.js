@@ -2,10 +2,10 @@ const BookModel = require("../../models/bookOrder.model");
 
 exports.getAllOrders = async (req, res) => {
   try {
-    let allOrders = await BookModel.find({});
-
+    let allOrders = await BookModel.find({})
+      .populate("userId") 
     if (allOrders.length === 0) {
-      return res.status(400).json({
+      return res.status(404).json({
         success: false,
         message: `No orders found.`,
         data: [],
@@ -15,7 +15,7 @@ exports.getAllOrders = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: `All Orders details fetched.`,
-      data: allOrders,
+      data: allOrders
     });
   } catch (error) {
     console.log(error.message);

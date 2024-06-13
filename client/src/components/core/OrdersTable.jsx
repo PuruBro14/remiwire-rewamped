@@ -24,12 +24,12 @@ const OrdersTable = ({userOrders,loading}) => {
   return (
      <div>
 
-        <Table className='border w-11/12 mt-7 mx-auto flex flex-col border-[#DDDDDD]' >
+        <Table className='border w-full mt-7 mx-auto flex flex-col border-[#DDDDDD]' >
 
             <Thead className="bg-white">
                 <Tr className='flex items-center rounded-t-md border-b border-[#DDDDDD]  justify-between p-5'>
                     <Th className=' text-left text-lg font-medium uppercase text-richblack-600 border-none'>
-                        Customer Id
+                        Order Note
                     </Th>
                     <Th className='text-left text-lg font-medium uppercase text-richblack-600 border-none'>
                         Order Id
@@ -52,19 +52,19 @@ const OrdersTable = ({userOrders,loading}) => {
                             console.log('entry',entry);
                            return <Tr key={index} className='flex items-center  bg-white border-b border-[#DDDDDD]  justify-between p-5'>
                                  <Td className='text-lg font-medium text-richblack-600  border-none text-center'>
-                                    {entry.customerId}
+                                    {entry.orderNote || "Remiwire order1"}
                                 </Td>
-                                <Td className='text-lg font-medium text-richblack-600  border-none text-center relative md:right-10'>
+                                <Td className='text-lg font-medium text-richblack-600  border-none text-center relative md:right-12'>
                                     {entry?.orderId}
                                 </Td>
-                                <Td className='text-lg font-medium text-richblack-600  border-none text-center relative md:right-28'>
-                                    {entry?.orderStatus}
+                                <Td className='text-lg font-medium text-richblack-600  border-none text-center relative md:right-20'>
+                                    {entry?.orderStatus || "Paid"}
                                 </Td>
                                 <Td className='text-lg font-medium text-richblack-600  border-none relative md:right-20'>
-                                    {entry?.orderDate}
+                                    {entry?.orderDate || "2024-06-10"}
                                 </Td>
                                 <Td className='text-lg font-medium text-richblack-600  border-none relative md:right-10'>
-                                    {entry?.orderAmount}{entry?.currency}
+                                    {entry?.orderAmount}{entry?.currency || "1INR"}
                                 </Td>
                             </Tr>
                         })

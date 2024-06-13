@@ -5,22 +5,22 @@ import { FiEdit2 } from "react-icons/fi"
 import { HiClock } from "react-icons/hi"
 import { RiDeleteBin6Line } from "react-icons/ri"
 const ConvertTable = ({ConvertTableEntries,editArray,filterArray,setTotalAmount,currentState}) => {
-    console.log('UpdatedData','Rendered again',ConvertTableEntries);
      const [convertTableDetails, setConvertTableDetails] = useState([]);
 
   useEffect(() => {
     const storedData = localStorage.getItem('convertEntries');
-    console.log(storedData);
     const parsedData = storedData ? JSON.parse(storedData) : [];
     setConvertTableDetails(parsedData);
   }, [ConvertTableEntries]);
 
-  console.log('convertTableDetails',convertTableDetails);
 
   if(convertTableDetails?.length===0){
     return null
   }
+
+//   useeffect me state [] if no localStorage
   return (
+    
      <div>
 
         <Table className='border border-[#DDDDDD] w-11/12 mt-7 mx-auto flex flex-col shadow-md' >
@@ -73,7 +73,7 @@ const ConvertTable = ({ConvertTableEntries,editArray,filterArray,setTotalAmount,
                                     {entry?.currentRate.toFixed(3)}
                                 </Td>
                                 <Td className='text-lg font-medium text-richblack-600  border-none relative md:right-8'>
-                                    {entry?.amount}
+                                    {entry?.individualTotalCurrency?.toFixed(2)}
                                 </Td>
                                  <Td className='text-lg font-medium text-richblack-600  border-none flex flex-row gap-5'>
                                     <button onClick={(e)=>editArray(e,entry,index)}>

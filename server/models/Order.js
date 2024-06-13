@@ -51,6 +51,10 @@ const ordersSchema = new mongoose.Schema(
     orderNote: {
       type: String,
     },
+    serviceType: {
+      type: String,
+      required: true,
+    },
   },
   { timestamps: true }
 );

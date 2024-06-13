@@ -59,8 +59,6 @@ export default function CurrencyInput({
   }, [convertFormValue.from, convertFormValue.to, currentState, currentType]);
 
 
-  console.log('countryCurrencyT',countryCurrencyList,currentType,currentType=="from",currentState==="Buy");
-
   return (
     <div>
       {convertFormValue?.[currentType] ? (
@@ -114,7 +112,6 @@ export default function CurrencyInput({
         <>
           <ul className="ulNotType">
             {countryCurrencyT?.map((val, index) => {
-              console.log("val", val);
               return (
                 <div key={index}>
                   <div>

@@ -132,3 +132,38 @@ export const registerBeneficiary = (beneficiaryData) => {
     }
   });
 };
+
+export const uploadDocument = (formData) => {
+  console.log("formData", formData);
+  return new Promise(async (resolve, reject) => {
+    const toastId = toast.loading("Uploading document...");
+    try {
+      const response = await apiConnector(
+        "POST",
+        "http://localhost:8100/api/v1/upload-document",
+        formData,
+        {
+          "x-client-id": import.meta.env.VITE_CLIENT_ID,
+          "x-client-secret": import.meta.env.VITE_CLIENT_SECRET,
+          "x-api-version": import.meta.env.VITE_API_VERSION,
+          "Content-Type": "multipart/form-data",
+        }
+      );
+
+      console.log("API Response:", response.data);
+      if (response.data.uploaded_documents.length>0){
+        toast.success("Document uploaded successfully");
+      }else{
+        toast.error("Document not supported")
+      }
+      resolve(response.data);
+    } catch (error) {
+      console.error("API Error:", error);
+      toast.error("Failed to upload document");
+      reject(error);
+    } finally {
+      toast.dismiss(toastId);
+    }
+  });
+};
+

@@ -86,7 +86,9 @@ function Sidebar({ show, setter, setShowScreen }) {
               setShowScreen(3);
             }}
           />
-          <MenuItem name="Contact" route="/contact" icon={<BsEnvelopeAt />} />
+          <MenuItem name="Contact" route="/admin/contact" icon={<BsEnvelopeAt />} onClick={() => {
+              setShowScreen(4);
+            }}/>
         </div>
       </div>
       {show ? <ModalOverlay /> : <></>}

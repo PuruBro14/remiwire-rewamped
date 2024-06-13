@@ -18,7 +18,7 @@ export default function SendMoneyAbroad() {
     const token = JSON.parse(localStorage.getItem("token"));
     return token || false;
   });
-  const [formStep, setFormStep] = useState(0);
+  const [formStep, setFormStep] = useState(4);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [tabName, setTabName] = useState("Login");
   const isUserLoggedIn = localStorage.getItem("sendmoneyloggedIn") === 'true';
@@ -53,7 +53,7 @@ export default function SendMoneyAbroad() {
     setShowLoginModal(data)
   }
 
-  console.log('isLoggedIn', isLoggedIn, showLoginModal, 'formStep', formStep, isUserLoggedIn);
+  console.log('formStep',formStep);
 
   const fetchFxDetails=(data)=>{
     setFxRate(data)

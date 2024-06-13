@@ -14,7 +14,6 @@ exports.auth = async (req, res, next) => {
     }
 
     const token = authHeader.split(" ")[1];
-    console.log("Received token:", token);
 
     if (!token) {
       return res.status(401).json({
@@ -25,7 +24,6 @@ exports.auth = async (req, res, next) => {
 
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      console.log("Decoded token:", decoded);
 
       req.user = decoded;
       next();
@@ -44,3 +42,14 @@ exports.auth = async (req, res, next) => {
     });
   }
 };
+
+exports.isAdmin=(req, res)=>{
+  const role = req.user?.accountType;
+  if (role.toLowerCase() !== "admin") {
+    return res.status(401).json({
+      message: "Unauthorized Access",
+      error: "You are not authorized to access this route",
+    });
+  }
+  next();
+}
