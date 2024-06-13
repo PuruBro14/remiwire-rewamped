@@ -103,18 +103,22 @@ export const setLogin = (
   };
 };
 
-export const logout=(navigate)=>{
-  return (dispatch)=>{
-     dispatch(setLoading(false));
-      dispatch(setToken(null))
-      dispatch(setUser(null))
-      localStorage.removeItem("token");
-      localStorage.removeItem("user")
-      toast.success("Logged Out")
-      localStorage.removeItem("sendmoneyloggedIn");
-      navigate("/");
-  }
-}
+export const logout = (navigate, setRole) => {
+  return (dispatch) => {
+    dispatch(setLoading(false));
+    dispatch(setToken(null));
+    dispatch(setUser(null));
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    toast.success("Logged Out");
+    localStorage.removeItem("sendmoneyloggedIn");
+    localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
+    navigate("/");
+    setRole(null)
+  };
+};
 
 export const setConvert=(totalEntries)=>{
   const destructeredArray=totalEntries?.map(({amount,from,to,currentRate})=>({amount,from,to,currentRate}))

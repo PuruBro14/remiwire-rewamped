@@ -15,21 +15,26 @@ export default function NRIRepatriationBifurcation({ setFormStep, documentProof,
   const { oneEurotoINR, receivingAmountInEuro, receivingAmountInINR } = useSelector((state) => state.sendMoneyAboroadForms);
   const { token } = useSelector((state) => state.auth);
 
-  const [sessionId, setSessionId] = useState("");
+   const [sessionId, setSessionId] = useState("");
 
-  let cashfree;
+  const [cashfree, setCashfree] = useState(null);
 
   const initializeSDK = async () => {
-    cashfree = await load({
-      mode: "sandbox",
-    });
+    try {
+      const cashfree = await load({ mode: "sandbox" });
+      setCashfree(cashfree);
+    } catch (error) {
+      console.error("Failed to load Cashfree SDK:", error);
+    }
   };
 
-  initializeSDK();
+  useEffect(() => {
+    initializeSDK();
+  }, []);
 
   const getSessionId = async () => {
     try {
-      const res = await apiConnector('POST', 'http://13.50.14.42:8100/api/v1/payment', {serviceType:"NRIRepatriation"}, {
+      const res = await apiConnector('POST', 'http://localhost:8100/api/v1/payment', null, {
         Authorization: `Bearer ${token}`,
       });
       if (res.data) {
@@ -47,6 +52,11 @@ export default function NRIRepatriationBifurcation({ setFormStep, documentProof,
   const handlePayment = async (e) => {
     e?.preventDefault();
     try {
+      if (!cashfree) {
+        console.error("Cashfree SDK not initialized");
+        return;
+      }
+
       let sessionId = await getSessionId();
       console.log("sessionId", sessionId, cashfree);
 
@@ -79,9 +89,18 @@ export default function NRIRepatriationBifurcation({ setFormStep, documentProof,
 
   const verifyPayment = async () => {
     try {
-      let res = await axios.post("http://13.50.14.42:8100/api/v1/verify", {
-        orderId: orderId,
-      });
+     let res = await axios.post(
+      "http://localhost:8100/api/v1/verify",
+      {
+        orderId: localStorage.getItem('orderId'),
+        serviceType: "SendMoneyAbroad"
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
       if (res && res.data) {
         alert("Payment verified");
@@ -94,7 +113,6 @@ export default function NRIRepatriationBifurcation({ setFormStep, documentProof,
 
   useEffect(() => {
     setSessionId(isSessionId);
-    getSessionId();
   }, [isSessionId]);
 
   console.log('fxRate----------->', fxRate,isPaymentVerified);

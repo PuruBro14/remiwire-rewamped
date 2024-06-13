@@ -78,17 +78,6 @@ function Sidebar({ show, setter, setShowScreen }) {
               setShowScreen(2);
             }}
           />
-          <MenuItem
-            name="Update Profile"
-            route="/admin/manage/profile"
-            icon={<BsInfoSquare />}
-            onClick={() => {
-              setShowScreen(3);
-            }}
-          />
-          <MenuItem name="Contact" route="/admin/contact" icon={<BsEnvelopeAt />} onClick={() => {
-              setShowScreen(4);
-            }}/>
         </div>
       </div>
       {show ? <ModalOverlay /> : <></>}

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setformValue } from "../../features/SendMoneySlice";
 import axios from "axios";
+import { uploadDocument } from "../../../services/operations/SendMoneyApi";
 
 export default function NRIRepatrirationCustomer({
   setFormStep,
@@ -53,8 +54,32 @@ export default function NRIRepatrirationCustomer({
 
     // If no errors, submit the form
     if (Object.keys(newErrors).length === 0) {
-      setFormStep(3);
+      try {
+        // Upload the document first
+        if (document) {
+          const formData = new FormData();
+          formData.append("customerPassportImage", document);
+          formData.append("customerName", "Goku");
+          formData.append("customerPassportNumber", "JFNPS4915B");
+          formData.append("placeOfIssue", "LA");
+          formData.append("issueDate", "1998-05-19");
+          formData.append("expireDate", "1998-05-20");
+
+          const uploadResponse = await uploadDocument(formData);
+          console.log("Upload Response:", uploadResponse);
+          if(uploadResponse?.uploaded_documents?.length>0){
+          setFormStep(3);
+          }
+        } else {
+          toast.error("Please select a document to upload");
+          return;
+        }
+      } catch (error) {
+        console.error("Error during document upload:", error);
+        toast.error("Failed to upload document");
+      }
     }
+
   };
   const clearError = (fieldName) => {
     setErrors({ ...errors, [fieldName]: "" });

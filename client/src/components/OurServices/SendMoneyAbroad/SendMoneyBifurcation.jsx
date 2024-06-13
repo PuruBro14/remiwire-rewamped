@@ -34,7 +34,7 @@ export default function SendMoneyBifurcation({ setFormStep, documentProof, fxRat
 
   const getSessionId = async () => {
     try {
-      const res = await apiConnector('POST', 'http://localhost:8100/api/v1/payment', {serviceType:"SendMoneyAbroad"}, {
+      const res = await apiConnector('POST', 'http://localhost:8100/api/v1/payment', null,{
         Authorization: `Bearer ${token}`,
       });
       if (res.data) {
@@ -87,9 +87,18 @@ export default function SendMoneyBifurcation({ setFormStep, documentProof, fxRat
 
   const verifyPayment = async () => {
     try {
-      let res = await axios.post("http://13.50.14.42:8100/api/v1/verify", {
+     let res = await axios.post(
+      "http://localhost:8100/api/v1/verify",
+      {
         orderId: localStorage.getItem('orderId'),
-      });
+        serviceType: "SendMoneyAbroad"
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
       if (res && res.data) {
         alert("Payment verified");

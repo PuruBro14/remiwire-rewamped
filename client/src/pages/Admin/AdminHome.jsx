@@ -7,12 +7,21 @@ import {toast} from 'react-hot-toast'
 import {useSelector} from 'react-redux'
 import { apiConnector } from '../../services/operations/apiconnector';
 import AdminDashboard from "./AdminDashboard";
+import UpdateProfile from "./UpdateProfile";
+import ContactUs from "./ContactUs";
+import LoginPage from "../AdminLoginPage";
 
-function AdminHome() {
+function AdminHome({setRole}) {
+  console.log('setRole',setRole);
   const [showSidebar, setShowSidebar] = useState(false);
   const [showScreen, setShowScreen] = useState(0);
+   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  // Function to determine what to show in the main content based on `showScreen`
+   useEffect(() => {
+    const storedIsLoggedIn = localStorage.getItem("isLoggedIn");
+    setIsLoggedIn(storedIsLoggedIn === "true");
+  }, []); 
+
   const showMainDiv = () => {
     switch (showScreen) {
       case 0:
@@ -29,10 +38,6 @@ function AdminHome() {
             <ManageUsers />
           </>
         );
-        case 3:
-          return "Update Profile"
-        case 4:
-          return "Contact US"
       default:
         return null; 
     }
@@ -41,6 +46,10 @@ function AdminHome() {
   useEffect(() => {
     showMainDiv();
   }, [showScreen]);
+
+  // if (!isLoggedIn) {
+  //   return <LoginPage setLoggedIn={setIsLoggedIn} setRole={setRole}/>;
+  // }
   
   return (
     <div className="min-h-screen">

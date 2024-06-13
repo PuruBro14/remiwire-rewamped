@@ -147,11 +147,11 @@ export default function NRIRepatriationForm2({
   };
 
   const handleInputChange = (fieldName, value) => {
-    const trimmedValue = value.replace(/\s/g, "");
+    // const trimmedValue = value.replace(/\s/g, "");
 
-    const sanitizedValue = trimmedValue.replace(/[^a-zA-Z0-9]/g, "");
+    // const sanitizedValue = trimmedValue.replace(/[^a-zA-Z0-9]/g, "");
 
-    dispatch(setformValue({ [fieldName]: sanitizedValue }));
+    dispatch(setformValue({ [fieldName]: value }));
   };
 
   const handleSubmitChangeFormDoc = (fieldName, value) => {

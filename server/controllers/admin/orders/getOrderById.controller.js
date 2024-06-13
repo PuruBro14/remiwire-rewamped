@@ -5,16 +5,7 @@ exports.getOrderById = async (req, res) => {
   try {
     const orderId = req.params.id;
 
-    // Validate orderId format
-    if (!mongoose.Types.ObjectId.isValid(orderId)) {
-      return res.status(400).json({
-        success: false,
-        message: "Invalid order ID format",
-      });
-    }
-
-    // Fetch order by ID
-    const order = await Order.findById(orderId).populate("user", "name email");
+    const order = await Order.findOne({orderId:orderId})
 
     if (!order) {
       return res.status(404).json({

@@ -12,8 +12,8 @@ exports.createPayment = async (req, res) => {
   const { serviceType } = req.body; 
   console.log('req.body',req.body,serviceType);
   try {
-    const orderId = generateOrderId("TORID"); // Example prefix "TORID"
-    const customerId = generateOrderId("CID"); // Example prefix "CID"
+    const orderId = generateOrderId("TORID"); 
+    const customerId = generateOrderId("CID"); 
     const options = {
       method: "POST",
       url: "https://sandbox.cashfree.com/pg/orders",
@@ -44,35 +44,6 @@ exports.createPayment = async (req, res) => {
     };
 
     const response = await axios.request(options);
-
-    const newOrder = new Order({
-      orderId: orderId,
-      customerId: customerId,
-      user: userId,
-      orderStatus: "Paid",
-      orderDate: new Date(),
-      orderAmount: 1,
-      currency: "INR",
-      paymentMethod: "Credit Card",
-      shippingAddress: {
-        street: "123 Main St",
-        city: "Springfield",
-        state: "IL",
-        postalCode: "62701",
-        country: "USA",
-      },
-      billingAddress: {
-        street: "123 Main St",
-        city: "Springfield",
-        state: "IL",
-        postalCode: "62701",
-        country: "USA",
-      },
-      orderNote: "Remiwire order1",
-      serviceType: serviceType,
-    });
-
-    await newOrder.save();
 
     return res.status(200).send(response.data);
   } catch (error) {

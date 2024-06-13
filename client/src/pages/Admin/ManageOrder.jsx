@@ -12,6 +12,7 @@ const ManageOrder = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(5);
   const [searchQuery, setSearchQuery] = useState('');
+  const[userOrder,setUserOrder]=useState()
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -51,7 +52,28 @@ const ManageOrder = () => {
     fetchUserOrders();
   }, [token]);
 
-  console.log('orders',orders);
+  const fetchInvididualOrder = async (orderId) => {
+    const toastId = toast.loading("Loading Forex orders...");
+    setLoading(true);
+    try {
+      const response = await apiConnector("GET", `http://localhost:8100/api/v1/fetchOrderById/${orderId}`, null, {
+        Authorization: `Bearer ${token}`,
+      });
+      setLoading(false);
+      toast.dismiss(toastId);
+      setUserOrder(response?.data?.data);
+    } catch (error) {
+      console.log('Error:', error);
+      toast.dismiss(toastId);
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchUserOrders();
+  }, [token]);
+
+  console.log('userOrder',userOrder);
 
   const filteredOrders = orders.filter(order => 
     order.orderId.includes(searchQuery) ||
@@ -209,8 +231,9 @@ const ManageOrder = () => {
                             className="cursor-pointer"
                             title="View Order"
                             onClick={() => {
+                              fetchInvididualOrder(currItem?.orderId);
                               setisViewModalOpen(!isViewModalOpen);
-                            }}
+  }}
                           />
                           <FaEdit
                             className="cursor-pointer"
@@ -293,21 +316,20 @@ const ManageOrder = () => {
               <hr />
               <div className="mt-5">
                 <p>
-                  <span className="font-bold">Order Id:</span> #154121
+                  <span className="font-bold">Order Id:</span> {userOrder?.orderId}
                 </p>
                 <p className="mt-2">
-                  <span className="font-bold">Order Placed By:</span> Jitender
-                  Singh
+                  <span className="font-bold">Order Placed By:</span> {userOrder?.serviceType}
                 </p>
                 <p className="mt-2">
-                  <span className="font-bold">Order Type:</span> Forex Buy
+                  <span className="font-bold">Order Type:</span> {userOrder?.serviceType}
                 </p>
                 <p className="mt-2">
-                  <span className="font-bold">Placed At:</span> 24-04-2024
+                  <span className="font-bold">Placed At:</span> {userOrder?.createdAt}
                 </p>
                 <p className="mt-2">
                   <span className="font-bold">Estimated Delivery :</span>{" "}
-                  26-04-2024
+                  {userOrder?.createdAt}
                 </p>
                 <p className="mt-2">
                   <span className="font-bold">Status:</span> Placed
@@ -317,10 +339,10 @@ const ManageOrder = () => {
                   <span className="font-bold">
                     Here insert currency details:
                   </span>{" "}
-                  Placed
+                  {userOrder?.currency}
                 </p>
                 <p className="mt-2">
-                  <span className="font-bold">Here add amount:</span> Placed
+                  <span className="font-bold">Here add amount:</span> {userOrder?.orderAmount}
                 </p>
               </div>
 

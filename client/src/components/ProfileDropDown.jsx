@@ -6,7 +6,7 @@ const ProfileDropDown = () => {
 
   return (
     <div className='profile-user-name'>
-        Hello {user.username}
+        Hello {user?.username}
     </div>
   )
 }

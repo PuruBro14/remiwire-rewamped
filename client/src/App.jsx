@@ -30,11 +30,26 @@ import ForexCurrencyExchange from "./components/OurServices/ForexCurrency";
 import CookiePolicy from "./components/Legal/CookiePolicy";
 import PrivacyPolicy from "./components/Legal/PrivacyPolicy";
 import TermsOfUse from "./components/Legal/TermsOfUse";
+import AdminNavbar from "./pages/Admin/AdminNavbar";
+import { useEffect, useState } from "react";
 
 function App() {
+  const [role, setRole] = useState(null);
+
+  const storedRole = localStorage.getItem("role");
+  console.log('storedRole',storedRole);
+  useEffect(() => {
+    if (storedRole) {
+      setRole(storedRole);
+    }
+  }, [storedRole]);
+
+  console.log('role',role);
+
   return (
     <div>
-      <Header className="sticky top-0" />
+            {/* {role === 'admin' ? <AdminNavbar username={"Admin"}/> : <Header className="sticky top-0" setRole={setRole}/>} */}
+            <Header/>
 
       <Routes>
         <Route
@@ -76,7 +91,7 @@ function App() {
           path="/login"
           element={
             <OpenRoute>
-              <Login />
+              <Login setRole={setRole}/>
               </OpenRoute>
           }
         ></Route>
@@ -121,7 +136,7 @@ function App() {
           <Route path="/userprofile/edit-profile" element={<Settings />} />
         </Route>
 
-        <Route path="/admin/*" element={<AdminHome />} />
+        <Route path="/admin/*" element={<AdminHome setRole={setRole}/>} />
 
         <Route path="/my-orders*" element={<MyOrders />} />
 
