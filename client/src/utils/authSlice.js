@@ -7,7 +7,7 @@ const authSlice=createSlice({
         loading:false,
         redirectedFromRoute:false,
         token:localStorage.getItem("token")?JSON.parse(localStorage.getItem("token")):null,
-        roleValue:""
+        roleValue:null
     },
     reducers:{
         setSignUpData:(state,action)=>{

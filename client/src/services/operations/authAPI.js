@@ -84,10 +84,7 @@ export const setLogin = (
       localStorage.setItem("token", JSON.stringify(response?.data?.token));
       localStorage.setItem("user", JSON.stringify(response?.data?.user));
 
-      if(loginFromCheckout){
-        navigate("/checkout")
-      }
-      else if (sendMoneyLoggedIn) {
+       if (sendMoneyLoggedIn) {
         navigate("/sendmoneyabroad");
         localStorage.removeItem("sendmoneyloggedin");
       } else {
