@@ -78,7 +78,7 @@ const AdminDashboard = () => {
     const fetchData = async () => {
       setLoading(true); 
       try {
-        const response = await apiConnector('GET', `http://localhost:8100/api/v1/adminOrders?month=${new Date(Date.parse(selectedMonth + " 1, 2024")).getMonth() + 1}&year=${selectedYear}`, null, {
+        const response = await apiConnector('GET', `http://13.50.14.42:8100//api/v1/adminOrders?month=${new Date(Date.parse(selectedMonth + " 1, 2024")).getMonth() + 1}&year=${selectedYear}`, null, {
           Authorization: `Bearer ${token}`,
         });
         console.log('data', response);

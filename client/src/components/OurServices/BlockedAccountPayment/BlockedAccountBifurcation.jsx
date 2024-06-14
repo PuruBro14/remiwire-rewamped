@@ -32,7 +32,7 @@ export default function BlockedAccountBifurcation({ setFormStep, documentProof, 
     try {
       const res = await apiConnector(
         "POST",
-        "http://localhost:8100/api/v1/payment",
+        "http://13.50.14.42:8100//api/v1/payment",
         null,
         {
           Authorization: `Bearer ${token}`,
@@ -85,7 +85,7 @@ export default function BlockedAccountBifurcation({ setFormStep, documentProof, 
 
   const verifyPayment = async () => {
     try {
-      let res = await axios.post("http://localhost:8100/api/v1/verify", {
+      let res = await axios.post("http://13.50.14.42:8100//api/v1/verify", {
         orderId: orderId,
       });
 

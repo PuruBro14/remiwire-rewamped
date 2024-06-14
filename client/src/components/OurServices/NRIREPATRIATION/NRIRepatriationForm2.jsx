@@ -167,7 +167,7 @@ export default function NRIRepatriationForm2({
 
   const fetchRemiiterDetails = async () => {
     const response = await fetch(
-      "http://localhost:8100/api/v1/remitters/prod_cf_rem_005"
+      "http://13.50.14.42:8100//api/v1/remitters/prod_cf_rem_005"
     );
     const data = await response.json();
 
