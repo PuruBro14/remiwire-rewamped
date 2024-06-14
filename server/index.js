@@ -31,7 +31,7 @@ const FormData = require("form-data");
 const fs = require("fs");
 const path = require("path");
 const Order = require("./models/Order");
-
+const jwt = require("jsonwebtoken");
 require('dotenv').config();
 const PORT = process.env.PORT || 4000;
 
@@ -95,6 +95,32 @@ app.get("/", (req, res) => {
     success: true,
     message: "Your server is up and runningggggg....",
   });
+});
+
+const adminUser = {
+  username: "admin",
+  password: "Admin@123", 
+};
+
+app.post("/api/admin/login", (req, res) => {
+  const { username, password } = req.body;
+
+  console.log(username,password,adminUser.username,adminUser.password);
+  console.log(username===adminUser.username,password===adminUser.password);
+
+  if (username !== adminUser.username || password !== adminUser.password) {
+    return res.status(401).json({ message: "Invalid username or password" });
+  }
+
+  const token = jwt.sign(
+    { username: adminUser.username },
+    process.env.JWT_SECRET,
+    {
+      expiresIn: "2h",
+    }
+  );
+
+  res.json({ token, role: "admin" });
 });
 
 app.listen(PORT, () => {

@@ -22,7 +22,7 @@ const TrackShipment = () => {
 
       const response = await apiConnector(
         "GET",
-        `http://13.50.14.42:8100/api/v1/trackingorder?orderId=${trackingNumber}`,
+        `http://localhost:8100/api/v1/trackingorder?orderId=${trackingNumber}`,
         null,
         headers
       );

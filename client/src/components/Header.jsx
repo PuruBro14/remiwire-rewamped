@@ -3,7 +3,7 @@ import Navbar from './Navbar/Navbar';
 import "./Navbar/assets/css/Navbar.css";
 import NavbarLogo from "../assets/images/logo.png";
 
-const Header = ({setRole}) => {
+const Header = ({}) => {
   return (
     <header className='bg-white shadow-xl sticky top-0 z-50'>
       <div className='w-11/12 mx-auto flex flex-row md:items-center '>
@@ -12,7 +12,7 @@ const Header = ({setRole}) => {
           src={NavbarLogo}
           alt="Logo"
         />
-        <Navbar setRole={setRole}/>
+        <Navbar/>
       </div>
     </header>
   );

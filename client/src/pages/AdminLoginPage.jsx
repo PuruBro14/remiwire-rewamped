@@ -1,21 +1,32 @@
-import React, { useState } from "react";
-import { toast } from "react-hot-toast";
+import React, { useState } from 'react';
+import { toast } from 'react-hot-toast';
+import axios from 'axios';
+import { setRoleValue,setToken } from "../utils/authSlice";
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
-const LoginPage = ({ setLoggedIn, setRole }) => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+const LoginPage = () => {
+  const navigate=useNavigate();
+  const dispatch=useDispatch();
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
 
-  const handleLogin = () => {
-    const token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InB1cnV3djAyQGdtYWlsLmNvbSIsImlkIjoiNjYzNDlhZjgyOTNmYTQ5OTA0ODcwMmNiIiwiaWF0IjoxNzE4Mjk3MTg0LCJleHAiOjE3MTg1NTYzODR9.yubXT3Sa71rib9BV4TTKK6mhsGVbDtpFQ8cd7lqfyTA"
-    if (username === "admin" && password === "Admin@123") {
-      localStorage.setItem("token",JSON.stringify("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InB1cnV3djAyQGdtYWlsLmNvbSIsImlkIjoiNjYzNDlhZjgyOTNmYTQ5OTA0ODcwMmNiIiwiaWF0IjoxNzE4Mjk3MTg0LCJleHAiOjE3MTg1NTYzODR9.yubXT3Sa71rib9BV4TTKK6mhsGVbDtpFQ8cd7lqfyTA"))
-      localStorage.setItem("isLoggedIn", true);
-      localStorage.setItem("role", "admin");
-      setLoggedIn(true);
-      setRole("admin");
-      toast.success("Login successful!");
-    } else {
-      toast.error("Invalid username or password");
+  const handleLogin = async () => {
+    try {
+      const response = await axios.post('http://localhost:8100/api/admin/login', { username, password });
+      const { token, role } = response.data;
+
+      localStorage.setItem('token', JSON.stringify(token));
+      localStorage.setItem('isLoggedIn', true);
+      localStorage.setItem('role', role);
+      toast.success('Login successful!');
+      dispatch(setToken(response?.data?.token))
+      dispatch(setRoleValue("admin"))
+      navigate("/admin/*")
+      console.log('------->runned');
+    } catch (error) {
+      console.log('error',error);
+      toast.error('Invalid username or password on client side');
     }
   };
 
@@ -29,7 +40,7 @@ const LoginPage = ({ setLoggedIn, setRole }) => {
           </label>
           <input
             type="text"
-            value={username}
+            value={username}ProtectedRoute
             onChange={(e) => setUsername(e.target.value)}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />

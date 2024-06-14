@@ -44,8 +44,7 @@ const subLinksData = [
   },
 ];
 
-const Navbar = ({setRole}) => {
-  console.log('setRole',setRole);
+const Navbar = ({}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [showHamburger, setShowHamburger] = useState(window.innerWidth < 768);
   const dispatch = useDispatch();
@@ -219,7 +218,7 @@ const Navbar = ({setRole}) => {
               {token !== null && (
                 <button
                   className="border border-richblack-700 bg-richblack-800 px-[12px] py-[8px] text-richblack-100 rounded-md"
-                  onClick={() => dispatch(logout(navigate,setRole))}
+                  onClick={() => dispatch(logout(navigate))}
                 >
                   Logout
                 </button>

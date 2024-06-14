@@ -11,8 +11,7 @@ import UpdateProfile from "./UpdateProfile";
 import ContactUs from "./ContactUs";
 import LoginPage from "../AdminLoginPage";
 
-function AdminHome({setRole}) {
-  console.log('setRole',setRole);
+function AdminHome() {
   const [showSidebar, setShowSidebar] = useState(false);
   const [showScreen, setShowScreen] = useState(0);
    const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -47,9 +46,9 @@ function AdminHome({setRole}) {
     showMainDiv();
   }, [showScreen]);
 
-  // if (!isLoggedIn) {
-  //   return <LoginPage setLoggedIn={setIsLoggedIn} setRole={setRole}/>;
-  // }
+  if (!isLoggedIn) {
+    return <LoginPage setLoggedIn={setIsLoggedIn}/>;
+  }
   
   return (
     <div className="min-h-screen">

@@ -32,24 +32,19 @@ import PrivacyPolicy from "./components/Legal/PrivacyPolicy";
 import TermsOfUse from "./components/Legal/TermsOfUse";
 import AdminNavbar from "./pages/Admin/AdminNavbar";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import LoginPage from "./pages/AdminLoginPage";
+import AdminProtectedRoute from "./components/Auth/AdminProtectedRoute";
 
 function App() {
-  const [role, setRole] = useState(null);
+  const {role,roleValue}=useSelector((state)=>state.auth)
+   const { token } = useSelector((state) => state.auth);
 
-  const storedRole = localStorage.getItem("role");
-  console.log('storedRole',storedRole);
-  useEffect(() => {
-    if (storedRole) {
-      setRole(storedRole);
-    }
-  }, [storedRole]);
-
-  console.log('role',role);
+  console.log("token",token,'roleValue',roleValue,'role',role);
 
   return (
     <div>
-            {/* {role === 'admin' ? <AdminNavbar username={"Admin"}/> : <Header className="sticky top-0" setRole={setRole}/>} */}
-            <Header/>
+            {(role === 'admin' || roleValue==="admin")? <AdminNavbar username={"Admin"}/> : <Header className="sticky top-0"/>}
 
       <Routes>
         <Route
@@ -91,7 +86,7 @@ function App() {
           path="/login"
           element={
             <OpenRoute>
-              <Login setRole={setRole}/>
+              <Login/>
               </OpenRoute>
           }
         ></Route>
@@ -136,7 +131,16 @@ function App() {
           <Route path="/userprofile/edit-profile" element={<Settings />} />
         </Route>
 
-        <Route path="/admin/*" element={<AdminHome setRole={setRole}/>} />
+        <Route path="/admin/login" element={<LoginPage />} />
+
+        <Route
+          path="/admin/*"
+          element={
+            <AdminProtectedRoute>
+              <AdminHome />
+            </AdminProtectedRoute>
+          }
+        />
 
         <Route path="/my-orders*" element={<MyOrders />} />
 

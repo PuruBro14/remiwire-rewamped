@@ -58,6 +58,62 @@ exports.getUserOrders = async (req, res) => {
   }
 };
 
+exports.getAdminOrders = async (req, res) => {
+  try {
+    const { month, year } = req.query;
+    const userId = req.user.id;
+
+    let filter = {};
+
+    if (month && year) {
+      const startDate = new Date(year, month - 1, 1);
+      const endDate = new Date(year, month, 0);
+      filter = { createdAt: { $gte: startDate, $lte: endDate } };
+    }
+
+    const userOrders = await Order.find(filter).sort({ createdAt: -1 });
+
+    const SendMoneyAbroad = userOrders.filter(
+      (order) => order.serviceType === "SendMoneyAbroad"
+    );
+
+    const NRIRepatriation = userOrders.filter(
+      (order) => order.serviceType === "NRIRepatriation"
+    );
+
+    const BlockedAccountPayment = userOrders.filter(
+      (order) => order.serviceType === "BlockedAccountPayment"
+    );
+
+    const GICAccountPayment = userOrders.filter(
+      (order) => order.serviceType === "GICAccountPayment"
+    );
+
+    const OverseasEducationLoan = userOrders.filter(
+      (order) => order.serviceType === "OverseasEducationLoan"
+    );
+
+    res.status(200).json({
+      success: true,
+      data: {
+        SendMoneyAbroad,
+        NRIRepatriation,
+        BlockedAccountPayment,
+        GICAccountPayment,
+        OverseasEducationLoan,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to retrieve user orders",
+      error: error.message,
+    });
+  }
+};
+
+
 exports.getTrackingOrder = async (req, res) => {
   try {
     const { orderId } = req.query;

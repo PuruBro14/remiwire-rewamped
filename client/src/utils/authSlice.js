@@ -6,7 +6,8 @@ const authSlice=createSlice({
         signUpData:null,
         loading:false,
         redirectedFromRoute:false,
-        token:localStorage.getItem("token")?JSON.parse(localStorage.getItem("token")):null
+        token:localStorage.getItem("token")?JSON.parse(localStorage.getItem("token")):null,
+        roleValue:""
     },
     reducers:{
         setSignUpData:(state,action)=>{
@@ -21,10 +22,18 @@ const authSlice=createSlice({
         },
         setToken:(state,action)=>{
             state.token=action.payload
+        },
+        setRoleValue:(state,action)=>{
+            state.role=action.payload
         }
     }
 })
 
-export const { setSignUpData, setLoading, setRedirectedFromRoute,setToken } =
-  authSlice.actions;
+export const {
+  setSignUpData,
+  setLoading,
+  setRedirectedFromRoute,
+  setToken,
+  setRoleValue,
+} = authSlice.actions;
 export default authSlice.reducer;
