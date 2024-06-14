@@ -23,7 +23,7 @@ const ManageUsers = () => {
   };
 
   const fetchUsers = async () => {
-    const toastId = toast.loading("Loading Forex orders...");
+    const toastId = toast.loading("Loading Users...");
     setLoading(true);
     try {
       const response = await apiConnector("GET", 'http://13.50.14.42:8100/api/v1/fetchAllUsers', null, {

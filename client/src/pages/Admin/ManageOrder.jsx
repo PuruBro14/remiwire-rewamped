@@ -32,7 +32,7 @@ const ManageOrder = () => {
   ];
 
   const fetchUserOrders = async () => {
-    const toastId = toast.loading("Loading Forex orders...");
+    const toastId = toast.loading("Loading orders...");
     setLoading(true);
     try {
       const response = await apiConnector("GET", 'http://13.50.14.42:8100/api/v1/fetchAllOrders', null, {
@@ -55,7 +55,7 @@ const ManageOrder = () => {
   console.log('token------------>',token);
 
   const fetchInvididualOrder = async (orderId) => {
-    const toastId = toast.loading("Loading Forex orders...");
+    const toastId = toast.loading("Loading orders...");
     setLoading(true);
     try {
       const response = await apiConnector("GET", `http://13.50.14.42:8100/api/v1/fetchOrderById/${orderId}`, null, {
@@ -94,7 +94,7 @@ const ManageOrder = () => {
         <div className="container mx-auto px-4 sm:px-8">
           <div className="py-8">
             <div>
-              <h2 className="text-2xl font-semibold leading-tight">Users</h2>
+              <h2 className="text-2xl font-semibold leading-tight">Orders</h2>
             </div>
             <div className="my-2 flex sm:flex-row flex-col">
               <div className="flex flex-row mb-1 sm:mb-0">
