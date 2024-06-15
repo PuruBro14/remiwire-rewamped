@@ -1,5 +1,5 @@
 const express = require("express");
-const { auth, isAdminRole } = require("../middlewares/auth");
+const { auth, isAdminRole, adminAuth } = require("../middlewares/auth");
 const {
   fetchAllOrders,
   fetchAllUsers,
@@ -8,10 +8,10 @@ const {getOrderById, getOrderByServiceType}=require("../controllers/admin/orders
 const adminRouter = express.Router();
 
 
-adminRouter.get("/fetchAllOrders", auth, fetchAllOrders);
-adminRouter.get("/fetchOrderById/:id", auth, getOrderById);
-adminRouter.get("/fetchOrderByServiceType/:serviceType", auth, getOrderByServiceType);
-adminRouter.get("/fetchAllUsers", auth, fetchAllUsers);
+adminRouter.get("/fetchAllOrders", adminAuth, fetchAllOrders);
+adminRouter.get("/fetchOrderById/:id", adminAuth, getOrderById);
+adminRouter.get("/fetchOrderByServiceType/:serviceType", adminAuth, getOrderByServiceType);
+adminRouter.get("/fetchAllUsers", adminAuth, fetchAllUsers);
 // adminRouter.put("/updateOrder/:id", auth, isAdminRole, updateOrderById);
 // adminRouter.delete("/deleteOrderById/:id", auth, isAdminRole, deleteOrderById);
 

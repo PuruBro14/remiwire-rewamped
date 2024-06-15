@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { toast } from 'react-hot-toast';
 import axios from 'axios';
-import { setRole,setToken } from "../utils/authSlice";
+import { setAdminToken, setRole } from "../utils/authSlice";
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
@@ -13,14 +13,14 @@ const LoginPage = () => {
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post('http://13.50.14.42:8100/api/admin/login', { username, password });
+      const response = await axios.post('http://localhost:8100/api/admin/login', { username, password });
       const { token, role } = response.data;
 
-      localStorage.setItem('token', JSON.stringify(token));
+      localStorage.setItem('adminToken', JSON.stringify(token));
       localStorage.setItem('isLoggedIn', true);
       localStorage.setItem('role', role);
       toast.success('Login successful!');
-      dispatch(setToken(response?.data?.token))
+      dispatch(setAdminToken(response?.data?.token))
       dispatch(setRole("admin"))
       navigate("/admin/*")
       console.log('------->runned');

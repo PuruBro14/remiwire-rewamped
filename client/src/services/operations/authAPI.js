@@ -1,5 +1,5 @@
 import { toast } from "react-hot-toast";
-import { setLoading, setToken, setRole } from "../../utils/authSlice";
+import { setLoading, setToken, setRole, setAdminToken } from "../../utils/authSlice";
 import { apiConnector } from "./apiconnector";
 import { bookOrderEndpoints, endpoints } from "../apis";
 import { setUser } from "../../utils/profileSlice";
@@ -101,17 +101,20 @@ export const setLogin = (
 };
 
 export const logout = (navigate) => {
+  console.log('this called-------------<');
   return (dispatch) => {
     dispatch(setLoading(false));
     dispatch(setToken(null));
     dispatch(setUser(null));
     dispatch(setRole(null))
+    dispatch(setAdminToken(null))
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     toast.success("Logged Out");
     localStorage.removeItem("sendmoneyloggedIn");
     localStorage.removeItem("isLoggedIn");
     localStorage.removeItem("token");
+    localStorage.removeItem("adminToken");
     localStorage.removeItem("role");
     navigate("/");
   };

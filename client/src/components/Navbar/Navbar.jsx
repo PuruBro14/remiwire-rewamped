@@ -51,6 +51,7 @@ const Navbar = ({}) => {
   const location = useLocation();
   const navigate = useNavigate();
   const { token } = useSelector((state) => state.auth);
+  const adminToken= localStorage.getItem("adminToken")
 
   const toggleNavbar = () => {
     setIsOpen(!isOpen);
@@ -84,6 +85,14 @@ const Navbar = ({}) => {
     }
     dispatch(setScrollToComponentContact(true));
   };
+
+  useEffect(()=>{
+    console.log('this calleddd---------<dd->');
+    if(adminToken){
+      console.log('tjis called->');
+      dispatch(logout(navigate))
+    }
+  },[adminToken])
 
   return (
     <div className="flex h-20 items-center w-full justify-center transition-all duration-200">
@@ -193,7 +202,7 @@ const Navbar = ({}) => {
             </nav>
 
             <div className="flex flex-col gap-y-2 md:flex-row md:gap-y-0 mb-2 gap-x-1 lg:gap-x-3 items-center">
-              {token === null  && (
+              {token === null && (
                 <Link to="/login">
                   <button
                     className="border border-richblack-700 text-white bg-[#d40511] px-[12px] py-[8px] rounded-md hover:bg-[#b3050f]"

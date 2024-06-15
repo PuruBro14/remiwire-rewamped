@@ -5,7 +5,7 @@ import {toast} from 'react-hot-toast'
 import { apiConnector } from '../../services/operations/apiconnector';
 
 const ManageUsers = () => {
- const {token}=useSelector((state)=>state.auth)
+ const {adminToken}=useSelector((state)=>state.auth)
   const [orders, setOrders] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -25,8 +25,8 @@ const ManageUsers = () => {
     const toastId = toast.loading("Loading Users...");
     setLoading(true);
     try {
-      const response = await apiConnector("GET", 'http://13.50.14.42:8100/api/v1/fetchAllUsers', null, {
-        Authorization: `Bearer ${token}`,
+      const response = await apiConnector("GET", 'http://localhost:8100/api/v1/fetchAllUsers', null, {
+        Authorization: `Bearer ${adminToken}`,
       });
       setLoading(false);
       toast.dismiss(toastId);
@@ -40,7 +40,7 @@ const ManageUsers = () => {
 
   useEffect(() => {
     fetchUsers();
-  }, [token]);
+  }, [adminToken]);
 
    const filteredOrders = orders.filter(order => 
     order.username.includes(searchQuery) ||

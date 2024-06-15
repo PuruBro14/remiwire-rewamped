@@ -4,10 +4,13 @@ const authSlice = createSlice({
   name: "auth",
   initialState: {
     signUpData: null,
+    adminToken: localStorage.getItem("token")
+      ? JSON.parse(localStorage.getItem("token"))
+      : null,
     loading: false,
     redirectedFromRoute: false,
-    token: localStorage.getItem("token")
-      ? JSON.parse(localStorage.getItem("token"))
+    token: localStorage.getItem("adminToken")
+      ? JSON.parse(localStorage.getItem("adminToken"))
       : null,
     role: null,
   },
@@ -25,6 +28,9 @@ const authSlice = createSlice({
     setToken: (state, action) => {
       state.token = action.payload;
     },
+    setAdminToken: (state, action) => {
+      state.adminToken = action.payload;
+    },
     setRole: (state, action) => {
       state.role = action.payload;
     },
@@ -36,6 +42,7 @@ export const {
   setLoading,
   setRedirectedFromRoute,
   setToken,
+  setAdminToken,
   setRole
 } = authSlice.actions;
 export default authSlice.reducer;

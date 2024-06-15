@@ -4,7 +4,7 @@ import {toast} from 'react-hot-toast'
 import {useSelector} from 'react-redux'
 import { apiConnector } from '../../services/operations/apiconnector';
 const ManageOrder = () => {
-  const {token}=useSelector((state)=>state.auth)
+  const {adminToken}=useSelector((state)=>state.auth)
   const [orders, setOrders] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isViewModalOpen, setisViewModalOpen] = useState(false);
@@ -37,8 +37,8 @@ const ManageOrder = () => {
     const toastId = toast.loading("Loading orders...");
     setLoading(true);
     try {
-      const response = await apiConnector("GET", 'http://13.50.14.42:8100/api/v1/fetchAllOrders', null, {
-        Authorization: `Bearer ${token}`,
+      const response = await apiConnector("GET", 'http://localhost:8100/api/v1/fetchAllOrders', null, {
+        Authorization: `Bearer ${adminToken}`,
       });
       setLoading(false);
       toast.dismiss(toastId);
@@ -52,14 +52,14 @@ const ManageOrder = () => {
 
   useEffect(() => {
     fetchUserOrders();
-  }, [token]);
+  }, [adminToken]);
 
   const fetchInvididualOrder = async (orderId) => {
     const toastId = toast.loading("Loading orders...");
     setLoading(true);
     try {
-      const response = await apiConnector("GET", `http://13.50.14.42:8100/api/v1/fetchOrderById/${orderId}`, null, {
-        Authorization: `Bearer ${token}`,
+      const response = await apiConnector("GET", `http://localhost:8100/api/v1/fetchOrderById/${orderId}`, null, {
+        Authorization: `Bearer ${adminToken}`,
       });
       setLoading(false);
       toast.dismiss(toastId);
@@ -75,8 +75,8 @@ const ManageOrder = () => {
     const toastId = toast.loading("Loading orders...");
     setLoading(true);
     try {
-      const response = await apiConnector("GET", `http://13.50.14.42:8100/api/v1/fetchOrderByServiceType/${serviceType}`, null, {
-        Authorization: `Bearer ${token}`,
+      const response = await apiConnector("GET", `http://localhost:8100/api/v1/fetchOrderByServiceType/${serviceType}`, null, {
+        Authorization: `Bearer ${adminToken}`,
       });
       setLoading(false);
       toast.dismiss(toastId);
@@ -90,7 +90,7 @@ const ManageOrder = () => {
 
   useEffect(() => {
     fetchUserOrders();
-  }, [token]);
+  }, [adminToken]);
 
   useEffect(() => {
     if (selectedServiceType !== "All") {
