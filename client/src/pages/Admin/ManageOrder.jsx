@@ -37,7 +37,7 @@ const ManageOrder = () => {
     const toastId = toast.loading("Loading orders...");
     setLoading(true);
     try {
-      const response = await apiConnector("GET", 'http://localhost:8100/api/v1/fetchAllOrders', null, {
+      const response = await apiConnector("GET", 'http://13.50.14.42:8100/api/v1/fetchAllOrders', null, {
         Authorization: `Bearer ${adminToken}`,
       });
       setLoading(false);
@@ -58,7 +58,7 @@ const ManageOrder = () => {
     const toastId = toast.loading("Loading orders...");
     setLoading(true);
     try {
-      const response = await apiConnector("GET", `http://localhost:8100/api/v1/fetchOrderById/${orderId}`, null, {
+      const response = await apiConnector("GET", `http://13.50.14.42:8100/api/v1/fetchOrderById/${orderId}`, null, {
         Authorization: `Bearer ${adminToken}`,
       });
       setLoading(false);
@@ -75,7 +75,7 @@ const ManageOrder = () => {
     const toastId = toast.loading("Loading orders...");
     setLoading(true);
     try {
-      const response = await apiConnector("GET", `http://localhost:8100/api/v1/fetchOrderByServiceType/${serviceType}`, null, {
+      const response = await apiConnector("GET", `http://13.50.14.42:8100/api/v1/fetchOrderByServiceType/${serviceType}`, null, {
         Authorization: `Bearer ${adminToken}`,
       });
       setLoading(false);
