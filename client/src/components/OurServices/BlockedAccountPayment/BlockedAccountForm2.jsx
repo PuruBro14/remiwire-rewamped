@@ -132,7 +132,6 @@ export default function BlockedAccountForm2({
 
       if (!fxRateResult.error) {
         console.log('response', fxRateResult);
-        setFxRateDetails(fxRateResult);
         fetchFxDetails(fxRateResult);
       } else {
         console.error("Error in fetchFxRate:", fxRateResult.error);

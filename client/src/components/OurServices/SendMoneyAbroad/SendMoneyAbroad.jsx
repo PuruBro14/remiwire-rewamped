@@ -18,7 +18,7 @@ export default function SendMoneyAbroad() {
     const token = JSON.parse(localStorage.getItem("token"));
     return token || false;
   });
-  const [formStep, setFormStep] = useState(4);
+  const [formStep, setFormStep] = useState(0);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [tabName, setTabName] = useState("Login");
   const [chargesData, setChargesData] = useState();

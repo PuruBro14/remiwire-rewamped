@@ -124,6 +124,7 @@ const ManageUsers = () => {
                 <tbody>
                   {
                     displayedOrders?.map((currItem)=>{
+                      console.log('currItem',currItem);
                       return(
                         <tr>
                     <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
@@ -136,7 +137,7 @@ const ManageUsers = () => {
                       </div>
                     </td>
                     <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                      <p className="text-gray-900 whitespace-no-wrap">Admin</p>
+                      <p className="text-gray-900 whitespace-no-wrap">{currItem?.address[0]?.address}{currItem?.address[0]?.country?',':''}{currItem?.address[0]?.city}{currItem?.address[0]?.country?',':''}{currItem?.address[0]?.country}</p>
                     </td>
                     <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                       <p className="text-gray-900 whitespace-no-wrap">

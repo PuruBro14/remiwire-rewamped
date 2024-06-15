@@ -90,6 +90,7 @@ export default function BlockedAccountBifurcation({ setFormStep, documentProof, 
   console.log("orderId", orderId);
 
 
+
 const verifyPayment = async (token) => { 
   if (!token) {
     console.error('Token is required for authentication');
@@ -110,7 +111,7 @@ const verifyPayment = async (token) => {
       "http://localhost:8100/api/v1/verify",
       {
         orderId: orderId,
-        serviceType: "BlockedAccountPayment"
+        serviceType: "BlockedAccountPayment"  
       },
       {
         Authorization: `Bearer ${token}`

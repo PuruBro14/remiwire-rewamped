@@ -120,10 +120,9 @@ export default function NRIRepatriationForm2({
         fetchFxRatePromise.catch(error => ({ error })),
         registerRemitterPromise.catch(error => ({ error }))
       ]);
-
+console.log('fxRateResult',fxRateResult);
       if (!fxRateResult.error) {
         console.log('response', fxRateResult);
-        setFxRateDetails(fxRateResult);
         fetchFxDetails(fxRateResult);
       } else {
         console.error("Error in fetchFxRate:", fxRateResult.error);

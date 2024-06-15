@@ -25,7 +25,7 @@ export default function GICAccountHome() {
     transferTo: "Canada",
     receivingCurrency: "Cad",
   });
-  const [formStep, setFormStep] = useState(2);
+  const [formStep, setFormStep] = useState(0);
 
   const [showLoginModal, setShowLoginModal] = useState(false);
 

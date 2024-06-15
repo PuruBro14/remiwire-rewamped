@@ -4,6 +4,7 @@ import { load } from "@cashfreepayments/cashfree-js";
 import { useParams, useNavigate } from "react-router-dom"; // Import useNavigate for navigation
 import { useSelector } from "react-redux";
 import { apiConnector } from "../../../services/operations/apiconnector";
+import toast from "react-hot-toast";
 
 export default function GicAccountBifurcation({ setFormStep, documentProof, fxRate }) {
   const [orderId, setOrderId] = useState("");
@@ -18,15 +19,20 @@ export default function GicAccountBifurcation({ setFormStep, documentProof, fxRa
 
   const [sessionId, setSessionId] = useState("");
 
-  let cashfree;
+  const [cashfree, setCashfree] = useState(null);
 
   const initializeSDK = async () => {
-    cashfree = await load({
-      mode: "sandbox",
-    });
+    try {
+      const cashfree = await load({ mode: "sandbox" });
+      setCashfree(cashfree);
+    } catch (error) {
+      console.error("Failed to load Cashfree SDK:", error);
+    }
   };
 
-  initializeSDK();
+  useEffect(() => {
+    initializeSDK();
+  }, []);
 
   const getSessionId = async () => {
     try {
@@ -71,7 +77,7 @@ export default function GicAccountBifurcation({ setFormStep, documentProof, fxRa
 
         if (res) {
           console.log("Redirection");
-          verifyPayment();
+          verifyPayment(token);
           console.log("this done");
           console.log("this not done end----->");
         }
@@ -83,20 +89,48 @@ export default function GicAccountBifurcation({ setFormStep, documentProof, fxRa
 
   console.log("orderId", orderId);
 
-  const verifyPayment = async () => {
-    try {
-      let res = await axios.post("http://localhost:8100/api/v1/verify", {
-        orderId: orderId,
-      });
+  const verifyPayment = async (token) => { 
+  if (!token) {
+    console.error('Token is required for authentication');
+    return;
+  }
 
-      if (res && res.data) {
-        alert("Payment verified");
-        setIsPaymentVerified(true);
-      }
-    } catch (error) {
-      console.log(error);
+  const orderId = localStorage.getItem('orderId');
+  if (!orderId) {
+    console.error('Order ID is missing');
+    return;
+  }
+
+  const toastId = toast.loading("Verifying payment...");
+
+  try {
+    let res = await apiConnector(
+      "POST",
+      "http://localhost:8100/api/v1/verify",
+      {
+        orderId: orderId,
+        serviceType: "GICAccountPayment"
+      },
+      {
+        Authorization: `Bearer ${token}` // Pass headers directly here
+      },
+    );
+
+    if (res && res.data) {
+      toast.success("Payment verified");
+      alert("Payment verified");
+      setIsPaymentVerified(true);
+    } else {
+      toast.error("Payment verification failed");
+      console.error("Unexpected response format", res);
     }
-  };
+  } catch (error) {
+    toast.error("Payment verification failed");
+    console.error("Error during payment verification", error);
+  } finally {
+    toast.dismiss(toastId);
+  }
+};
 
   useEffect(() => {
     setSessionId(isSessionId);

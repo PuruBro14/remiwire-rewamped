@@ -18,7 +18,7 @@ export default function NRIRepatriation() {
     const token = JSON.parse(localStorage.getItem("token"));
     return token || false;
   });
-  const [formStep, setFormStep] = useState(2);
+  const [formStep, setFormStep] = useState(0);
 
   const [showLoginModal, setShowLoginModal] = useState(false);
 
@@ -55,8 +55,12 @@ export default function NRIRepatriation() {
   };
 
   const fetchFxDetails = (data) => {
+    console.log('this caleddddddddddddd->');
+    console.log('data------->',data);
     setFxRate(data);
   };
+
+  console.log('fx-------------122324>',fxRate);
 
   return (
     <div className="container mx-auto px-4">

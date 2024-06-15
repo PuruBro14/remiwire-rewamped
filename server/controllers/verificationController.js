@@ -15,6 +15,8 @@ const generateOrderId = (prefix) => {
 exports.verifyOrder = async (req, res) => {
   const userId=req.user.id;
   const customerId = generateOrderId("CID"); 
+      console.log("userId-dsssssssss------>", userId);
+
   try {
     let { orderId, serviceType } = req.body;
     console.log("orderId", orderId,serviceType,customerId);

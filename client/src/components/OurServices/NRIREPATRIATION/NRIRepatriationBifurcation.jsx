@@ -4,6 +4,7 @@ import { load } from "@cashfreepayments/cashfree-js";
 import { useParams, useNavigate } from "react-router-dom"; 
 import { useSelector } from "react-redux";
 import { apiConnector } from "../../../services/operations/apiconnector";
+import toast from "react-hot-toast";
 
 export default function NRIRepatriationBifurcation({ setFormStep, documentProof, fxRate }) {
   const [orderId, setOrderId] = useState("");
@@ -12,7 +13,7 @@ export default function NRIRepatriationBifurcation({ setFormStep, documentProof,
   const params = useParams();
   const navigate = useNavigate(); 
   const isSessionId = params.sessionid;
-  const { oneEurotoINR, receivingAmountInEuro, receivingAmountInINR } = useSelector((state) => state.sendMoneyAboroadForms);
+  const { oneEurotoINR, receivingAmountInEuro, receivingAmountInINR } = useSelector((state) => state.NRIRepatriationForms);
   const { token } = useSelector((state) => state.auth);
 
    const [sessionId, setSessionId] = useState("");
@@ -75,7 +76,7 @@ export default function NRIRepatriationBifurcation({ setFormStep, documentProof,
 
         if (res) {
           console.log("Redirection");
-          verifyPayment();
+          verifyPayment(token);
           console.log("this done");
           console.log("this not done end----->");
         }
@@ -87,29 +88,48 @@ export default function NRIRepatriationBifurcation({ setFormStep, documentProof,
 
   console.log("orderId", orderId);
 
-  const verifyPayment = async () => {
-    try {
-     let res = await axios.post(
+const verifyPayment = async (token) => { 
+  if (!token) {
+    console.error('Token is required for authentication');
+    return;
+  }
+
+  const orderId = localStorage.getItem('orderId');
+  if (!orderId) {
+    console.error('Order ID is missing');
+    return;
+  }
+
+  const toastId = toast.loading("Verifying payment...");
+
+  try {
+    let res = await apiConnector(
+      "POST",
       "http://localhost:8100/api/v1/verify",
       {
-        orderId: localStorage.getItem('orderId'),
-        serviceType: "SendMoneyAbroad"
+        orderId: orderId,
+        serviceType: "NRIRepatriation"
       },
       {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
+        Authorization: `Bearer ${token}` // Pass headers directly here
+      },
     );
 
-      if (res && res.data) {
-        alert("Payment verified");
-        setIsPaymentVerified(true);
-      }
-    } catch (error) {
-      console.log(error);
+    if (res && res.data) {
+      toast.success("Payment verified");
+      alert("Payment verified");
+      setIsPaymentVerified(true);
+    } else {
+      toast.error("Payment verification failed");
+      console.error("Unexpected response format", res);
     }
-  };
+  } catch (error) {
+    toast.error("Payment verification failed");
+    console.error("Error during payment verification", error);
+  } finally {
+    toast.dismiss(toastId);
+  }
+};
 
   useEffect(() => {
     setSessionId(isSessionId);

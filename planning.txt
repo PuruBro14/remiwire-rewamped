@@ -127,3 +127,14 @@ gic account
 blocked account payment
 
 Admin login -> dashboard -> manage orders -> manage tabs ->logout
+
+import React, { useState, useEffect } from 'react';
+import { Pie } from 'react-chartjs-2';
+import { Bar } from 'react-chartjs-2';
+import { apiConnector } from '../../services/operations/apiconnector';
+import { useSelector } from 'react-redux';
+import './dashboard.css';
+import { ArcElement } from "chart.js";
+import Chart from "chart.js/auto";
+
+Chart.register(ArcElement);
