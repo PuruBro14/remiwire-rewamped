@@ -22,6 +22,8 @@ exports.verifyOrder = async (req, res) => {
     const response = await Cashfree.PGOrderFetchPayments("2023-08-01", orderId);
     res.json(response.data);
 
+    console.log('userId------->',userId);
+
     const newOrder = new Order({
       orderId: orderId,
       customerId: customerId,
@@ -51,7 +53,7 @@ exports.verifyOrder = async (req, res) => {
 
     await newOrder.save();
   } catch (error) {
-    console.error(error.message);
+    console.error('erorrrrrrrrrrrrrrrrrrrr->',error.message);
     res
       .status(500)
       .json({ error: "An error occurred while verifying the order." });

@@ -17,7 +17,6 @@ export default function CreateGICAccount() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formDataF = new FormData();
-    console.log(">>>>>>>>>>", formData);
     formDataF.append("fName", formData.fName);
     formDataF.append("lName", formData.lName);
     formDataF.append("moblieNumber", formData.moblieNumber);
@@ -32,7 +31,6 @@ export default function CreateGICAccount() {
     };
 
     const response = await axiosInstance.post("/locla", formData, config);
-    // make axios request
   };
 
   const handleChange = (event) => {
@@ -65,7 +63,8 @@ export default function CreateGICAccount() {
         <div className="p-4">
           <div className="p-4">
             <div className="sma_pclara bg-white shadow-lg rounded-lg p-6">
-              <div>ng GIC Account:
+              <div>
+                ng GIC Account:
                 <p className="text-[20px]">
                   For getting assistance in Opening GIC Account:
                 </p>

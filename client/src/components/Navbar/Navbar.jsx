@@ -51,7 +51,6 @@ const Navbar = ({}) => {
   const location = useLocation();
   const navigate = useNavigate();
   const { token } = useSelector((state) => state.auth);
-  const { user } = useSelector((state) => state.profile);
 
   const toggleNavbar = () => {
     setIsOpen(!isOpen);
@@ -194,7 +193,7 @@ const Navbar = ({}) => {
             </nav>
 
             <div className="flex flex-col gap-y-2 md:flex-row md:gap-y-0 mb-2 gap-x-1 lg:gap-x-3 items-center">
-              {token === null && (
+              {token === null  && (
                 <Link to="/login">
                   <button
                     className="border border-richblack-700 text-white bg-[#d40511] px-[12px] py-[8px] rounded-md hover:bg-[#b3050f]"
@@ -211,7 +210,7 @@ const Navbar = ({}) => {
                     onClick={closeNavbar}
                   >
                     Sign up
-                  </button>
+                </button>
                 </Link>
               )}
               {token !== null && <ProfileDropDown closeNavbar={closeNavbar} />}

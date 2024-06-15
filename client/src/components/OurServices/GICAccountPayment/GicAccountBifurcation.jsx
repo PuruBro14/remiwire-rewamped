@@ -32,7 +32,7 @@ export default function GicAccountBifurcation({ setFormStep, documentProof, fxRa
     try {
       const res = await apiConnector(
         "POST",
-        "http://13.50.14.42:8100/api/v1/payment",
+        "http://localhost:8100/api/v1/payment",
         null,
         {
           Authorization: `Bearer ${token}`,
@@ -85,7 +85,7 @@ export default function GicAccountBifurcation({ setFormStep, documentProof, fxRa
 
   const verifyPayment = async () => {
     try {
-      let res = await axios.post("http://13.50.14.42:8100/api/v1/verify", {
+      let res = await axios.post("http://localhost:8100/api/v1/verify", {
         orderId: orderId,
       });
 

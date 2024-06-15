@@ -6,11 +6,7 @@ const mailSender = require("../utils/mailSender");
 // const { uploadImageToCloudinary } = require("../utils/imageUploader");
 
 exports.createNRIRepatriation = async (req, res) => {
-  console.log('controller reached');
   try {
-
-    console.log('controller 1 ');
-
     let {
       transferFromCountry,
       transferFromState,
@@ -73,8 +69,6 @@ exports.createNRIRepatriation = async (req, res) => {
       });
     }
 
-    console.log("controller 2 ");
-
     const panImage = await uploadImageToCloudinary(
       pancardImage,
       process.env.FOLDER_NAME
@@ -126,8 +120,6 @@ exports.createNRIRepatriation = async (req, res) => {
         beneficiaryCountry,
       },
     });
-
-    console.log("controller 3 ");
 
      let adminTemplate = await adminOverseaUserTemplate(req.body);
      let usersTemplates = await userSeaTemplate();

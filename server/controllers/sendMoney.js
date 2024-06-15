@@ -45,7 +45,6 @@ exports.createSendMoney = async (req, res) => {
       passportImage
     ];
 
-    console.log('passportImage',passportImage);
 
     console.log(transferFromCountry,pancardImage);
     const missingFields = requiredFields.filter((field) => !field);

@@ -1,11 +1,7 @@
-import React, { useEffect, useState } from "react";
-import Tab from "../common/Tab";
+import React, { useEffect } from "react";
 import SignupForm from "../Auth/SignupForm";
-import Login from "../Form/Login";
 
 const SignUp = ({sendMoneyLoggedIn}) => {
-  const[currentState,setCurrentState]=useState("Signup")
-  const[passedFromSignup,setPassedFromSignup]=useState(false);
 
     useEffect(() => {
     window.scrollTo(0, 0);
@@ -15,7 +11,6 @@ const SignUp = ({sendMoneyLoggedIn}) => {
     <div className="py-10 lg:pt-0">
       <div className="lg:h-[100px]"></div>
       <div className="w-11/12 mx-auto justify-center flex flex-row">
-        {/* first div  */}
         <div className="flex flex-col md:w-[60%]">
           <SignupForm sendMoneyLoggedIn={sendMoneyLoggedIn}/>
         </div>

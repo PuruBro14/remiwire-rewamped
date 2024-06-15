@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import Cookie from "./assets/img/cookie.jpg";
 export default function CookiePolicy() {
-
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);

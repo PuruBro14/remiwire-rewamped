@@ -18,9 +18,6 @@ export default function OverseasEducationLoan() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
-    console.log(formData);
-    // make axios request
   };
 
   const handleChange = (event) => {

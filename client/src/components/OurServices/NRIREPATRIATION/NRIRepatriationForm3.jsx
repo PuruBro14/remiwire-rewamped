@@ -72,12 +72,14 @@ export default function NRIRepatriationForm3({ setFormStep,documentProof }) {
     }
 
     // Validate beneficiaryCountry
-    if (!NRIRepatriationForms.beneficiaryCountry.trim()) {
-      newErrors.beneficiaryCountry = "Beneficiary country is required";
-    }
+    // if (!NRIRepatriationForms.beneficiaryCountry.trim()) {
+    //   newErrors.beneficiaryCountry = "Beneficiary country is required";
+    // }
 
     // Update errors state
     setErrors(newErrors);
+
+    console.log('newErros',newErrors);
 
     // If no errors, submit the form
     if (Object.keys(newErrors).length === 0) {

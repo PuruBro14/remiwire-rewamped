@@ -10,7 +10,6 @@ export default function DeleteAccount() {
   const navigate = useNavigate()
 
   async function handleDeleteAccount(){
-    console.log('clicked');
     try{
       dispatch(deleteProfile(token,navigate))
     }catch(err){

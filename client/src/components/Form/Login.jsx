@@ -75,8 +75,9 @@ const Login = ({ passedFromSignup }) => {
 
                 <div className="flex flex-row items-center gap-5">
                   <div className="flex flex-col relative  w-full">
-                    <label className="text-richblack-700">Create Password
-                    <sup className="text-pink-200">*</sup>
+                    <label className="text-richblack-700">
+                      Create Password
+                      <sup className="text-pink-200">*</sup>
                     </label>
                     <input
                       type={showPassword ? "text" : "password"}

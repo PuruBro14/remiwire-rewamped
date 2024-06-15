@@ -115,9 +115,10 @@ const UserModel = require("../../../models/User");
 
 exports.fetchAllUsers = async (req, res, next) => {
   try {
-    const users = await UserModel.find({}, "-__v").populate(
-      "additionalDetails",
-    );
+    const users = await UserModel.find({}, "-__v")
+      .populate("additionalDetails")
+      .populate("address");
+    ;
     return res.status(200).json({
       success: true,
       message: "All users fetched successfully.",

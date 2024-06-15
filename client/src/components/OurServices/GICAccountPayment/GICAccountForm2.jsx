@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setformValue } from "../../features/GICAccountSlice";
 import { fetchFxRate, registerRemitter } from "../../../services/operations/SendMoneyApi";
+import { apiConnector } from "../../../services/operations/apiconnector";
 
 export default function GICAccountForm2({
   setFormStep,
@@ -9,6 +10,7 @@ export default function GICAccountForm2({
   documentProof,
   fetchFxDetails
 }) {
+  const {token}=useSelector((state)=>state.auth)
   const [errors, setErrors] = useState({
     pancardNumber: "",
     panCardImage: "",
@@ -65,11 +67,6 @@ export default function GICAccountForm2({
       newErrors.panCardImage = "PAN card document is required";
     }
 
-    if (!gicAccountForms.passportNumber) {
-      newErrors.passportNumber =
-        "Passport / Aadhar Card / Driving License Number is required";
-    }
-
     if (!documentProof.passportImage) {
       newErrors.passportImage = "Document is required";
     }
@@ -106,28 +103,45 @@ export default function GICAccountForm2({
     setErrors(newErrors);
 
     // If no errors, submit the form
-    if (Object.keys(newErrors).length === 0) {
+   if (Object.keys(newErrors).length === 0) {
+    const fetchFxRatePromise = fetchFxRate(
+      transferFromState,
+      transferFromCity,
+      purposeOfTransfer,
+      transferToCountry,
+      receivingAmountInEuro,
+      receivingAmountInINR,
+      receivingCurrency
+    );
+
+    const registerRemitterPromise = registerRemitter(token);
+
     try {
-      const response=await fetchFxRate(
-        transferFromState,
-        transferFromCity,
-        purposeOfTransfer,
-        transferToCountry,
-        receivingAmountInEuro,
-        receivingAmountInINR,
-        receivingCurrency
-      );
+      const [fxRateResult, remitterResult] = await Promise.all([
+        fetchFxRatePromise.catch(error => ({ error })),
+        registerRemitterPromise.catch(error => ({ error }))
+      ]);
 
-      console.log('response',response);
-      fetchFxDetails(response)
+      if (!fxRateResult.error) {
+        console.log('response', fxRateResult);
+        setFxRateDetails(fxRateResult);
+        fetchFxDetails(fxRateResult);
+      } else {
+        console.error("Error in fetchFxRate:", fxRateResult.error);
+      }
 
-      await registerRemitter();
-
+      if (!remitterResult.error) {
+        console.log("Remitter registered successfully");
+      } else {
+        console.error("Error in registerRemitter:", remitterResult.error);
+      }
     } catch (error) {
-      console.error("Error during form submission:", error);
-    }
+      console.error("Unexpected error during form submission:", error);
+    } finally {
       setFormStep(2)
+    }
   }
+
   };
 
   // Clear error when input field is clicked
@@ -136,11 +150,11 @@ export default function GICAccountForm2({
   };
 
   const handleInputChange = (fieldName, value) => {
-    const trimmedValue = value.replace(/\s/g, "");
+    // const trimmedValue = value.replace(/\s/g, "");
 
-    const sanitizedValue = trimmedValue.replace(/[^a-zA-Z0-9]/g, "");
+    // const sanitizedValue = trimmedValue.replace(/[^a-zA-Z0-9]/g, "");
 
-    dispatch(setformValue({ [fieldName]: sanitizedValue }));
+    dispatch(setformValue({ [fieldName]: value }));
   };
 
   const handleSubmitChangeFormDoc = (fieldName, value) => {
@@ -154,28 +168,33 @@ export default function GICAccountForm2({
     setErrors({ ...errors, [fieldName]: "" });
   };
 
-  const fetchRemiiterDetails = async () => {
-    const response = await fetch(
-      "http://13.50.14.42:8100/api/v1/remitters/prod_cf_rem_005"
-    );
-    const data = await response.json();
+  const fetchRemiiterDetails = async (token, dispatch, setGetRemiiterDetails) => {
+  try {
+    const response = await apiConnector("GET", "http://localhost:8100/api/v1/remitters/prod_cf_rem_005", null, {
+      Authorization: `Bearer ${token}`,
+    });
 
-    console.log("data", data);
-    const { name, account_number, ifsc, email, phone_number } = data;
+    console.log('response',response);
+
+    console.log("data", response?.data);
+    const { name, account_number, ifsc, email, phone_number } = response?.data;
     dispatch(
       setformValue({
         remiterFirstName: name,
         remiterAccountNo: account_number,
         remiterIFSCCode: ifsc,
         remiterMobileNo: phone_number,
-        remiterEmailID: data?.email,
+        remiterEmailID: email,
       })
     );
-    setGetRemiiterDetails(data);
-  };
+    setGetRemiiterDetails(response?.data);
+  } catch (err) {
+    console.error("Error fetching remitter details:", err);
+  }
+};
 
   useEffect(() => {
-    fetchRemiiterDetails();
+    fetchRemiiterDetails(token,dispatch,setGetRemiiterDetails);
   }, []);
 
   return (
@@ -235,25 +254,26 @@ export default function GICAccountForm2({
             </div>
           </div>
           <div className="relative z-0 w-full mb-5 group">
-            <input
-              type="text"
-              name="courseDetails"
-              id="course_details"
-              className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-              placeholder=" "
-              value={gicAccountForms.passportNumber}
-              onChange={(e) => {
-                handleInputChange("passportNumber", e.target.value);
-                clearError("passportNumber");
-              }}
-            />
-
             <label
               htmlFor="course_details"
               className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
             >
-              Passport / Aadhar Card / Driving License Number
+              Address Proof
             </label>
+            <select
+              className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+              placeholder=" "
+              onChange={(e) => {
+                handleInputChange("addressProof", e.target.value);
+                clearError("addressProof");
+              }}
+            >
+              <option value="">--Select Address Proof--</option>
+              <option>Aadhar Card</option>
+              <option>Passport</option>
+              <option>Driving License</option>
+            </select>
+
             {errors.passportNumber && (
               <span className="text-[red] text-[11px] italic">
                 {errors.passportNumber}

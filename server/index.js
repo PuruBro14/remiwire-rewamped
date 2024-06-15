@@ -5,7 +5,6 @@ const ordersRoutes = require("./routes/bookOrder.routes");
 const database = require("./config/database");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
-const dotenv = require("dotenv");
 const addressRouter = require("./routes/address.routes");
 const contactRouter = require("./routes/contact_us.routes");
 const profileRoutes = require("./routes/Profile");
@@ -20,17 +19,10 @@ const statusRoutes = require("./routes/statusRoutes");
 const NRIRepatriationRoutes = require("./routes/nriRepatriatoin");
 const sendMoneyRoutes = require("./routes/sendMoney");
 const adminRoutes = require("./routes/adminRoutes");
-const blockedAccountRoutes = require("./routes/blockedAccount");
 const { cloudinaryConnect } = require("./config/cloudinary");
 const fileUpload = require("express-fileupload");
-// const overSeaLoanRoutes = require("./overseaEducationLoan.routes");
 const {Cashfree}=require('cashfree-pg');
 const crypto = require("crypto");
-const axios=require("axios");
-const FormData = require("form-data");
-const fs = require("fs");
-const path = require("path");
-const Order = require("./models/Order");
 const jwt = require("jsonwebtoken");
 require('dotenv').config();
 const PORT = process.env.PORT || 4000;
@@ -58,7 +50,6 @@ Cashfree.XClientId = process.env.CLIENT_ID;
 Cashfree.XClientSecret = process.env.CLIENT_SECRET;
 Cashfree.XEnvironment = Cashfree.Environment.SANDBOX;
 
-//cloudinary connection
 cloudinaryConnect();
 
 app.use("/api/v1/auth", userRoutes);
@@ -78,19 +69,7 @@ app.use("/api/v1", verificationRoutes);
 app.use("/api/v1", statusRoutes);
 app.use("/api/v1", adminRoutes);
 
-function generateOrderId() {
-  const uniqueId = crypto.randomBytes(16).toString("hex");
-
-  const hash = crypto.createHash("sha256");
-  hash.update(uniqueId);
-
-  const orderId = hash.digest("hex");
-
-  return orderId.substring(0, 12);
-}
-
 app.get("/", (req, res) => {
-  console.log("this is running");
   return res.json({
     success: true,
     message: "Your server is up and runningggggg....",
@@ -104,9 +83,6 @@ const adminUser = {
 
 app.post("/api/admin/login", (req, res) => {
   const { username, password } = req.body;
-
-  console.log(username,password,adminUser.username,adminUser.password);
-  console.log(username===adminUser.username,password===adminUser.password);
 
   if (username !== adminUser.username || password !== adminUser.password) {
     return res.status(401).json({ message: "Invalid username or password" });

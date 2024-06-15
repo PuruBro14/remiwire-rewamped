@@ -1,19 +1,27 @@
+const UserModel = require("../../models/User");
 const AddressModel = require("../../models/Address.model");
 
 exports.fetchAllAddress = async (req, res) => {
   try {
     const userId = req.user.id;
-    console.log('userId',userId);
+    console.log("userId", userId);
 
-    const userAddress = await AddressModel.find({ userId: userId }).sort({
-      createdAt: -1,
-    });
+    // Fetch user and populate address
+    const user = await UserModel.findById(userId).populate("address");
 
-    console.log("userAddress", userAddress);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    // Log the populated user address for debugging
+    console.log("User with populated addresses:", user);
 
     res.status(200).json({
       success: true,
-      data: userAddress,
+      data: user.address,
     });
   } catch (error) {
     console.error(error);

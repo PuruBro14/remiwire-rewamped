@@ -1,11 +1,12 @@
 const AddressModel = require("../../models/Address.model");
+const User = require("../../models/User"); // Adjust the path as needed
 const Joi = require("joi");
 
 const addressValidation = Joi.object({
   fullName: Joi.string().required(),
   address: Joi.string().required(),
   city: Joi.string().required(),
-  locality: Joi.string().required(), 
+  locality: Joi.string().required(),
   landmark: Joi.string().required(),
   state: Joi.string().required(),
   country: Joi.string().required(),
@@ -24,11 +25,12 @@ exports.createAddress = async (req, res) => {
     });
   }
   try {
+    // Create a new address document
     let createAddress = await AddressModel.create({
       fullName: value.fullName,
       address: value.address,
       city: value.city,
-      locality: value.locality, 
+      locality: value.locality,
       landmark: value.landmark,
       state: value.state,
       country: value.country,
@@ -36,15 +38,31 @@ exports.createAddress = async (req, res) => {
       phone: value.phone,
       userId: userId,
     });
+
+    // Update the user's address field with the new address ObjectId
+    let user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    user.address.push(createAddress._id);
+    await user.save();
+
+    // Populate the user's address field
+    const populatedUser = await User.findById(userId).populate("address");
+
     return res.status(201).json({
       success: true,
       message: "Address successfully added.",
-      data: createAddress,
+      data: populatedUser,
     });
   } catch (error) {
     return res.status(500).json({
       success: false,
-      message: `Internal Server Error.`,
+      message: "Internal Server Error.",
       error: error.message,
     });
   }

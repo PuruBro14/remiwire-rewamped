@@ -1,5 +1,5 @@
 import { toast } from "react-hot-toast";
-import { setLoading, setToken,setRoleValue } from "../../utils/authSlice";
+import { setLoading, setToken, setRole } from "../../utils/authSlice";
 import { apiConnector } from "./apiconnector";
 import { bookOrderEndpoints, endpoints } from "../apis";
 import { setUser } from "../../utils/profileSlice";
@@ -105,7 +105,7 @@ export const logout = (navigate) => {
     dispatch(setLoading(false));
     dispatch(setToken(null));
     dispatch(setUser(null));
-    dispatch(setRoleValue(null))
+    dispatch(setRole(null))
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     toast.success("Logged Out");

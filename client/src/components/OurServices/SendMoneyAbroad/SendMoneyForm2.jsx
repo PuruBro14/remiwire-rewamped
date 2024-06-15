@@ -4,6 +4,7 @@ import { setformValue } from "../../features/SendMoneySlice";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { fetchFxRate, registerRemitter } from "../../../services/operations/SendMoneyApi";
+import { apiConnector } from "../../../services/operations/apiconnector";
 
 export default function SendMoneyForm2({
   setFormStep,
@@ -11,6 +12,7 @@ export default function SendMoneyForm2({
   documentProof,
   fetchFxDetails
 }) {
+  const{token}=useSelector((state)=>state.auth)
   const [errors, setErrors] = useState({
     pancardNumber: "",
     panCardImage: "",
@@ -40,6 +42,8 @@ export default function SendMoneyForm2({
   const panRegex = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
   return panRegex.test(pan);
 }
+
+console.log('tokennnnnnnnnnn-------->',token);
 
 const handleSubmit = async (e) => {
   e.preventDefault();
@@ -108,7 +112,7 @@ const handleSubmit = async (e) => {
       receivingCurrency
     );
 
-    const registerRemitterPromise = registerRemitter();
+    const registerRemitterPromise = registerRemitter(token);
 
     try {
       const [fxRateResult, remitterResult] = await Promise.all([
@@ -162,28 +166,33 @@ const handleSubmit = async (e) => {
     setErrors({ ...errors, [fieldName]: "" });
   };
 
-  const fetchRemiiterDetails = async () => {
-    const response = await fetch(
-      "http://13.50.14.42:8100/api/v1/remitters/prod_cf_rem_005"
-    );
-    const data = await response.json();
+const fetchRemiiterDetails = async (token, dispatch, setGetRemiiterDetails) => {
+  try {
+    const response = await apiConnector("GET", "http://localhost:8100/api/v1/remitters/prod_cf_rem_005", null, {
+      Authorization: `Bearer ${token}`,
+    });
 
-    console.log("data", data);
-    const { name, account_number, ifsc, email, phone_number } = data;
+    console.log('response',response);
+
+    console.log("data", response?.data);
+    const { name, account_number, ifsc, email, phone_number } = response?.data;
     dispatch(
       setformValue({
         remiterFirstName: name,
         remiterAccountNo: account_number,
         remiterIFSCCode: ifsc,
         remiterMobileNo: phone_number,
-        remiterEmailID: data?.email,
+        remiterEmailID: email,
       })
     );
-    setGetRemiiterDetails(data);
-  };
+    setGetRemiiterDetails(response?.data);
+  } catch (err) {
+    console.error("Error fetching remitter details:", err);
+  }
+};
 
   useEffect(() => {
-    fetchRemiiterDetails();
+    fetchRemiiterDetails(token,dispatch,setGetRemiiterDetails);
   }, []);
 
 

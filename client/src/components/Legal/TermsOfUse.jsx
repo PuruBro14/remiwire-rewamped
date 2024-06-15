@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import Terms from "./assets/img/terms.jpg";
 export default function TermsOfUse() {
-
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);

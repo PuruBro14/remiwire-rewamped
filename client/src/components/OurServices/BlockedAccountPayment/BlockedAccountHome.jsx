@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "../assets/css/ourservices.css";
 import image1 from "../assets/img/blocked.jpg";
-import countriesList from "../../../utils/countryList";
 import BlockedAccountForm1 from "./BlockedAccountForm1";
 import BlockedAccountForm2 from "./BlockedAccountForm2";
 import BlockedAccountForm3 from "./BlockedAccountForm3";
@@ -12,13 +11,12 @@ import { useSelector } from "react-redux";
 import BlockedAccountBifurcation from "./BlockedAccountBifurcation";
 
 export default function BlockedAccountHome() {
-  const {token}=useSelector((state)=>state.auth)
-    const [tabName, setTabName] = useState("Login");
+  const { token } = useSelector((state) => state.auth);
+  const [tabName, setTabName] = useState("Login");
   const [isLoggedIn, setIsLoggedIn] = useState(() => {
     const token = JSON.parse(localStorage.getItem("token"));
     return token || false;
   });
-  const isUserLoggedIn = localStorage.getItem("sendmoneyloggedIn") === 'true';
   const [formData, setFormData] = useState({
     transferFromCountry: "India",
     transferFromState: "",
@@ -27,7 +25,7 @@ export default function BlockedAccountHome() {
     transferTo: "Germany",
     receivingCurrency: "Euro",
   });
-    const [formStep, setFormStep] = useState(3);
+  const [formStep, setFormStep] = useState(3);
 
   const [showLoginModal, setShowLoginModal] = useState(false);
 
@@ -38,13 +36,10 @@ export default function BlockedAccountHome() {
   });
 
   const [chargesData, setChargesData] = useState();
-  const[fxRate,setFxRate]=useState();
+  const [fxRate, setFxRate] = useState();
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
-    console.log(formData);
-    // make axios request
   };
 
   useEffect(() => {
@@ -54,9 +49,8 @@ export default function BlockedAccountHome() {
   useEffect(() => {
     window.scrollTo(0, 0);
     if (token) {
-      console.log('runned------>');
-      setIsLoggedIn(true)
-      setShowLoginModal(false)
+      setIsLoggedIn(true);
+      setShowLoginModal(false);
     }
   }, [token]);
 
@@ -68,18 +62,13 @@ export default function BlockedAccountHome() {
     setChargesData(data);
   };
 
-  const getShowModalData=(data)=>{
-    console.log('-------------->data',data);
-    setShowLoginModal(data)
-  }
+  const getShowModalData = (data) => {
+    setShowLoginModal(data);
+  };
 
-  console.log('isLoggedIn', isLoggedIn, showLoginModal, 'formStep', formStep, isUserLoggedIn);
-
-  const fetchFxDetails=(data)=>{
-    console.log('data',data);
-    setFxRate(data)
-  }
-
+  const fetchFxDetails = (data) => {
+    setFxRate(data);
+  };
 
   return (
     <div className="container mx-auto px-4">
@@ -112,11 +101,13 @@ export default function BlockedAccountHome() {
                 {formStep === 0 && (
                   <>
                     {" "}
-                    <BlockedAccountForm1 setFormStep={setFormStep}
+                    <BlockedAccountForm1
+                      setFormStep={setFormStep}
                       isLoggedIn={isLoggedIn}
                       fetchChargesData={fetchChargesData}
                       setShowLoginModal={setShowLoginModal}
-                      getShowModalData={getShowModalData} />
+                      getShowModalData={getShowModalData}
+                    />
                   </>
                 )}
 
@@ -130,7 +121,6 @@ export default function BlockedAccountHome() {
                     />{" "}
                   </>
                 )}
-                
 
                 {formStep === 2 && (
                   <>
@@ -152,9 +142,6 @@ export default function BlockedAccountHome() {
                     />{" "}
                   </>
                 )}
-
-
-
               </div>
             </>
           )}
@@ -172,7 +159,10 @@ export default function BlockedAccountHome() {
           getTabName={getTabName}
         >
           {tabName === "Login" ? (
-            <SendMoneyLogin setIsLoggedIn={setIsLoggedIn} setShowLoginModal={setShowLoginModal}/>
+            <SendMoneyLogin
+              setIsLoggedIn={setIsLoggedIn}
+              setShowLoginModal={setShowLoginModal}
+            />
           ) : (
             <SendMoneyRegister />
           )}

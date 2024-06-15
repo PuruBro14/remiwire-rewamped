@@ -24,17 +24,33 @@ body {
 }
 
 .card {
-    border-radius: 5px;
-    -webkit-box-shadow: 0 1px 2.94px 0.06px rgba(4, 26, 55, 0.16);
-    box-shadow: 0 1px 2.94px 0.06px rgba(4, 26, 55, 0.16);
-    border: none;
-    margin-bottom: 40px;
-    -webkit-transition: all 0.3s ease-in-out;
-    transition: all 0.3s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+    height: 140px;
+}
+
+.card:hover {
+    transform: scale(1.05);
 }
 
 .card .card-block {
     padding: 25px;
+    text-align: center;
+}
+
+.card h3 {
+    font-size: 1rem;
+    /* Adjusted font size */
+}
+
+.card p {
+    font-size: 0.875rem;
+    /* Adjusted font size */
 }
 
 .order-card i {

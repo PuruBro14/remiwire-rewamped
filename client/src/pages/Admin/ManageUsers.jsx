@@ -8,7 +8,6 @@ const ManageUsers = () => {
  const {token}=useSelector((state)=>state.auth)
   const [orders, setOrders] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isViewModalOpen, setisViewModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(5);
@@ -26,7 +25,7 @@ const ManageUsers = () => {
     const toastId = toast.loading("Loading Users...");
     setLoading(true);
     try {
-      const response = await apiConnector("GET", 'http://13.50.14.42:8100/api/v1/fetchAllUsers', null, {
+      const response = await apiConnector("GET", 'http://localhost:8100/api/v1/fetchAllUsers', null, {
         Authorization: `Bearer ${token}`,
       });
       setLoading(false);
@@ -82,22 +81,6 @@ const ManageUsers = () => {
                   </svg>
                 </div>
               </div>
-              <div className="relative">
-                <select className="appearance-none h-full rounded-r border-t sm:rounded-r-none sm:border-r-0 border-r border-b block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500">
-                  <option>All</option>
-                  <option>Active</option>
-                  <option>Inactive</option>
-                </select>
-                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                  <svg
-                    className="fill-current h-4 w-4"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 20 20"
-                  >
-                    <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                  </svg>
-                </div>
-              </div>
             </div>
             <div className="block relative">
               <span className="h-full absolute inset-y-0 left-0 flex items-center pl-2">
@@ -141,7 +124,6 @@ const ManageUsers = () => {
                 <tbody>
                   {
                     displayedOrders?.map((currItem)=>{
-                      console.log('currItem',currItem);
                       return(
                         <tr>
                     <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">

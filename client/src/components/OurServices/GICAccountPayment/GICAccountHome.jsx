@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "../assets/css/ourservices.css";
 import image1 from "../assets/img/blocked.jpg";
-import countriesList from "../../../utils/countryList";
 import GICAccountForm1 from "./GICAccountForm1";
 import GICAccountForm2 from "./GICAccountForm2";
 import GICAccountForm3 from "./GICAccountForm3";
@@ -11,13 +10,13 @@ import { useSelector } from "react-redux";
 import GicAccountBifurcation from "./GicAccountBifurcation";
 
 export default function GICAccountHome() {
-   const {token}=useSelector((state)=>state.auth)
-    const [tabName, setTabName] = useState("Login");
+  const { token } = useSelector((state) => state.auth);
+  const [tabName, setTabName] = useState("Login");
   const [isLoggedIn, setIsLoggedIn] = useState(() => {
     const token = JSON.parse(localStorage.getItem("token"));
     return token || false;
   });
-  const isUserLoggedIn = localStorage.getItem("sendmoneyloggedIn") === 'true';
+  const isUserLoggedIn = localStorage.getItem("sendmoneyloggedIn") === "true";
   const [formData, setFormData] = useState({
     transferFromCountry: "India",
     transferFromState: "",
@@ -26,7 +25,7 @@ export default function GICAccountHome() {
     transferTo: "Canada",
     receivingCurrency: "Cad",
   });
-  const [formStep, setFormStep] = useState(0);
+  const [formStep, setFormStep] = useState(2);
 
   const [showLoginModal, setShowLoginModal] = useState(false);
 
@@ -36,15 +35,12 @@ export default function GICAccountHome() {
     blockACSheetDoc: "",
   });
 
-   const [chargesData, setChargesData] = useState();
-   
-   const[fxRate,setFxRate]=useState();
+  const [chargesData, setChargesData] = useState();
+
+  const [fxRate, setFxRate] = useState();
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
-    console.log(formData);
-    // make axios request
   };
 
   const handleChange = (event) => {
@@ -55,9 +51,8 @@ export default function GICAccountHome() {
   useEffect(() => {
     window.scrollTo(0, 0);
     if (token) {
-      console.log('runned------>');
-      setIsLoggedIn(true)
-      setShowLoginModal(false)
+      setIsLoggedIn(true);
+      setShowLoginModal(false);
     }
   }, [token]);
 
@@ -69,18 +64,13 @@ export default function GICAccountHome() {
     setChargesData(data);
   };
 
-  const getShowModalData=(data)=>{
-    console.log('-------------->data',data);
-    setShowLoginModal(data)
-  }
+  const getShowModalData = (data) => {
+    setShowLoginModal(data);
+  };
 
-  console.log('isLoggedIn', isLoggedIn, showLoginModal, 'formStep', formStep, isUserLoggedIn);
-
-  const fetchFxDetails=(data)=>{
-    console.log('data',data);
-    setFxRate(data)
-  }
-
+  const fetchFxDetails = (data) => {
+    setFxRate(data);
+  };
 
   return (
     <div className="container mx-auto px-4">
@@ -113,11 +103,13 @@ export default function GICAccountHome() {
                 {formStep === 0 && (
                   <>
                     {" "}
-                    <GICAccountForm1 setFormStep={setFormStep}
+                    <GICAccountForm1
+                      setFormStep={setFormStep}
                       isLoggedIn={isLoggedIn}
                       fetchChargesData={fetchChargesData}
                       setShowLoginModal={setShowLoginModal}
-                      getShowModalData={getShowModalData} />
+                      getShowModalData={getShowModalData}
+                    />
                   </>
                 )}
                 {formStep === 1 && (
@@ -140,7 +132,7 @@ export default function GICAccountHome() {
                   </>
                 )}
 
-                  {formStep === 3 && (
+                {formStep === 3 && (
                   <>
                     <GicAccountBifurcation
                       setFormStep={setFormStep}
@@ -151,7 +143,6 @@ export default function GICAccountHome() {
                     />{" "}
                   </>
                 )}
-                
               </div>
             </>
           )}
@@ -169,7 +160,10 @@ export default function GICAccountHome() {
           getTabName={getTabName}
         >
           {tabName === "Login" ? (
-            <SendMoneyLogin setIsLoggedIn={setIsLoggedIn} setShowLoginModal={setShowLoginModal}/>
+            <SendMoneyLogin
+              setIsLoggedIn={setIsLoggedIn}
+              setShowLoginModal={setShowLoginModal}
+            />
           ) : (
             <SendMoneyRegister />
           )}

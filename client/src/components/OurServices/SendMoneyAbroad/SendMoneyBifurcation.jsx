@@ -4,6 +4,7 @@ import { load } from "@cashfreepayments/cashfree-js";
 import { useParams, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { apiConnector } from "../../../services/operations/apiconnector";
+import { toast } from 'react-hot-toast';
 
 export default function SendMoneyBifurcation({ setFormStep, documentProof, fxRate }) {
   const [orderId, setOrderId] = useState("");
@@ -34,7 +35,7 @@ export default function SendMoneyBifurcation({ setFormStep, documentProof, fxRat
 
   const getSessionId = async () => {
     try {
-      const res = await apiConnector('POST', 'http://13.50.14.42:8100/api/v1/payment', null,{
+      const res = await apiConnector('POST', 'http://localhost:8100/api/v1/payment', null,{
         Authorization: `Bearer ${token}`,
       });
       if (res.data) {
@@ -75,7 +76,7 @@ export default function SendMoneyBifurcation({ setFormStep, documentProof, fxRat
 
         if (res) {
           console.log("Redirection");
-          verifyPayment();
+          verifyPayment(token);
           console.log("this done");
           console.log("this not done end----->");
         }
@@ -85,29 +86,48 @@ export default function SendMoneyBifurcation({ setFormStep, documentProof, fxRat
     }
   };
 
-  const verifyPayment = async () => {
-    try {
-     let res = await axios.post(
-      "http://13.50.14.42:8100/api/v1/verify",
+const verifyPayment = async (token) => { 
+  if (!token) {
+    console.error('Token is required for authentication');
+    return;
+  }
+
+  const orderId = localStorage.getItem('orderId');
+  if (!orderId) {
+    console.error('Order ID is missing');
+    return;
+  }
+
+  const toastId = toast.loading("Verifying payment...");
+
+  try {
+    let res = await apiConnector(
+      "POST",
+      "http://localhost:8100/api/v1/verify",
       {
-        orderId: localStorage.getItem('orderId'),
+        orderId: orderId,
         serviceType: "SendMoneyAbroad"
       },
       {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
+        Authorization: `Bearer ${token}` // Pass headers directly here
+      },
     );
 
-      if (res && res.data) {
-        alert("Payment verified");
-        setIsPaymentVerified(true);
-      }
-    } catch (error) {
-      console.log(error);
+    if (res && res.data) {
+      toast.success("Payment verified");
+      alert("Payment verified");
+      setIsPaymentVerified(true);
+    } else {
+      toast.error("Payment verification failed");
+      console.error("Unexpected response format", res);
     }
-  };
+  } catch (error) {
+    toast.error("Payment verification failed");
+    console.error("Error during payment verification", error);
+  } finally {
+    toast.dismiss(toastId);
+  }
+};
 
   useEffect(() => {
     setSessionId(isSessionId);

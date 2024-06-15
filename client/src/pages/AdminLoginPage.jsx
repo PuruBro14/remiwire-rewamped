@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { toast } from 'react-hot-toast';
 import axios from 'axios';
-import { setRoleValue,setToken } from "../utils/authSlice";
+import { setRole,setToken } from "../utils/authSlice";
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
@@ -21,7 +21,7 @@ const LoginPage = () => {
       localStorage.setItem('role', role);
       toast.success('Login successful!');
       dispatch(setToken(response?.data?.token))
-      dispatch(setRoleValue("admin"))
+      dispatch(setRole("admin"))
       navigate("/admin/*")
       console.log('------->runned');
     } catch (error) {

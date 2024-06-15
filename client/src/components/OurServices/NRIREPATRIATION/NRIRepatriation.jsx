@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "../assets/css/ourservices.css";
 import image1 from "../assets/img/nri.jpg";
-import countriesList from "../../../utils/countryList";
 import NRIRepatriationForm1 from "./NRIRepatriationForm1";
 import NRIRepatriationForm2 from "./NRIRepatriationForm2";
 import NRIRepatriationForm3 from "./NRIRepatriationForm3";
@@ -11,14 +10,12 @@ import NRIRepatrirationCustomer from "./NRIRepatriration";
 import NRIRepatriationBifurcation from "./NRIRepatriationBifurcation";
 import { useSelector } from "react-redux";
 
-
 export default function NRIRepatriation() {
-  const user = useSelector((state) => state.profile.user?.email);
-  const {token}=useSelector((state)=>state.auth)
+  const { token } = useSelector((state) => state.auth);
   const [chargesData, setChargesData] = useState();
   const [tabName, setTabName] = useState("Login");
   const [isLoggedIn, setIsLoggedIn] = useState(() => {
-  const token = JSON.parse(localStorage.getItem("token"));
+    const token = JSON.parse(localStorage.getItem("token"));
     return token || false;
   });
   const [formStep, setFormStep] = useState(2);
@@ -31,18 +28,17 @@ export default function NRIRepatriation() {
     blockACSheetDoc: "",
   });
 
-  const[fxRate,setFxRate]=useState();
+  const [fxRate, setFxRate] = useState();
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-   useEffect(() => {
+  useEffect(() => {
     window.scrollTo(0, 0);
     if (token) {
-      console.log('runned------>');
-      setIsLoggedIn(true)
-      setShowLoginModal(false)
+      setIsLoggedIn(true);
+      setShowLoginModal(false);
     }
   }, [token]);
 
@@ -54,17 +50,13 @@ export default function NRIRepatriation() {
     setChargesData(data);
   };
 
-  const getShowModalData=(data)=>{
-    console.log('-------------->data',data);
-    setShowLoginModal(data)
-  }
+  const getShowModalData = (data) => {
+    setShowLoginModal(data);
+  };
 
-  console.log('isLoggedIn', isLoggedIn, showLoginModal, 'formStep', formStep);
-
-  const fetchFxDetails=(data)=>{
-    console.log('data',data);
-    setFxRate(data)
-  }
+  const fetchFxDetails = (data) => {
+    setFxRate(data);
+  };
 
   return (
     <div className="container mx-auto px-4">
@@ -95,17 +87,19 @@ export default function NRIRepatriation() {
                 {formStep === 0 && (
                   <>
                     {" "}
-                    <NRIRepatriationForm1 setFormStep={setFormStep}
+                    <NRIRepatriationForm1
+                      setFormStep={setFormStep}
                       isLoggedIn={isLoggedIn}
                       fetchChargesData={fetchChargesData}
                       setShowLoginModal={setShowLoginModal}
-                      getShowModalData={getShowModalData} />
+                      getShowModalData={getShowModalData}
+                    />
                   </>
                 )}
                 {formStep === 1 && (
                   <>
                     <NRIRepatriationForm2
-                       setFormStep={setFormStep}
+                      setFormStep={setFormStep}
                       documentProof={documentProof}
                       setDocumentProofs={setDocumentProofs}
                       fetchFxDetails={fetchFxDetails}
@@ -113,7 +107,7 @@ export default function NRIRepatriation() {
                   </>
                 )}
 
-                  {formStep === 2 && isLoggedIn && (
+                {formStep === 2 && isLoggedIn && (
                   <>
                     <NRIRepatrirationCustomer
                       setFormStep={setFormStep}
@@ -122,7 +116,6 @@ export default function NRIRepatriation() {
                     />
                   </>
                 )}
-                
 
                 {formStep === 3 && (
                   <>
@@ -160,7 +153,10 @@ export default function NRIRepatriation() {
           getTabName={getTabName}
         >
           {tabName === "Login" ? (
-            <SendMoneyLogin setIsLoggedIn={setIsLoggedIn} setShowLoginModal={setShowLoginModal}/>
+            <SendMoneyLogin
+              setIsLoggedIn={setIsLoggedIn}
+              setShowLoginModal={setShowLoginModal}
+            />
           ) : (
             <SendMoneyRegister />
           )}

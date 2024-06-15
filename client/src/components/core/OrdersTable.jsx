@@ -61,7 +61,7 @@ const OrdersTable = ({userOrders,loading}) => {
                                     {entry?.orderStatus || "Paid"}
                                 </Td>
                                 <Td className='text-lg font-medium text-richblack-600  border-none relative md:right-20'>
-                                    {entry?.orderDate || "2024-06-10"}
+                                    {entry?.orderDate || entry?.createdAt || "2024-06-10"}
                                 </Td>
                                 <Td className='text-lg font-medium text-richblack-600  border-none relative md:right-10'>
                                     {entry?.orderAmount}{entry?.currency || "1INR"}

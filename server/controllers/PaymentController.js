@@ -47,7 +47,7 @@ exports.createPayment = async (req, res) => {
 
     return res.status(200).send(response.data);
   } catch (error) {
-    console.error("Internal server error:", error);
+    console.error("Internal server error----------------------<:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 };

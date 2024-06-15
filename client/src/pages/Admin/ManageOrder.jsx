@@ -12,7 +12,9 @@ const ManageOrder = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(5);
   const [searchQuery, setSearchQuery] = useState('');
-  const[userOrder,setUserOrder]=useState()
+  const[userOrder,setUserOrder]=useState();
+  const [selectedServiceType, setSelectedServiceType] = useState('All');
+  const [filteredOrders, setFilteredOrders] = useState([]);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -35,7 +37,7 @@ const ManageOrder = () => {
     const toastId = toast.loading("Loading orders...");
     setLoading(true);
     try {
-      const response = await apiConnector("GET", 'http://13.50.14.42:8100/api/v1/fetchAllOrders', null, {
+      const response = await apiConnector("GET", 'http://localhost:8100/api/v1/fetchAllOrders', null, {
         Authorization: `Bearer ${token}`,
       });
       setLoading(false);
@@ -52,13 +54,11 @@ const ManageOrder = () => {
     fetchUserOrders();
   }, [token]);
 
-  console.log('token------------>',token);
-
   const fetchInvididualOrder = async (orderId) => {
     const toastId = toast.loading("Loading orders...");
     setLoading(true);
     try {
-      const response = await apiConnector("GET", `http://13.50.14.42:8100/api/v1/fetchOrderById/${orderId}`, null, {
+      const response = await apiConnector("GET", `http://localhost:8100/api/v1/fetchOrderById/${orderId}`, null, {
         Authorization: `Bearer ${token}`,
       });
       setLoading(false);
@@ -71,19 +71,50 @@ const ManageOrder = () => {
     }
   };
 
+  const fetchOrderByServiceType = async (serviceType) => {
+    const toastId = toast.loading("Loading orders...");
+    setLoading(true);
+    try {
+      const response = await apiConnector("GET", `http://localhost:8100/api/v1/fetchOrderByServiceType/${serviceType}`, null, {
+        Authorization: `Bearer ${token}`,
+      });
+      setLoading(false);
+      toast.dismiss(toastId);
+      setFilteredOrders(response?.data?.data);
+    } catch (error) {
+      console.log('Error:', error);
+      toast.dismiss(toastId);
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     fetchUserOrders();
   }, [token]);
 
-  console.log('userOrder',userOrder);
+  useEffect(() => {
+    if (selectedServiceType !== "All") {
+      fetchOrderByServiceType(selectedServiceType);
+    } else {
+      setFilteredOrders(orders);
+    }
+  }, [selectedServiceType, orders]);
 
-  const filteredOrders = orders.filter(order => 
+  const handleServiceTypeChange = (e) => {
+    setSelectedServiceType(e.target.value);
+  };
+
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const filteredAndSearchedOrders = filteredOrders.filter(order => 
     order.orderId.includes(searchQuery) ||
     order.placedBy.includes(searchQuery)
   );
 
-   const totalPages = Math.ceil(filteredOrders.length / itemsPerPage);
-  const displayedOrders = filteredOrders.slice(
+    const totalPages = Math.ceil(filteredAndSearchedOrders.length / itemsPerPage);
+  const displayedOrders = filteredAndSearchedOrders.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
@@ -118,21 +149,27 @@ const ManageOrder = () => {
                   </div>
                 </div>
                 <div className="relative">
-                  <select className="appearance-none h-full rounded-r border-t sm:rounded-r-none sm:border-r-0 border-r border-b block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500">
-                    <option>All</option>
-                    <option>Active</option>
-                    <option>Inactive</option>
-                  </select>
-                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                    <svg
-                      className="fill-current h-4 w-4"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 20 20"
-                    >
-                      <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                    </svg>
-                  </div>
+                <select className="appearance-none h-full rounded-r border-t sm:rounded-r-none sm:border-r-0 border-r border-b block w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500"
+                onChange={handleServiceTypeChange}
+                >
+                  <option>All</option>
+                  <option value="SendMoneyAbroad">Send Money Abroad</option>
+                  <option value="Forex Currency Exchange">Forex Currency Exchange</option>
+                  <option value="NRIRepatriation">NRI Repatriation</option>
+                  <option value="BlockedAccountPayment">Blocked Account Payment</option>
+                  <option value="GICAccountPayment">GIC Account Payment</option>
+                </select>
+                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                  <svg
+                    className="fill-current h-4 w-4"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                  >
+                    <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                  </svg>
                 </div>
+              </div>
+
               </div>
               <div className="block relative">
                 <span className="h-full absolute inset-y-0 left-0 flex items-center pl-2">
@@ -147,7 +184,7 @@ const ManageOrder = () => {
                   placeholder="Search"
                   className="appearance-none rounded-r rounded-l sm:rounded-l-none border border-gray-400 border-b block pl-8 pr-6 py-2 w-full bg-white text-sm placeholder-gray-400 text-gray-700 focus:bg-white focus:placeholder-gray-600 focus:text-gray-700 focus:outline-none"
                   value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onChange={handleSearchChange}
                 />
               </div>
             </div>
@@ -184,7 +221,7 @@ const ManageOrder = () => {
                     {
                       displayedOrders?.map((currItem)=>{
                         return(
- <tr>
+                        <tr>
                       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                         <div className="flex items-center">
                           <div className="ml-3">
@@ -235,7 +272,7 @@ const ManageOrder = () => {
                             onClick={() => {
                               fetchInvididualOrder(currItem?.orderId);
                               setisViewModalOpen(!isViewModalOpen);
-  }}
+                            }}
                           />
                           <FaEdit
                             className="cursor-pointer"

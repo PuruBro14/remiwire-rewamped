@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { setformValue } from "../../features/SendMoneySlice";
 import axios from "axios";
 import { uploadDocument } from "../../../services/operations/SendMoneyApi";
+import toast from "react-hot-toast";
 
 export default function NRIRepatrirationCustomer({
   setFormStep,
@@ -17,6 +18,8 @@ export default function NRIRepatrirationCustomer({
     issueDate: "",
     expireDate: "",
   });
+
+  const [document, setDocument] = useState(null);
 
   const dispatch = useDispatch();
   const sendMoneyAboroadForms = useSelector(
@@ -104,7 +107,14 @@ export default function NRIRepatrirationCustomer({
     setErrors({ ...errors, [fieldName]: "" });
   };
 
-  console.log("errors", errors);
+  const handleFileChange = (e) => {
+    setDocument(e.target.files[0]);
+    setDocumentProofs((prevState) => ({
+      ...prevState,
+      customerPassportImage: e.target.files[0],
+    }));
+    clearError("customerPassportImage");
+  };
 
   return (
     <>
@@ -152,13 +162,7 @@ export default function NRIRepatrirationCustomer({
                   className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer"
                   id="file_input"
                   type="file"
-                  onChange={(e) => {
-                    handleSubmitChangeFormDoc(
-                      "customerPassportImage",
-                      e.target.files[0]
-                    );
-                    clearErrorDoc("customerPassportImage");
-                  }}
+                   onChange={handleFileChange}
                 />
                 {errors.customerPassportImage && (
                   <span className="text-[red] text-[11px] italic">

@@ -1,4 +1,5 @@
 const Order = require("../models/Order");
+const BookModel = require("../models/bookOrder.model");
 
 exports.getAllOrders = async (req, res) => {
   try {
@@ -73,9 +74,13 @@ exports.getAdminOrders = async (req, res) => {
 
     const userOrders = await Order.find(filter).sort({ createdAt: -1 });
 
+    const ForexCurrencyExchangeOrders=await BookModel.find(filter).sort({createdAt:-1})
+
     const SendMoneyAbroad = userOrders.filter(
       (order) => order.serviceType === "SendMoneyAbroad"
     );
+
+    const ForexCurrencyExchange = ForexCurrencyExchangeOrders;
 
     const NRIRepatriation = userOrders.filter(
       (order) => order.serviceType === "NRIRepatriation"
@@ -89,18 +94,14 @@ exports.getAdminOrders = async (req, res) => {
       (order) => order.serviceType === "GICAccountPayment"
     );
 
-    const OverseasEducationLoan = userOrders.filter(
-      (order) => order.serviceType === "OverseasEducationLoan"
-    );
-
     res.status(200).json({
       success: true,
       data: {
         SendMoneyAbroad,
+        ForexCurrencyExchange,
         NRIRepatriation,
         BlockedAccountPayment,
-        GICAccountPayment,
-        OverseasEducationLoan,
+        GICAccountPayment
       },
     });
   } catch (error) {
