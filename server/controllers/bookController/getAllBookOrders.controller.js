@@ -1,8 +1,9 @@
 const BookModel = require("../../models/bookOrder.model");
 
 exports.getAllOrders = async (req, res) => {
+  const userId=req.user.id
   try {
-    let allOrders = await BookModel.find({})
+    let allOrders = await BookModel.find({userId:userId})
       .populate("userId") 
     if (allOrders.length === 0) {
       return res.status(404).json({
