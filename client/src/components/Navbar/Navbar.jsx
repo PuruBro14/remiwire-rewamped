@@ -86,14 +86,6 @@ const Navbar = ({}) => {
     dispatch(setScrollToComponentContact(true));
   };
 
-  useEffect(()=>{
-    console.log('this calleddd---------<dd->');
-    if(adminToken){
-      console.log('tjis called->');
-      dispatch(logout(navigate))
-    }
-  },[adminToken])
-
   return (
     <div className="flex h-20 items-center w-full justify-center transition-all duration-200">
       <div className="w-11/12 mx-auto items-center justify-between">

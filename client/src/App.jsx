@@ -1,9 +1,7 @@
 import Home from "./components/HomePage/Home";
 import Login from "./components/Form/Login";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-
+import {Routes,Route} from "react-router-dom";
 import PrepaidTravelCard from "./components/OurServices/PrepaidTravelCard";
-
 import NRIRepatriation from "./components/OurServices/NRIREPATRIATION/NRIRepatriation";
 import BlockedAccountHome from "./components/OurServices/BlockedAccountPayment/BlockedAccountHome";
 import OverseasEducationLoan from "./components/OurServices/OverseasEducationLoan";
@@ -31,7 +29,6 @@ import CookiePolicy from "./components/Legal/CookiePolicy";
 import PrivacyPolicy from "./components/Legal/PrivacyPolicy";
 import TermsOfUse from "./components/Legal/TermsOfUse";
 import AdminNavbar from "./pages/Admin/AdminNavbar";
-import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import LoginPage from "./pages/AdminLoginPage";
 import AdminProtectedRoute from "./components/Auth/AdminProtectedRoute";
@@ -39,20 +36,17 @@ import AdminProtectedRoute from "./components/Auth/AdminProtectedRoute";
 function App() {
   const {role,roleValue}=useSelector((state)=>state.auth)
    const { token } = useSelector((state) => state.auth);
-
-  console.log("token",token,'roleValue',roleValue,'role',role);
+   const adminToken=localStorage.getItem("adminToken")
 
   return (
     <div>
-            {(role === 'admin' || roleValue==="admin")? <AdminNavbar username={"Admin"}/> : <Header className="sticky top-0"/>}
+          {adminToken? <AdminNavbar username={"Admin"}/> : <Header className="sticky top-0"/>}
 
       <Routes>
         <Route
           path="/"
           element={
-            // <ProtectedRoute>
             <Home />
-            //</ProtectedRoute>
           }
         ></Route>
         <Route
@@ -108,9 +102,7 @@ function App() {
         <Route
           path="checkout"
           element={
-            // <ProtectedRoute>
             <Checkout />
-            // </ProtectedRoute>
           }
         ></Route>
         <Route path="settings" element={<Settings />}></Route>

@@ -12,6 +12,8 @@ const ManageUsers = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(5);
   const [searchQuery, setSearchQuery] = useState('');
+  const[orderId,setOrderId]=useState('');
+  const[orderStatus,setOrderStatus]=useState('');
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -25,7 +27,7 @@ const ManageUsers = () => {
     const toastId = toast.loading("Loading Users...");
     setLoading(true);
     try {
-      const response = await apiConnector("GET", 'http://13.50.14.42:8100/api/v1/fetchAllUsers', null, {
+      const response = await apiConnector("GET", 'http://localhost:8100/api/v1/fetchAllUsers', null, {
         Authorization: `Bearer ${adminToken}`,
       });
       setLoading(false);
@@ -52,6 +54,25 @@ const ManageUsers = () => {
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
+
+  const fetchInvididualOrder = async (orderId) => {
+    console.log('orderId----------->',orderId);
+    const toastId = toast.loading("Loading orders...");
+    setLoading(true);
+    try {
+      const response = await apiConnector("GET", `http://localhost:8100/api/v1/fetchOrderById/${orderId}`, null, {
+        Authorization: `Bearer ${adminToken}`,
+      });
+      setLoading(false);
+      toast.dismiss(toastId);
+      setOrderId(response.data.data.orderId)
+      setOrderStatus(response.data.data.orderStatus)
+    } catch (error) {
+      console.log('Error:', error);
+      toast.dismiss(toastId);
+      setLoading(false);
+    }
+  };
   
   return (
     <body className="antialiased font-sans bg-gray-200">
@@ -124,7 +145,6 @@ const ManageUsers = () => {
                 <tbody>
                   {
                     displayedOrders?.map((currItem)=>{
-                      console.log('currItem',currItem);
                       return(
                         <tr>
                     <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
@@ -157,7 +177,10 @@ const ManageUsers = () => {
                       <FaEye
                         className="cursor-pointer"
                         title="View History"
-                        onClick={openModal}
+                        onClick={() => {
+                              fetchInvididualOrder("TORID17182933432488100");
+                              setIsModalOpen(true);
+                            }}
                       />
                     </td>
                   </tr>
@@ -207,8 +230,8 @@ const ManageUsers = () => {
                 </thead>
                 <tbody>
                   <tr>
-                    <td>#151244545</td>
-                    <td>Delivered</td>
+                    <td>{orderId}</td>
+                    <td>{orderStatus}</td>
                   </tr>
                 </tbody>
               </table>

@@ -15,6 +15,8 @@ const ManageOrder = () => {
   const[userOrder,setUserOrder]=useState();
   const [selectedServiceType, setSelectedServiceType] = useState('All');
   const [filteredOrders, setFilteredOrders] = useState([]);
+  const [selectedStatus, setSelectedStatus] = useState('');
+  const[selectedOrderId,setSelectedOrderId]=useState();
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -37,7 +39,7 @@ const ManageOrder = () => {
     const toastId = toast.loading("Loading orders...");
     setLoading(true);
     try {
-      const response = await apiConnector("GET", 'http://13.50.14.42:8100/api/v1/fetchAllOrders', null, {
+      const response = await apiConnector("GET", 'http://localhost:8100/api/v1/fetchAllOrders', null, {
         Authorization: `Bearer ${adminToken}`,
       });
       setLoading(false);
@@ -58,7 +60,7 @@ const ManageOrder = () => {
     const toastId = toast.loading("Loading orders...");
     setLoading(true);
     try {
-      const response = await apiConnector("GET", `http://13.50.14.42:8100/api/v1/fetchOrderById/${orderId}`, null, {
+      const response = await apiConnector("GET", `http://localhost:8100/api/v1/fetchOrderById/${orderId}`, null, {
         Authorization: `Bearer ${adminToken}`,
       });
       setLoading(false);
@@ -75,7 +77,7 @@ const ManageOrder = () => {
     const toastId = toast.loading("Loading orders...");
     setLoading(true);
     try {
-      const response = await apiConnector("GET", `http://13.50.14.42:8100/api/v1/fetchOrderByServiceType/${serviceType}`, null, {
+      const response = await apiConnector("GET", `http://localhost:8100/api/v1/fetchOrderByServiceType/${serviceType}`, null, {
         Authorization: `Bearer ${adminToken}`,
       });
       setLoading(false);
@@ -118,6 +120,39 @@ const ManageOrder = () => {
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
+
+  const handleStatusChange = (event) => {
+    setSelectedStatus(event.target.value);
+  };
+
+  const handleUpdate = async () => {
+    if (!selectedStatus) {
+      alert('Please select a status');
+      return;
+    }
+
+    try {
+      const response = await apiConnector('PUT', `http://localhost:8100/api/v1/updateOrder/${selectedOrderId}`, {
+        orderStatus: selectedStatus,
+      },{
+        Authorization: `Bearer ${adminToken}`,
+      });
+
+      console.log('response',response);
+
+      if (response.data.success) {
+        alert('Order status updated successfully');
+        closeModal();
+        fetchUserOrders();
+      } else {
+        console.log('error',response.message);
+      }
+    } catch (error) {
+      console.error('Error updating order status:', error);
+    }
+  };
+
+  console.log('orderId',selectedOrderId);
 
   return (
     <>
@@ -242,7 +277,7 @@ const ManageOrder = () => {
                       </td>
                       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                         <p className="text-gray-900 whitespace-no-wrap">
-                          {currItem?.placedBy}
+                          {currItem?.orderType}
                         </p>
                       </td>
                       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
@@ -277,7 +312,10 @@ const ManageOrder = () => {
                           <FaEdit
                             className="cursor-pointer"
                             title="Update Order"
-                            onClick={openModal}
+                            onClick={()=>{
+                              setSelectedOrderId(currItem?.orderId)
+                              openModal();
+                            }}
                           />
                         </div>
                       </td>
@@ -322,7 +360,11 @@ const ManageOrder = () => {
               </h2>
               <hr />
               <div className="mt-5">
-                <select className="w-full ml-2 px-2 py-1 border rounded">
+                <select className="w-full ml-2 px-2 py-1 border rounded"
+              value={selectedStatus}
+              onChange={handleStatusChange}
+                >
+                   <option value="">Select status</option>
                   {statusList.map((statusItem) => (
                     <option key={statusItem} value={statusItem}>
                       {statusItem}
@@ -331,7 +373,9 @@ const ManageOrder = () => {
                 </select>
               </div>
               <div className="flex gap-3 mt-10">
-                <button className="border border-richblack-700 text-white bg-[#d40511]  px-[12px] py-[8px] text-richblack-100 rounded-md  hover:bg-[#d40511]">
+                <button className="border border-richblack-700 text-white bg-[#d40511]  px-[12px] py-[8px] text-richblack-100 rounded-md  hover:bg-[#d40511]"
+                onClick={handleUpdate}
+                >
                   Update
                 </button>
                 <button

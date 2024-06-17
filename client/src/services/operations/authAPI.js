@@ -101,7 +101,7 @@ export const setLogin = (
 };
 
 export const logout = (navigate) => {
-  console.log('this called-------------<');
+  console.log('this called-------------<huehuehue');
   return (dispatch) => {
     dispatch(setLoading(false));
     dispatch(setToken(null));

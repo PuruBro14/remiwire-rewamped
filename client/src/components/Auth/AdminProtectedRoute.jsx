@@ -5,7 +5,7 @@ const AdminProtectedRoute = ({ children }) => {
   const adminToken=localStorage.getItem("adminToken")
   const {  role } = useSelector((state) => state.auth);
 
-  if ( !adminToken && role !== "admin" ) {
+  if ( !adminToken ) {
     return <Navigate to="/admin/login" replace />;
   }else{
     console.log('this runned');
