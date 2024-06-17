@@ -50,7 +50,7 @@ const Navbar = ({}) => {
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
-  const { token } = useSelector((state) => state.auth);
+  const token  = localStorage.getItem("token");
   const adminToken= localStorage.getItem("adminToken")
 
   const toggleNavbar = () => {
