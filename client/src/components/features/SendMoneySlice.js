@@ -13,7 +13,7 @@ const initialState = {
   receivingAmountInINR: "",
   oneEurotoINR: "",
   pancardNumber: "",
-  pancardImage: "",
+  pancardimage: "",
   addressProof: "",
   passportImage: "",
   blockACSheetDoc: "",
@@ -53,7 +53,7 @@ const SendMoneySlice = createSlice({
         exchangeRate,
         receivingAmountInINR,
         pancardNumber,
-        pancardImage,
+        pancardimage,
         remiterFirstName,
         remiterLastName,
         remiterAccountNo,
@@ -101,8 +101,8 @@ const SendMoneySlice = createSlice({
           : state.receivingAmountInINR;
       state.pancardNumber =
         pancardNumber !== undefined ? pancardNumber : state.pancardNumber;
-      state.pancardImage =
-        pancardImage !== undefined ? pancardImage : state.pancardImage;
+      state.pancardimage =
+        pancardimage !== undefined ? pancardimage : state.pancardimage;
       state.remiterFirstName =
         remiterFirstName !== undefined
           ? remiterFirstName

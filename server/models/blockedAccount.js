@@ -56,7 +56,7 @@ const blockedAccountSchema = new mongoose.Schema({
       trim: true,
       required: true,
     },
-    pancardImage: {
+    pancardimage: {
       type: String,
       trim: true,
       required: true,

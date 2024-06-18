@@ -15,7 +15,7 @@ export const fetchFxRate = (
     try {
       const response = await apiConnector(
         "POST",
-        "http://13.50.14.42:8100/api/v1/fx-rate",
+        "http://localhost:8100/api/v1/fx-rate",
         {
           to_amount: 100,
           to_currency: "USD",
@@ -48,34 +48,21 @@ export const fetchFxRate = (
 };
 
 
-export const registerRemitter = (token) => {
+export const registerRemitter = (token,formData) => {
+  console.log('formData-------->',formData);
   return new Promise(async (resolve, reject) => {
     const toastId = toast.loading("Loading...");
     try {
       const response = await apiConnector(
         "POST",
-        "http://13.50.14.42:8100/api/v1/registerRemitter",
-        {
-          purpose: "EDUCATION",
-          account_number: "011234567991234",
-          ifsc: "SBIN0005943",
-          pan: "ABCDE1234F",
-          remitter_id: "prod_cf_rem_005",
-          name: "Siddharth",
-          address: "ABC street",
-          phone_number: "9090909090",
-          email: "abc@b.com",
-          nationality: "IN",
-          postal_code: "474005",
-          state: "madhya pradesh",
-          city: "gwalior",
-          bank_code: "3003",
-        },
+        "http://localhost:8100/api/v1/registerRemitter",
+        formData,
         {
           "x-client-id": import.meta.env.VITE_CLIENT_ID,
           "x-client-secret": import.meta.env.VITE_CLIENT_SECRET,
           "x-api-version": import.meta.env.VITE_API_VERSION,
           Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
         }
       );
 
@@ -99,7 +86,7 @@ export const registerBeneficiary = (beneficiaryData) => {
     try {
       const response = await apiConnector(
         "POST",
-        "http://13.50.14.42:8100/api/v1/registerBeneficiary",
+        "http://localhost:8100/api/v1/registerBeneficiary",
         {
           beneficiary_id: "bene_004",
           account_holder_name: beneficiaryData.beneficiaryName,
@@ -143,7 +130,7 @@ export const uploadDocument = (formData) => {
     try {
       const response = await apiConnector(
         "POST",
-        "http://13.50.14.42:8100/api/v1/upload-document",
+        "http://localhost:8100/api/v1/upload-document",
         formData,
         {
           "x-client-id": import.meta.env.VITE_CLIENT_ID,

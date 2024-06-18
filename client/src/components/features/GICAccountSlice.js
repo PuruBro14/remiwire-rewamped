@@ -12,7 +12,7 @@ const initialState = {
   receivingAmountInINR: "",
   oneEurotoINR: "",
   pancardNumber: "",
-  pancardImage: "",
+  pancardimage: "",
   passportNumber: "",
   passportImage: "",
   blockACSheetDoc: "",
@@ -43,7 +43,7 @@ const GICAccountSlice = createSlice({
         receivingAmountInEuro,
         receivingAmountInINR,
         pancardNumber,
-        pancardImage,
+        pancardimage,
         passportNumber,
         passportImage,
         blockACSheetDoc,
@@ -82,8 +82,8 @@ const GICAccountSlice = createSlice({
           : state.receivingAmountInINR;
       state.pancardNumber =
         pancardNumber !== undefined ? pancardNumber : state.pancardNumber;
-      state.pancardImage =
-        pancardImage !== undefined ? pancardImage : state.pancardImage;
+      state.pancardimage =
+        pancardimage !== undefined ? pancardimage : state.pancardimage;
       state.passportNumber =
         passportNumber !== undefined ? passportNumber : state.passportNumber;
       state.passportImage =

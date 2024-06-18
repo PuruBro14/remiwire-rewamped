@@ -21,7 +21,9 @@ exports.registerRemitter = async (req, res) => {
     bank_code,
   } = req.body;
 
-  // const { pancardImage, passportImage } = req?.files; 
+  const { pancardImage, passportImage } = req.files; 
+
+  console.log("pancard", pancardImage, passportImage);
 
   const client_id = process.env.CLIENT_ID;
   const client_secret = process.env.CLIENT_SECRET;
@@ -42,8 +44,8 @@ exports.registerRemitter = async (req, res) => {
       state,
       city,
       bank_code,
-      // pancardImage,
-      // passportImage,
+      pancardImage,
+      passportImage,
     ];
 
     console.log('requiredFields',requiredFields);
@@ -58,14 +60,14 @@ exports.registerRemitter = async (req, res) => {
       });
     }
 
-    // const pancardImgUpload = await uploadImageToCloudinary(
-    //   pancardImage,
-    //   process.env.FOLDER_NAME
-    // );
-    // const passportImgUpload = await uploadImageToCloudinary(
-    //   passportImage,
-    //   process.env.FOLDER_NAME
-    // );
+    const pancardImgUpload = await uploadImageToCloudinary(
+      pancardImage,
+      process.env.FOLDER_NAME
+    );
+    const passportImgUpload = await uploadImageToCloudinary(
+      passportImage,
+      process.env.FOLDER_NAME
+    );
 
     const remitterData = {
       userId: req.user.id, 
@@ -83,8 +85,8 @@ exports.registerRemitter = async (req, res) => {
       state,
       city,
       bank_code: bank_code,
-      // pancardImage: pancardImgUpload.url,
-      // passportImage: passportImgUpload.url,
+      pancardImage: pancardImgUpload.url,
+      passportImage: passportImgUpload.url,
     };
 
     const response = await axios.post(
@@ -142,8 +144,8 @@ exports.getRemitter = async (req, res) => {
       account_number: response.data.account_number,
       ifsc: response.data.ifsc,
       pan: response.data.pan,
-      // pancardImage: response.data.pancardImage,
-      // passportImage: response.data.passportImage,
+      pancardImage: response.data.pancardImage,
+      passportImage: response.data.passportImage,
       name: response.data.name,
       address: response.data.address,
       phone_number: response.data.phone_number,

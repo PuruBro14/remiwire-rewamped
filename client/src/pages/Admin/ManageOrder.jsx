@@ -17,6 +17,10 @@ const ManageOrder = () => {
   const [filteredOrders, setFilteredOrders] = useState([]);
   const [selectedStatus, setSelectedStatus] = useState('');
   const[selectedOrderId,setSelectedOrderId]=useState();
+  const [attachments, setAttachments] = useState([]);
+  const [isAttachmentModalOpen, setIsAttachmentModalOpen] = useState(false);
+  const [selectedAttachmentUrl, setSelectedAttachmentUrl] = useState('');
+
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -39,7 +43,7 @@ const ManageOrder = () => {
     const toastId = toast.loading("Loading orders...");
     setLoading(true);
     try {
-      const response = await apiConnector("GET", 'http://13.50.14.42:8100/api/v1/fetchAllOrders', null, {
+      const response = await apiConnector("GET", 'http://localhost:8100/api/v1/fetchAllOrders', null, {
         Authorization: `Bearer ${adminToken}`,
       });
       setLoading(false);
@@ -60,7 +64,7 @@ const ManageOrder = () => {
     const toastId = toast.loading("Loading orders...");
     setLoading(true);
     try {
-      const response = await apiConnector("GET", `http://13.50.14.42:8100/api/v1/fetchOrderById/${orderId}`, null, {
+      const response = await apiConnector("GET", `http://localhost:8100/api/v1/fetchOrderById/${orderId}`, null, {
         Authorization: `Bearer ${adminToken}`,
       });
       setLoading(false);
@@ -77,7 +81,7 @@ const ManageOrder = () => {
     const toastId = toast.loading("Loading orders...");
     setLoading(true);
     try {
-      const response = await apiConnector("GET", `http://13.50.14.42:8100/api/v1/fetchOrderByServiceType/${serviceType}`, null, {
+      const response = await apiConnector("GET", `http://localhost:8100/api/v1/fetchOrderByServiceType/${serviceType}`, null, {
         Authorization: `Bearer ${adminToken}`,
       });
       setLoading(false);
@@ -132,7 +136,7 @@ const ManageOrder = () => {
     }
 
     try {
-      const response = await apiConnector('PUT', `http://13.50.14.42:8100/api/v1/updateOrder/${selectedOrderId}`, {
+      const response = await apiConnector('PUT', `http://localhost:8100/api/v1/updateOrder/${selectedOrderId}`, {
         orderStatus: selectedStatus,
       },{
         Authorization: `Bearer ${adminToken}`,
@@ -152,7 +156,55 @@ const ManageOrder = () => {
     }
   };
 
-  console.log('orderId',selectedOrderId);
+const fetchRemitterDetails = async (remitterId) => {
+  try {
+    const response = await apiConnector('GET', `http://localhost:8100/api/v1/remitterDetails/${remitterId}`);
+    console.log('response',response);
+    if (response.data.success) {
+      setUserOrder(response.data.data);
+      setAttachments([response.data.data.pancardImage,response.data.data.passportImage])
+    } else {
+      console.error('Error fetching remitter details:', response.data.error);
+    }
+  } catch (error) {
+    console.error('Error fetching remitter details:', error);
+  }
+};
+
+useEffect(() => {
+  fetchRemitterDetails('prod_cf_rem_005');
+}, []);
+
+console.log('attachments',attachments);
+
+const handleDownload = async (base64Data,fileName) => { 
+  console.log('filenameeeeeeeeeeeeee',fileName);
+  try {
+    // Convert base64 data to a Blob
+    const byteCharacters = atob(base64Data);
+    const byteNumbers = new Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+    const blob = new Blob([byteArray], { type: 'application/octet-stream' });
+
+    // Create a blob URL for the Blob
+    const blobUrl = window.URL.createObjectURL(blob);
+
+    // Create an anchor element to trigger the download
+    const anchor = document.createElement('a');
+    anchor.href = blobUrl;
+    anchor.download = fileName;
+    anchor.click();
+
+    // Clean up the blob URL
+    window.URL.revokeObjectURL(blobUrl);
+  } catch (error) {
+    console.error('Error downloading file:', error);
+  }
+};
+
 
   return (
     <>
@@ -290,6 +342,7 @@ const ManageOrder = () => {
                           {currItem?.estimatedDelivery}
                         </p>
                       </td>
+                      
                       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                         <span className="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
                           <span
@@ -427,8 +480,26 @@ const ManageOrder = () => {
                 <p className="mt-2">
                   <span className="font-bold">Here add amount:</span> {userOrder?.orderAmount}
                 </p>
+                <div className="mt-5">
+                {attachments.map((attachment, index) => {
+                  console.log('attcacynnebt',attachment);
+                  return <div key={index} className="flex items-center justify-between">
+                    <a href={attachment} target="_blank" rel="noopener noreferrer" className="underline" download={`attachment_${index + 1}`} >
+                      Attachment {index + 1}
+                    </a>
+                    <button
+                      className="ml-2 px-2 py-1 bg-gray-200 rounded"
+                      onClick={() => handleDownload(attachment,"panCardImage")}
+                    >
+                      Download
+                    </button>
+                  </div>
+})}
               </div>
 
+
+
+              </div>
               <div className="flex gap-3 mt-10 float-end">
                 <button
                   className="border border-richblack-700 text-white bg-[#d40511]  px-[12px] py-[8px] text-richblack-100 rounded-md  hover:bg-[#d40511]"

@@ -15,7 +15,7 @@ export default function SendMoneyForm2({
   const{token}=useSelector((state)=>state.auth)
   const [errors, setErrors] = useState({
     pancardNumber: "",
-    panCardImage: "",
+    pancardimage: "",
     remiterFirstName: "",
     remiterLastName: "",
     remiterAccountNo: "",
@@ -43,12 +43,9 @@ export default function SendMoneyForm2({
   return panRegex.test(pan);
 }
 
-console.log('tokennnnnnnnnnn-------->',token);
-
 const handleSubmit = async (e) => {
   e.preventDefault();
 
-  console.log("runned-------->");
 
   const {
     purposeOfTransfer,
@@ -77,8 +74,8 @@ const handleSubmit = async (e) => {
   if (!documentProof.passportImage) {
     newErrors.passportImage = "Document is required";
   }
-  if (!documentProof.panCardImage) {
-    newErrors.panCardImage = "PAN card image is required";
+  if (!documentProof.pancardimage) {
+    newErrors.pancardimage = "PAN card image is required";
   }
   if (!sendMoneyAboroadForms.remiterFirstName) {
     newErrors.remiterFirstName = "Remitter's first name is required";
@@ -112,7 +109,25 @@ const handleSubmit = async (e) => {
       receivingCurrency
     );
 
-    const registerRemitterPromise = registerRemitter(token);
+    const formData = new FormData();
+    formData.append("purpose", "EDUCATION");
+    formData.append("account_number", remiterAccountNo);
+    formData.append("ifsc", remiterIFSCCode);
+    formData.append("pan", pancardNumber);
+    formData.append("remitter_id", "prod_cf_rem_005");
+    formData.append("name", remiterFirstName);
+    formData.append("address", "ABC street");
+    formData.append("phone_number", remiterMobileNo);
+    formData.append("email", remiterEmailID);
+    formData.append("nationality", "IN");
+    formData.append("postal_code", "474005");
+    formData.append("state", "madhya pradesh");
+    formData.append("city", "gwalior");
+    formData.append("bank_code", "3003");
+    formData.append("pancardimage", documentProof.pancardimage);
+    formData.append("passportImage", documentProof.passportImage);
+
+    const registerRemitterPromise = registerRemitter(token,formData);
 
     try {
       const [fxRateResult, remitterResult] = await Promise.all([
@@ -168,7 +183,7 @@ const handleSubmit = async (e) => {
 
 const fetchRemiiterDetails = async (token, dispatch, setGetRemiiterDetails) => {
   try {
-    const response = await apiConnector("GET", "http://13.50.14.42:8100/api/v1/remitters/prod_cf_rem_005", null, {
+    const response = await apiConnector("GET", "http://localhost:8100/api/v1/remitters/prod_cf_rem_005", null, {
       Authorization: `Bearer ${token}`,
     });
 
@@ -243,13 +258,13 @@ const fetchRemiiterDetails = async (token, dispatch, setGetRemiiterDetails) => {
                 id="file_input"
                 type="file"
                 onChange={(e) => {
-                  handleSubmitChangeFormDoc("panCardImage", e.target.files[0]);
-                  clearErrorDoc("panCardImage");
+                  handleSubmitChangeFormDoc("pancardimage", e.target.files[0]);
+                  clearErrorDoc("pancardimage");
                 }}
               />{" "}
-              {errors.panCardImage && (
+              {errors.pancardimage && (
                 <span className="text-[red] text-[11px] italic">
-                  {errors.panCardImage}
+                  {errors.pancardimage}
                 </span>
               )}
             </div>

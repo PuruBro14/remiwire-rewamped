@@ -4,13 +4,13 @@ const authSlice = createSlice({
   name: "auth",
   initialState: {
     signUpData: null,
-    adminToken: localStorage.getItem("token")
-      ? JSON.parse(localStorage.getItem("token"))
+    adminToken: localStorage.getItem("adminToken")
+      ? JSON.parse(localStorage.getItem("adminToken"))
       : null,
     loading: false,
     redirectedFromRoute: false,
-    token: localStorage.getItem("adminToken")
-      ? JSON.parse(localStorage.getItem("adminToken"))
+    token: localStorage.getItem("token")
+      ? JSON.parse(localStorage.getItem("token"))
       : null,
     role: null,
   },

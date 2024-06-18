@@ -36,7 +36,7 @@ exports.createNRIRepatriation = async (req, res) => {
       beneficiaryCountry,
     } = req.body;
 
-    const { pancardImage, passportImage } = req.files;
+    const { pancardimage, passportImage } = req.files;
 
     if (
       !transferFromCountry ||
@@ -45,7 +45,7 @@ exports.createNRIRepatriation = async (req, res) => {
       !receivingCurrency ||
       !receivingAmountInEuro ||
       !pancardNumber ||
-      !pancardImage ||
+      !pancardimage ||
       !passportNumber ||
       !passportImage ||
       !blockACSheetDoc ||
@@ -70,7 +70,7 @@ exports.createNRIRepatriation = async (req, res) => {
     }
 
     const panImage = await uploadImageToCloudinary(
-      pancardImage,
+      pancardimage,
       process.env.FOLDER_NAME
     );
     const passportImg = await uploadImageToCloudinary(
@@ -97,7 +97,7 @@ exports.createNRIRepatriation = async (req, res) => {
       },
       identificationDetails: {
         pancardNumber,
-        pancardImage: panImage.url,
+        pancardimage: panImage.url,
         passportNumber,
         passportImage: passportImg.url,
         blockACSheetDoc,

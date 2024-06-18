@@ -25,7 +25,7 @@ export default function SendMoneyAbroad() {
   const [fxRate, setFxRate] = useState();
 
   const [documentProof, setDocumentProofs] = useState({
-    panCardImage: "",
+    pancardimage: "",
     passportImage: "",
     blockACSheetDoc: "",
   });

@@ -38,15 +38,15 @@ exports.createSendMoney = async (req, res) => {
       beneficiaryCountry,
     } = req.body;
 
-    const { pancardImage, passportImage } = req.files;
+    const { pancardimage, passportImage } = req.files;
 
     const requiredFields = [
-      pancardImage,
+      pancardimage,
       passportImage
     ];
 
 
-    console.log(transferFromCountry,pancardImage);
+    console.log(transferFromCountry,pancardimage);
     const missingFields = requiredFields.filter((field) => !field);
     if (missingFields.length > 0) {
       return res.status(400).json({
@@ -57,7 +57,7 @@ exports.createSendMoney = async (req, res) => {
     }
 
         const panImage = await uploadImageToCloudinary(
-          pancardImage,
+          pancardimage,
           process.env.FOLDER_NAME
         );
     const passportImg = await uploadImageToCloudinary(
@@ -67,7 +67,7 @@ exports.createSendMoney = async (req, res) => {
 
     const newSendMoney = await SendMoney.create({
       userId,
-      pancardImage: panImage.url,
+      pancardimage: panImage.url,
       passportImage: passportImg.url,
     });
 

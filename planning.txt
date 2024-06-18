@@ -144,3 +144,8 @@ Manage Users actions
 Manage Orders Update Order Status 
 Upload images in cloudinary
 Download files via attachments
+
+admin panel logo -- fixed
+admin panel login issue 
+forex dropdown issue
+Overseas education loan api calls

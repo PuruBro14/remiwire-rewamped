@@ -1,6 +1,6 @@
 import Home from "./components/HomePage/Home";
 import Login from "./components/Form/Login";
-import {Routes,Route} from "react-router-dom";
+import {Routes,Route,useLocation} from "react-router-dom";
 import PrepaidTravelCard from "./components/OurServices/PrepaidTravelCard";
 import NRIRepatriation from "./components/OurServices/NRIREPATRIATION/NRIRepatriation";
 import BlockedAccountHome from "./components/OurServices/BlockedAccountPayment/BlockedAccountHome";
@@ -35,12 +35,17 @@ import AdminProtectedRoute from "./components/Auth/AdminProtectedRoute";
 
 function App() {
   const {role,roleValue}=useSelector((state)=>state.auth)
-   const { token } = useSelector((state) => state.auth);
-   const adminToken=localStorage.getItem("adminToken")
+  const { token } = useSelector((state) => state.auth);
+  const {adminToken}=useSelector((state)=>state.auth)
+  const location = useLocation();
+
+    const isAdminPath = location.pathname.startsWith('/admin');
+
+    console.log('isAdminPath',isAdminPath);
 
   return (
     <div>
-          {adminToken? <AdminNavbar username={"Admin"}/> : <Header className="sticky top-0"/>}
+          {isAdminPath && adminToken? <AdminNavbar username={"Admin"}/> : <Header className="sticky top-0"/>}
 
       <Routes>
         <Route

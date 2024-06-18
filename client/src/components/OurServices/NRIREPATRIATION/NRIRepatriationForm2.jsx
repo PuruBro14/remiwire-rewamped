@@ -13,7 +13,7 @@ export default function NRIRepatriationForm2({
   const{token}=useSelector((state)=>state.auth)
   const [errors, setErrors] = useState({
     pancardNumber: "",
-    panCardImage: "",
+    pancardimage: "",
     remiterFirstName: "",
     remiterLastName: "",
     remiterAccountNo: "",
@@ -65,8 +65,8 @@ export default function NRIRepatriationForm2({
     newErrors.pancardNumber = "Invalid PAN card number format";
   }
 
-    if (!documentProof.panCardImage) {
-      newErrors.panCardImage = "PAN card image is required";
+    if (!documentProof.pancardimage) {
+      newErrors.pancardimage = "PAN card image is required";
     }
 
     if (!NRIRepatriationForms.remiterFirstName) {
@@ -168,7 +168,7 @@ console.log('fxRateResult',fxRateResult);
 
   const fetchRemiiterDetails = async (token, dispatch, setGetRemiiterDetails) => {
   try {
-    const response = await apiConnector("GET", "http://13.50.14.42:8100/api/v1/remitters/prod_cf_rem_005", null, {
+    const response = await apiConnector("GET", "http://localhost:8100/api/v1/remitters/prod_cf_rem_005", null, {
       Authorization: `Bearer ${token}`,
     });
 
@@ -240,13 +240,13 @@ console.log('fxRateResult',fxRateResult);
                 id="file_input"
                 type="file"
                 onChange={(e) => {
-                  handleSubmitChangeFormDoc("panCardImage", e.target.files[0]);
-                  clearErrorDoc("panCardImage");
+                  handleSubmitChangeFormDoc("pancardimage", e.target.files[0]);
+                  clearErrorDoc("pancardimage");
                 }}
               />{" "}
-              {errors.panCardImage && (
+              {errors.pancardimage && (
                 <span className="text-[red] text-[11px] italic">
-                  {errors.panCardImage}
+                  {errors.pancardimage}
                 </span>
               )}
             </div>

@@ -30,7 +30,7 @@ export default function BlockedAccountHome() {
   const [showLoginModal, setShowLoginModal] = useState(false);
 
   const [documentProof, setDocumentProofs] = useState({
-    panCardImage: "",
+    pancardimage: "",
     passportImage: "",
     blockACSheetDoc: "",
   });
