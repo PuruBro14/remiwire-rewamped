@@ -20,7 +20,9 @@ const ManageOrder = () => {
   const [attachments, setAttachments] = useState([]);
   const [isAttachmentModalOpen, setIsAttachmentModalOpen] = useState(false);
   const [selectedAttachmentUrl, setSelectedAttachmentUrl] = useState('');
-
+  const [activeTab, setActiveTab] = useState('Cashfree Services');
+  const [cashfreeData, setCashfreeData] = useState([]);
+  const[services,SetServices]=useState(["Cashfree Servics","My Services"])
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -43,7 +45,7 @@ const ManageOrder = () => {
     const toastId = toast.loading("Loading orders...");
     setLoading(true);
     try {
-      const response = await apiConnector("GET", 'http://13.50.14.42:8100/api/v1/fetchAllOrders', null, {
+      const response = await apiConnector("GET", 'http://localhost:8100/api/v1/fetchAllOrders', null, {
         Authorization: `Bearer ${adminToken}`,
       });
       setLoading(false);
@@ -64,7 +66,7 @@ const ManageOrder = () => {
     const toastId = toast.loading("Loading orders...");
     setLoading(true);
     try {
-      const response = await apiConnector("GET", `http://13.50.14.42:8100/api/v1/fetchOrderById/${orderId}`, null, {
+      const response = await apiConnector("GET", `http://localhost:8100/api/v1/fetchOrderById/${orderId}`, null, {
         Authorization: `Bearer ${adminToken}`,
       });
       setLoading(false);
@@ -81,7 +83,7 @@ const ManageOrder = () => {
     const toastId = toast.loading("Loading orders...");
     setLoading(true);
     try {
-      const response = await apiConnector("GET", `http://13.50.14.42:8100/api/v1/fetchOrderByServiceType/${serviceType}`, null, {
+      const response = await apiConnector("GET", `http://localhost:8100/api/v1/fetchOrderByServiceType/${serviceType}`, null, {
         Authorization: `Bearer ${adminToken}`,
       });
       setLoading(false);
@@ -98,13 +100,39 @@ const ManageOrder = () => {
     fetchUserOrders();
   }, [adminToken]);
 
+    const fetchOrderByForexType = async () => {
+      console.log('clicked');
+    const toastId = toast.loading("Loading orders...");
+    setLoading(true);
+    try {
+      const response = await apiConnector("GET", `http://localhost:8100/api/v1/fetchOrderByForexType/forexCurrency`, null, {
+        Authorization: `Bearer ${adminToken}`,
+      });
+      setLoading(false);
+      toast.dismiss(toastId);
+      setFilteredOrders(response?.data?.data);
+    } catch (error) {
+      console.log('Error:', error);
+      toast.dismiss(toastId);
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchOrderByForexType();
+  }, [adminToken]);
+
   useEffect(() => {
     if (selectedServiceType !== "All") {
       fetchOrderByServiceType(selectedServiceType);
-    } else {
+    } else if(selectedServiceType === "Forex Currency Exchange"){
+      fetchOrderByForexType();
+    }else{
       setFilteredOrders(orders);
     }
   }, [selectedServiceType, orders]);
+
+  console.log('selectedServiceType',selectedServiceType);
 
   const handleServiceTypeChange = (e) => {
     setSelectedServiceType(e.target.value);
@@ -112,6 +140,7 @@ const ManageOrder = () => {
 
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
+    setCurrentPage(1);
   };
 
   const filteredAndSearchedOrders = filteredOrders.filter(order => 
@@ -136,7 +165,7 @@ const ManageOrder = () => {
     }
 
     try {
-      const response = await apiConnector('PUT', `http://13.50.14.42:8100/api/v1/updateOrder/${selectedOrderId}`, {
+      const response = await apiConnector('PUT', `http://localhost:8100/api/v1/updateOrder/${selectedOrderId}`, {
         orderStatus: selectedStatus,
       },{
         Authorization: `Bearer ${adminToken}`,
@@ -158,7 +187,7 @@ const ManageOrder = () => {
 
 const fetchRemitterDetails = async (remitterId) => {
   try {
-    const response = await apiConnector('GET', `http://13.50.14.42:8100/api/v1/remitterDetails/${remitterId}`);
+    const response = await apiConnector('GET', `http://localhost:8100/api/v1/remitterDetails/${remitterId}`);
     console.log('response',response);
     if (response.data.success) {
       setUserOrder(response.data.data);
@@ -205,7 +234,6 @@ const handleDownload = async (base64Data,fileName) => {
   }
 };
 
-
   return (
     <>
       <body className="antialiased font-sans bg-gray-200">
@@ -241,7 +269,6 @@ const handleDownload = async (base64Data,fileName) => {
                 >
                   <option>All</option>
                   <option value="SendMoneyAbroad">Send Money Abroad</option>
-                  <option value="Forex Currency Exchange">Forex Currency Exchange</option>
                   <option value="NRIRepatriation">NRI Repatriation</option>
                   <option value="BlockedAccountPayment">Blocked Account Payment</option>
                   <option value="GICAccountPayment">GIC Account Payment</option>
@@ -374,10 +401,8 @@ const handleDownload = async (base64Data,fileName) => {
                       </td>
                     </tr>
                         )
-                      })
-                   
+                      })                  
 }
-                    
                   </tbody>
                 </table>
                 <div className="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between">
@@ -484,7 +509,7 @@ const handleDownload = async (base64Data,fileName) => {
                 {attachments.map((attachment, index) => {
                   console.log('attcacynnebt',attachment);
                   return <div key={index} className="flex items-center justify-between">
-                    <a href={attachment} target="_blank" rel="noopener noreferrer" className="underline" download={`attachment_${index + 1}`} >
+                    <a>
                       Attachment {index + 1}
                     </a>
                     <button
@@ -496,9 +521,6 @@ const handleDownload = async (base64Data,fileName) => {
                   </div>
 })}
               </div>
-
-
-
               </div>
               <div className="flex gap-3 mt-10 float-end">
                 <button

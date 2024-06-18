@@ -92,7 +92,7 @@ app.post("/api/admin/login", (req, res) => {
     { username: adminUser.username },
     process.env.JWT_SECRET,
     {
-      expiresIn: "2h",
+      expiresIn: "24h",
     }
   );
 

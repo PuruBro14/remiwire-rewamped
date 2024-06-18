@@ -9,7 +9,7 @@ import AboutUs from "../AboutUs/AboutUs";
 import HowTransferMoney from "../HowTransferMoney/HowTransferMoney";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-
+import NewLandingVideo from '../../assets/images/NewLandingVideo.mp4'
 const homeServices = [
   {
     id: 1,
@@ -38,9 +38,9 @@ const Home = () => {
     <div className="overflow-x-hidden">
       <div className="relative">
        <video autoPlay muted loop className="h-full">
-  <source src="https://www.detroit.software/assets/video/New_landing_video.mp4" type="video/mp4" />
-  Your browser does not support HTML5 video.
-</video>
+        <source src={NewLandingVideo} type="video/mp4" />
+        Your browser does not support HTML video and source tags.
+        </video>
 
 
         <div className="absolute hidden lg:block md:top-[15%] left-[5%] w-[30%] p-10 text-white bg-[#d40511]">

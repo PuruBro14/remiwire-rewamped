@@ -27,12 +27,13 @@ const ManageUsers = () => {
     const toastId = toast.loading("Loading Users...");
     setLoading(true);
     try {
-      const response = await apiConnector("GET", 'http://13.50.14.42:8100/api/v1/fetchAllUsers', null, {
+      const response = await apiConnector("GET", 'http://localhost:8100/api/v1/fetchAllUsers', null, {
         Authorization: `Bearer ${adminToken}`,
       });
       setLoading(false);
       toast.dismiss(toastId);
       setOrders(response?.data?.data);
+      setCurrentPage(1);
     } catch (error) {
       console.log('Error:', error);
       toast.dismiss(toastId);
@@ -49,18 +50,19 @@ const ManageUsers = () => {
     order.username.includes(searchQuery)
   );
 
-   const totalPages = Math.ceil(filteredOrders.length / itemsPerPage);
-  const displayedOrders = filteredOrders.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
+ const totalPages = Math.ceil(filteredOrders.length / itemsPerPage);
+const displayedOrders = filteredOrders.slice(
+  (currentPage - 1) * itemsPerPage,
+  currentPage * itemsPerPage
+);
+
 
   const fetchInvididualOrder = async (orderId) => {
     console.log('orderId----------->',orderId);
     const toastId = toast.loading("Loading orders...");
     setLoading(true);
     try {
-      const response = await apiConnector("GET", `http://13.50.14.42:8100/api/v1/fetchOrderById/${orderId}`, null, {
+      const response = await apiConnector("GET", `http://localhost:8100/api/v1/fetchOrderById/${orderId}`, null, {
         Authorization: `Bearer ${adminToken}`,
       });
       setLoading(false);
@@ -72,6 +74,11 @@ const ManageUsers = () => {
       toast.dismiss(toastId);
       setLoading(false);
     }
+  };
+
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+    setCurrentPage(1);
   };
   
   return (
@@ -116,7 +123,7 @@ const ManageUsers = () => {
                 placeholder="Search"
                 className="appearance-none rounded-r rounded-l sm:rounded-l-none border border-gray-400 border-b block pl-8 pr-6 py-2 w-full bg-white text-sm placeholder-gray-400 text-gray-700 focus:bg-white focus:placeholder-gray-600 focus:text-gray-700 focus:outline-none"
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={handleSearchChange}
               />
             </div>
           </div>

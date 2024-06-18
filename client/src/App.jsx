@@ -32,6 +32,7 @@ import AdminNavbar from "./pages/Admin/AdminNavbar";
 import { useSelector } from "react-redux";
 import LoginPage from "./pages/AdminLoginPage";
 import AdminProtectedRoute from "./components/Auth/AdminProtectedRoute";
+import ProtectedRoute from "./components/Auth/ProtectedRoute";
 
 function App() {
   const {role,roleValue}=useSelector((state)=>state.auth)
@@ -139,7 +140,11 @@ function App() {
           }
         />
 
-        <Route path="/my-orders*" element={<MyOrders />} />
+        <Route path="/my-orders*" element={
+          <ProtectedRoute>
+          <MyOrders />
+          </ProtectedRoute>
+          } />
 
         <Route path="*" element={<Error />} />
       </Routes>
