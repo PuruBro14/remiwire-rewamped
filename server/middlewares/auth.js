@@ -64,9 +64,7 @@ exports.adminAuth = async (req, res, next) => {
         message: "authToken is missing",
       });
     }
-
-    console.log("authToken", authToken);
-
+    
     try {
       const decoded = jwt.verify(authToken, process.env.JWT_SECRET);
 

@@ -146,6 +146,6 @@ Upload images in cloudinary
 Download files via attachments
 
 admin panel logo -- fixed
-admin panel login issue 
+admin panel login issue -- fixed
 forex dropdown issue
 Overseas education loan api calls

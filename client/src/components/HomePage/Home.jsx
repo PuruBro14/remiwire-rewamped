@@ -37,7 +37,12 @@ const Home = () => {
   return (
     <div className="overflow-x-hidden">
       <div className="relative">
-        <img src={HeaderBanner} alt="home-banner" className="w-full" />
+       <video autoPlay muted loop className="h-full">
+  <source src="https://www.detroit.software/assets/video/New_landing_video.mp4" type="video/mp4" />
+  Your browser does not support HTML5 video.
+</video>
+
+
         <div className="absolute hidden lg:block md:top-[15%] left-[5%] w-[30%] p-10 text-white bg-[#d40511]">
           <h1 className="text-xl md:text-4xl w-[100%]">
             Trusted Global Currency Converter & Money Transfers

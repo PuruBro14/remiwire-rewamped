@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const Order = require("../../../models/Order");
 const { formatDate } = require("../../../utils/utility");
+const BookModel = require("../../../models/bookOrder.model");
 
 exports.getOrderById = async (req, res) => {
   try {
@@ -79,6 +80,72 @@ exports.getOrderByServiceType = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Failed to fetch orders",
+      error: error.message,
+    });
+  }
+};
+
+exports.getOrderOfForexCurrency = async (req, res) => {
+  try {
+    const pipeline = [
+      { $unwind: "$currencies" },
+      {
+        $lookup: {
+          from: "users",
+          localField: "userId",
+          foreignField: "_id",
+          as: "user",
+        },
+      },
+      { $unwind: "$user" },
+      {
+        $project: {
+          _id: 1,
+          orderId: 1,
+          currencyAmount: "$currencies.amount",
+          currencyFrom: "$currencies.from",
+          currencyTo: "$currencies.to",
+          currencyRate: "$currencies.currentRate",
+          placedBy: { $concat: ["$user.firstName", " ", "$user.lastName"] },
+          createdAt: {
+            $dateToString: { format: "%Y-%m-%d", date: "$createdAt" },
+          },
+          estimatedDelivery: {
+            $dateToString: {
+              format: "%Y-%m-%d",
+              date: "$currencies.orderDate",
+            },
+          },
+          status: "$orderStatus",
+        },
+      },
+    ];
+
+    console.log("Pipeline:", JSON.stringify(pipeline, null, 2));
+
+    const forexOrders = await BookModel.aggregate(pipeline);
+
+    console.log(
+      "Forex Orders after aggregation:",
+      JSON.stringify(forexOrders, null, 2)
+    );
+
+    if (forexOrders.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "No forex currency orders found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: forexOrders,
+    });
+  } catch (error) {
+    console.error("Error fetching forex currency orders:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch forex currency orders",
       error: error.message,
     });
   }
