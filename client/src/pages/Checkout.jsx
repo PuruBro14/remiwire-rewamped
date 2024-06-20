@@ -7,6 +7,7 @@ import ManageDeliveryAddress from "../components/core/ManageDeliveryAddress";
 import { fetchDeliveryAddress } from "../services/operations/SettingsApi";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "../utils/profileSlice";
+import TravelDetails from "../components/Checkout/TravelDetails";
 
 const Checkout = () => {
   const [deliveryAddress, setDeliveryAddress] = useState([]);
@@ -34,6 +35,8 @@ const Checkout = () => {
         <div className="flex flex-col gap-5 py-16 pb-48 ">
           <div>
             <LoginCheckout />
+
+            <TravelDetails/>
 
             <ManageDeliveryAddress />
 

@@ -53,6 +53,8 @@ const Navbar = ({}) => {
   const token  = localStorage.getItem("token");
   const adminToken= localStorage.getItem("adminToken")
 
+  console.log('hahahhahaha',document.getElementById("contactUs"));
+
   const toggleNavbar = () => {
     setIsOpen(!isOpen);
   };

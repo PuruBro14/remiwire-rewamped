@@ -28,7 +28,7 @@ const MyOrders = () => {
     try {
       const response = await apiConnector(
         "GET",
-        "http://13.50.14.42:8100/api/v1/userOrders",
+        "http://localhost:8100/api/v1/userOrders",
         null,
         {
           Authorization: `Bearer ${token}`,
@@ -50,7 +50,7 @@ const MyOrders = () => {
     try {
       const response = await apiConnector(
         "GET",
-        "http://13.50.14.42:8100/api/v1/fetchAllBookOrders",
+        "http://localhost:8100/api/v1/fetchAllBookOrders",
         null,
         {
           Authorization: `Bearer ${token}`,
@@ -119,7 +119,7 @@ const MyOrders = () => {
         <h1 className="text-3xl font-medium text-richblack-800">My Orders</h1>
         <IconBtn
           text="Buy Currency"
-          onClick={() => navigate("/")}
+          onclick={() => navigate("/forexcurrency")}
           className={styles["icon-btn"]}
         >
           <VscAdd />

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+  import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setformValue } from "../../features/SendMoneySlice";
 import axios from "axios";
@@ -48,6 +48,13 @@ export default function SendMoneyForm2Customer({
     if (!sendMoneyAboroadForms.expireDate.trim()) {
       newErrors.expireDate = "Expire Date is required";
     }
+
+  const issueDate = new Date(sendMoneyAboroadForms.issueDate);
+  const expireDate = new Date(sendMoneyAboroadForms.expireDate);
+
+  if (issueDate > expireDate) {
+    newErrors.issueDate = "Issue Date cannot be after Expire Date";
+  }
 
     setErrors(newErrors);
 

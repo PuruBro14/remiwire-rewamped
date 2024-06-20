@@ -24,7 +24,7 @@ const OrderSummary = () => {
   }
 
   const handleCheckout=()=>{
-    dispatch(setStep(4))
+    dispatch(setStep(5))
   }
 
   return (
@@ -35,7 +35,7 @@ const OrderSummary = () => {
       {/* first div  */}
       <div className='relative flex flex-row gap-x-4 h-12 items-center p-5 bg-gradient-to-b from-[#FF512F] to-[#F09819]'>
         <div className='text-white'>
-          3
+          4
         </div>
         <div className='text-white uppercase'>
           Order Summary
@@ -44,7 +44,7 @@ const OrderSummary = () => {
       </div>
 
       {/* second div  */}
-      {step>=3 && showAccordionData && 
+      {step>=4 && showAccordionData && 
        <Table className='border mt-7 mx-auto flex flex-col' >
 
             <Thead className="bg-white">

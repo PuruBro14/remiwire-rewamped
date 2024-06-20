@@ -10,46 +10,35 @@ require("dotenv").config();
 exports.signup = async (req, res) => {
   try {
     // Destructure fields from the request body
-    const { username, firstName, lastName, contactNo, email, password } =
+    const { username, firstName, lastName, contactNo, email, password,confirmPassword } =
       req.body;
     // Check if All Details are there or not
-    if (!username || !firstName || !lastName || !email || !password) {
-      return res.status(403).send({
+    if (!username || !firstName || !lastName || !email || !contactNo || !password) {
+      return res.status(400).send({
         success: false,
         message: "All Fields are required",
       });
     }
 
+    if(password!==confirmPassword){
+      return res.status(400).send({
+        success: false,
+        message: "Password and Confirm Password do not match",
+      });
+    }
+
     // Check if user already exists
     const existingUser = await User.findOne({ email });
-    if (existingUser) {
+    const existingMobileUser = await User.findOne({ contactNo: contactNo });
+    if (existingUser || existingMobileUser) {
       return res.status(400).json({
         success: false,
         message: "User already exists. Please sign in to continue.",
       });
     }
 
-    // Find the most recent OTP for the email
-    // const response = await OTP.find({ email }).sort({ createdAt: -1 }).limit(1);
-    // console.log('otp',otp,response);
-    // if (response.length === 0) {
-    //   // OTP not found for the email
-    //   return res.status(400).json({
-    //     success: false,
-    //     message: "The OTP is not valid",
-    //   });
-    // } else if (otp !== response[0].otp) {
-    //   // Invalid OTP
-    //   return res.status(400).json({
-    //     success: false,
-    //     message: "The OTP is not valid",
-    //   });
-    // }
-
-    // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create the Additional Profile For User
     const profileDetails = await Profile.create({
       gender: null,
       dateOfBirth: null,
@@ -91,7 +80,7 @@ exports.login = async (req, res) => {
     }
 
     // Find user with provided email
-    const user = await User.findOne({ email }).populate("additionalDetails");
+    const user = await User.findOne({ email })
 
     // If user not found
     if (!user) {

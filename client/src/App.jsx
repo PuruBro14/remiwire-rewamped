@@ -33,6 +33,9 @@ import { useSelector } from "react-redux";
 import LoginPage from "./pages/AdminLoginPage";
 import AdminProtectedRoute from "./components/Auth/AdminProtectedRoute";
 import ProtectedRoute from "./components/Auth/ProtectedRoute";
+import AdminDashboard from "./pages/Admin/AdminDashboard";
+import ManageOrder from "./pages/Admin/ManageOrder";
+import ManageUsers from "./pages/Admin/ManageUsers";
 
 function App() {
   const {role,roleValue}=useSelector((state)=>state.auth)
@@ -119,7 +122,7 @@ function App() {
           <Route
             path="/userprofile/manage-address"
             element={<ManageProfileAddress />}
-          />
+          />k
 
           <Route
             path="/userprofile/profile-settings"
@@ -130,7 +133,7 @@ function App() {
         </Route>
 
         <Route path="/admin/login" element={<LoginPage />} />
-
+        
         <Route
           path="/admin/*"
           element={
@@ -138,7 +141,11 @@ function App() {
               <AdminHome />
             </AdminProtectedRoute>
           }
-        />
+        >
+          <Route path="dashboard" element={<AdminDashboard />} />
+          <Route path="orders" element={<ManageOrder />} />
+          <Route path="users" element={<ManageUsers />} />
+        </Route>
 
         <Route path="/my-orders*" element={
           <ProtectedRoute>

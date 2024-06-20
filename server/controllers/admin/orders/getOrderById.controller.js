@@ -199,3 +199,15 @@ exports.updateOrderStatusById = async (req, res, next) => {
     });
   }
 };
+
+exports.getSpecificUserOrders = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    console.log('userId',userId);
+    const userOrders = await Order.find({ user:userId });
+    res.status(200).json({ success: true, data: userOrders });
+  } catch (error) {
+    console.error("Error fetching user orders:", error);
+    res.status(500).json({ success: false, error: "Internal Server Error" });
+  }
+};

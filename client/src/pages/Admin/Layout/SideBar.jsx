@@ -64,7 +64,7 @@ function Sidebar({ show, setter, setShowScreen }) {
           />
           <MenuItem
             name="Manage Orders"
-            route="/admin/manage/orders"
+            route="/admin/orders"
             icon={<FaTshirt />}
             onClick={() => {
               setShowScreen(1);
@@ -72,7 +72,7 @@ function Sidebar({ show, setter, setShowScreen }) {
           />
           <MenuItem
             name="Manage Users"
-            route="/admin/manage/users"
+            route="/admin/users"
             icon={<FaRedhat />}
             onClick={() => {
               setShowScreen(2);

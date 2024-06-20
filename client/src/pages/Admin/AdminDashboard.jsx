@@ -10,7 +10,7 @@ import Loader from "../../components/Loader"
 import { FaChartBar, FaChartLine, FaChartPie } from 'react-icons/fa';
 Chart.register(ArcElement);
 
-const AdminDashboard = () => {
+const  AdminDashboard = () => {
   const [apiData, setApiData] = useState({
     SendMoneyAbroad: [],
     ForexCurrencyExchange: [],
@@ -62,11 +62,11 @@ const AdminDashboard = () => {
         backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4CAF50', '#9C27B0'],
         hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4CAF50', '#9C27B0'],
         data: [
-          apiData.SendMoneyAbroad.reduce((total, order) => total + order.orderAmount, 0),
+          apiData?.SendMoneyAbroad?.length,
           apiData?.ForexCurrencyExchange?.length,
-          apiData.NRIRepatriation.reduce((total, order) => total + order.orderAmount, 0),
-          apiData.BlockedAccountPayment.reduce((total, order) => total + order.orderAmount, 0),
-          apiData.GICAccountPayment.reduce((total, order) => total + order.orderAmount, 0)
+          apiData?.NRIRepatriation?.length,
+          apiData?.BlockedAccountPayment?.length,
+          apiData?.GICAccountPayment?.length
         ],
       },
     ],
@@ -79,7 +79,7 @@ const AdminDashboard = () => {
     const fetchData = async () => {
       setLoading(true); 
       try {
-        const response = await apiConnector('GET', `http://13.50.14.42:8100/api/v1/adminOrders?month=${new Date(Date.parse(selectedMonth + " 1, 2024")).getMonth() + 1}&year=${selectedYear}`, null, {
+        const response = await apiConnector('GET', `http://localhost:8100/api/v1/adminOrders?month=${new Date(Date.parse(selectedMonth + " 1, 2024")).getMonth() + 1}&year=${selectedYear}`, null, {
           Authorization: `Bearer ${adminToken}`,
         });
         console.log('data', response);
@@ -109,6 +109,13 @@ const AdminDashboard = () => {
     }
   };
 
+  const hasData =
+    apiData.SendMoneyAbroad.length > 0 ||
+    apiData.ForexCurrencyExchange.length > 0 ||
+    apiData.NRIRepatriation.length > 0 ||
+    apiData.BlockedAccountPayment.length > 0 ||
+    apiData.GICAccountPayment.length > 0;
+
   return (
     <div className="p-6">
       <h1 className="text-2xl font-bold mb-4">Admin Dashboard</h1>
@@ -133,6 +140,8 @@ const AdminDashboard = () => {
             </select>
           </div>
 
+          
+
           <div className="flex flex-wrap justify-around items-center mb-6">
             {pieChartData.labels.map((label, index) => (
               <div 
@@ -149,6 +158,12 @@ const AdminDashboard = () => {
             ))}
           </div>
 
+          {
+            !hasData ? (
+            <div className="text-center text-gray-500 mt-4">
+              No orders found for the selected period.
+            </div>
+          ) :
           <div className="flex flex-wrap justify-around items-center">
             <div className="w-full md:w-1/2 h-96 p-4">
               <Pie
@@ -187,6 +202,8 @@ const AdminDashboard = () => {
               />
             </div>
           </div>
+
+              }
         </>
       )}
     </div>

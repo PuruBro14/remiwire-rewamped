@@ -58,8 +58,9 @@ const ConvertTable = ({ConvertTableEntries,editArray,filterArray,setTotalAmount,
                         </Tr>
                     )
                     :(
-                        convertTableDetails?.map((entry,index)=>(
-                            <Tr key={index} className='flex items-center rounded-t-md border-b border-[#DDDDDD]  justify-between p-5'>
+                        convertTableDetails?.map((entry,index)=>{
+                            console.log('entry',entry);
+                            return <Tr key={index} className='flex items-center rounded-t-md border-b border-[#DDDDDD]  justify-between p-5'>
                                 <Td className='text-lg font-medium text-richblack-600  border-none text-center'>
                                     {entry?.amount}
                                 </Td>
@@ -70,7 +71,7 @@ const ConvertTable = ({ConvertTableEntries,editArray,filterArray,setTotalAmount,
                                     {entry?.to}
                                 </Td>
                                 <Td className='text-lg font-medium text-richblack-600  border-none relative md:right-20'>
-                                    {entry?.currentRate.toFixed(3)}
+                                    {entry?.currentRate?entry?.currentRate?.toFixed(3):''}
                                 </Td>
                                 <Td className='text-lg font-medium text-richblack-600  border-none relative md:right-8'>
                                     {entry?.individualTotalCurrency?.toFixed(2)}
@@ -84,7 +85,7 @@ const ConvertTable = ({ConvertTableEntries,editArray,filterArray,setTotalAmount,
                                     </button>
                                 </Td>
                             </Tr>
-                        ))
+})
                     )
                 }
             </Tbody>

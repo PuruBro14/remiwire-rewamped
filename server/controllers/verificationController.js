@@ -18,11 +18,10 @@ exports.verifyOrder = async (req, res) => {
       console.log("userId-dsssssssss------>", userId);
 
   try {
-    let { orderId, serviceType } = req.body;
+    let { orderId, serviceType,amount } = req.body;
     console.log("orderId", orderId,serviceType,customerId);
 
     const response = await Cashfree.PGOrderFetchPayments("2023-08-01", orderId);
-    res.json(response.data);
 
     console.log('userId------->',userId);
 
@@ -32,7 +31,7 @@ exports.verifyOrder = async (req, res) => {
       user: userId,
       orderStatus: "Paid",
       orderDate: new Date(),
-      orderAmount: 1,
+      orderAmount: amount||1,
       currency: "INR",
       paymentMethod: "Credit Card",
       shippingAddress: {
@@ -54,6 +53,14 @@ exports.verifyOrder = async (req, res) => {
     });
 
     await newOrder.save();
+
+        const populatedOrder = await Order.findById(newOrder._id).populate(
+          "user",
+          "firstName lastName email contactNumber"
+        );
+
+            res.json(populatedOrder);
+
   } catch (error) {
     console.error('erorrrrrrrrrrrrrrrrrrrr->',error.message);
     res

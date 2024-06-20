@@ -8,6 +8,9 @@ const generateOrderId = (prefix) => {
 };
 
 exports.createPayment = async (req, res) => {
+  const {amount}=req.body;
+  console.log('amount',amount);
+  console.log('amount',amount);
   const userId = req.user.id;
   const { serviceType } = req.body; 
   console.log('req.body',req.body,serviceType);
@@ -36,7 +39,7 @@ exports.createPayment = async (req, res) => {
             "https://webhook.site/99b1bf89-@bbc-4c0d-ad03-abcd1240c321",
           payment_methods: "cc,dc,upi,nb,paylater",
         },
-        order_amount: 1,
+        order_amount: amount || 1,
         order_id: orderId,
         order_currency: "INR",
         order_note: "Remiwire order",

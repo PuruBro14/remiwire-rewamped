@@ -128,7 +128,7 @@ exports.getTrackingOrder = async (req, res) => {
 
     console.log("orderId", orderId);
 
-    const order = await Order.findOne(orderId);
+    const order = await Order.findOne({orderId:orderId});
 
     if (!order) {
       return res.status(404).json({
@@ -150,3 +150,4 @@ exports.getTrackingOrder = async (req, res) => {
     });
   }
 };
+

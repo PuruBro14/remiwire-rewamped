@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { FaEye } from "react-icons/fa";
-import {useSelector} from 'react-redux'
-import {toast} from 'react-hot-toast'
+import { useSelector } from 'react-redux';
+import { toast } from 'react-hot-toast';
 import { apiConnector } from '../../services/operations/apiconnector';
+import Papa from 'papaparse';
 
 const ManageUsers = () => {
- const {adminToken}=useSelector((state)=>state.auth)
+  const { adminToken } = useSelector((state) => state.auth);
   const [orders, setOrders] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(5);
   const [searchQuery, setSearchQuery] = useState('');
-  const[orderId,setOrderId]=useState('');
-  const[orderStatus,setOrderStatus]=useState('');
+  const [userOrders, setUserOrders] = useState([]);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -27,7 +27,7 @@ const ManageUsers = () => {
     const toastId = toast.loading("Loading Users...");
     setLoading(true);
     try {
-      const response = await apiConnector("GET", 'http://13.50.14.42:8100/api/v1/fetchAllUsers', null, {
+      const response = await apiConnector("GET", 'http://localhost:8100/api/v1/fetchAllUsers', null, {
         Authorization: `Bearer ${adminToken}`,
       });
       setLoading(false);
@@ -45,30 +45,30 @@ const ManageUsers = () => {
     fetchUsers();
   }, [adminToken]);
 
-   const filteredOrders = orders.filter(order => 
+  const filteredOrders = orders.filter(order => 
     order.username.includes(searchQuery) ||
     order.username.includes(searchQuery)
   );
 
- const totalPages = Math.ceil(filteredOrders.length / itemsPerPage);
-const displayedOrders = filteredOrders.slice(
-  (currentPage - 1) * itemsPerPage,
-  currentPage * itemsPerPage
-);
+  const totalPages = Math.ceil(filteredOrders.length / itemsPerPage);
+  const displayedOrders = filteredOrders.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
-
-  const fetchInvididualOrder = async (orderId) => {
-    console.log('orderId----------->',orderId);
+  const fetchIndividualUserOrders = async (userId) => {
+    console.log('orderId----------->', userId);
     const toastId = toast.loading("Loading orders...");
     setLoading(true);
     try {
-      const response = await apiConnector("GET", `http://13.50.14.42:8100/api/v1/fetchOrderById/${orderId}`, null, {
+      const response = await apiConnector("GET", `http://localhost:8100/api/v1/users/${userId}/orders`, null, {
         Authorization: `Bearer ${adminToken}`,
       });
       setLoading(false);
       toast.dismiss(toastId);
-      setOrderId(response.data.data.orderId)
-      setOrderStatus(response.data.data.orderStatus)
+      setUserOrders(response.data.data);
+      openModal();
+      console.log('response----->', response);
     } catch (error) {
       console.log('Error:', error);
       toast.dismiss(toastId);
@@ -80,20 +80,49 @@ const displayedOrders = filteredOrders.slice(
     setSearchQuery(e.target.value);
     setCurrentPage(1);
   };
-  
+
+  const downloadCSV = () => {
+    const filteredOrders = orders.map(order => ({
+      username: order.username,
+      firstName: order.firstName,
+      lastName: order.lastName,
+      address: order.address[0]?.city ? order.address[0]?.city + ',' + order.address[0]?.country : '',
+      contactNo: order.additionalDetails.contactNumber ? order.additionalDetails.contactNumber : '',
+      email: order.email,
+    }));
+    const csv = Papa.unparse(filteredOrders, {
+      fields: ['username', 'firstName', 'lastName', 'address', 'contactNo', 'email']
+    });
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    link.setAttribute('href', url);
+    link.setAttribute('download', 'users.csv');
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
-    <body className="antialiased font-sans bg-gray-200">
+    <div className="antialiased font-sans bg-gray-200">
       <div className="container mx-auto px-4 sm:px-8">
         <div className="py-8">
-          <div>
+          <div className="flex justify-between items-center">
             <h2 className="text-2xl font-semibold leading-tight">Users</h2>
+            <button
+              className="bg-blue-500 text-white px-4 py-2 rounded-md"
+              onClick={downloadCSV}
+            >
+              Download CSV
+            </button>
           </div>
           <div className="my-2 flex sm:flex-row flex-col">
             <div className="flex flex-row mb-1 sm:mb-0">
               <div className="relative">
                 <select className="appearance-none h-full rounded-l border block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                value={itemsPerPage}
-                onChange={(e) => setItemsPerPage(Number(e.target.value))}
+                  value={itemsPerPage}
+                  onChange={(e) => setItemsPerPage(Number(e.target.value))}
                 >
                   <option>5</option>
                   <option>10</option>
@@ -136,6 +165,9 @@ const displayedOrders = filteredOrders.slice(
                       Username
                     </th>
                     <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                      Full Name
+                    </th>
+                    <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                       Address
                     </th>
                     <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
@@ -151,65 +183,60 @@ const displayedOrders = filteredOrders.slice(
                 </thead>
                 <tbody>
                   {
-                    displayedOrders?.map((currItem)=>{
-                      return(
-                        <tr>
-                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                      <div className="flex items-center">
-                        <div className="ml-3">
+                    displayedOrders.map((currItem) => (
+                      <tr key={currItem._id}>
+                        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                          <div className="flex items-center">
+                            <div className="ml-3">
+                              <p className="text-gray-900 whitespace-no-wrap">
+                                {currItem?.username}
+                              </p>
+                            </div>
+                          </div>
+                        </td>
+                        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                          <p className="text-gray-900 whitespace-no-wrap">{currItem?.firstName?currItem?.firstName:'' + " " + currItem?.lastName?currItem?.lastName:''}</p>
+                        </td>
+                        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                           <p className="text-gray-900 whitespace-no-wrap">
-                            {currItem?.username}
+                            {currItem?.address[0]?.city ? currItem?.address[0]?.city + ',' + currItem?.address[0]?.country : ''}
                           </p>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                      <p className="text-gray-900 whitespace-no-wrap">{currItem?.address[0]?.address}{currItem?.address[0]?.country?',':''}{currItem?.address[0]?.city}{currItem?.address[0]?.country?',':''}{currItem?.address[0]?.country}</p>
-                    </td>
-                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                      <p className="text-gray-900 whitespace-no-wrap">
-                        {currItem?.additionalDetails?.contactNumber}
-                      </p>
-                    </td>
-                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                      <span className="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
-                        <span
-                          aria-hidden
-                          className="absolute inset-0 bg-green-200 opacity-50 rounded-full"
-                        ></span>
-                        <span className="relative">{currItem?.email}</span>
-                      </span>
-                    </td>
-                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                      <FaEye
-                        className="cursor-pointer"
-                        title="View History"
-                        onClick={() => {
-                              fetchInvididualOrder("TORID17182933432488100");
-                              setIsModalOpen(true);
-                            }}
-                      />
-                    </td>
-                  </tr>
-                      )
-                    })
-                  
-}
+                        </td>
+                        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                          <p className="text-gray-900 whitespace-no-wrap">{currItem?.additionalDetails?.contactNumber ? currItem?.additionalDetails?.contactNumber : ''}</p>
+                        </td>
+                        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                          <p className="text-gray-900 whitespace-no-wrap">{currItem?.email}</p>
+                        </td>
+                        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                          <button
+                            onClick={() => fetchIndividualUserOrders(currItem?._id)}
+                            className="text-blue-500 hover:text-blue-700"
+                          >
+                            <FaEye size={20} />
+                          </button>
+                        </td>
+                      </tr>
+                    ))
+                  }
                 </tbody>
               </table>
-              <div className="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between          ">
+              <div className="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between">
                 <span className="text-xs xs:text-sm text-gray-900">
-                 Showing {currentPage} of {totalPages} Pages
+                  Showing {currentPage} to {totalPages} of {orders.length} Entries
                 </span>
                 <div className="inline-flex mt-2 xs:mt-0">
-                  <button className="text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-l"
-                  disabled={currentPage === 1}
-                      onClick={() => setCurrentPage(currentPage - 1)}>
+                  <button
+                    className={`text-sm ${currentPage === 1 ? 'opacity-50 cursor-not-allowed' : ''} hover:bg-gray-200 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded-l`}
+                    onClick={() => setCurrentPage(currentPage - 1)}
+                    disabled={currentPage === 1}
+                  >
                     Prev
                   </button>
-                  <button className="text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-r"
-                  disabled={currentPage === totalPages}
-                      onClick={() => setCurrentPage(currentPage + 1)}
+                  <button
+                    className={`text-sm ${currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : ''} hover:bg-gray-200 text-gray-800 font-semibold py-2 px-4 border-t border-b border-r border-gray-400 rounded-r`}
+                    onClick={() => setCurrentPage(currentPage + 1)}
+                    disabled={currentPage === totalPages}
                   >
                     Next
                   </button>
@@ -218,44 +245,92 @@ const displayedOrders = filteredOrders.slice(
             </div>
           </div>
         </div>
-      </div>
+        {isModalOpen && (
+          <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+            <div className="bg-white rounded-lg p-6 w-full md:w-2/3 lg:w-1/2 max-h-[500px] overflow-y-auto">
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-xl font-semibold">User Orders</h2>
+                <button
+                  className="text-gray-500 hover:text-gray-700"
+                  onClick={closeModal}
+                >
+                  <svg
+                    className="w-6 h-6"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M6 18L18 6M6 6l12 12"
+                    ></path>
+                  </svg>
+                </button>
+              </div>
 
-      {/* Modal Update Modal*/}
-      {isModalOpen && (
-        <div className="fixed inset-0 w-[100%] flex items-center justify-center z-50 bg-black bg-opacity-50">
-          {/* Modal */}
-          <div className="bg-white rounded-lg p-8 z-50 w-[30%]">
-            <h2 className="text-lg font-semibold mb-4">View Order Status</h2>
-            <hr />
-            <div className="mt-5">
-              <table class="table-auto">
+              <table className="min-w-full leading-normal">
                 <thead>
                   <tr>
-                    <th>Order Id</th>
-                    <th>Status</th>
+                    <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                      Order ID
+                    </th>
+                    <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                      Order Service Type
+                    </th>
+                     <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                      Order Status
+                    </th>
+                    <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                      Amount
+                    </th>
+                    <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                      Date
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>{orderId}</td>
-                    <td>{orderStatus}</td>
-                  </tr>
+                  {
+                  userOrders?.length===0 && <h2 className="mt-5 font-bold">No Orders Found For This User</h2>
+                }
+                  {userOrders.map((order) => {
+                    console.log('order------->',order);
+                   return <tr key={order._id}>
+                      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                        <p className="text-gray-900 whitespace-no-wrap">{order._id}</p>
+                      </td>
+                      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                        <p className="text-gray-900 whitespace-no-wrap">{order.serviceType}</p>
+                      </td>
+                      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                        <p className="text-gray-900 whitespace-no-wrap">{order.orderStatus}</p>
+                      </td>
+                      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                        <p className="text-gray-900 whitespace-no-wrap">{order.orderAmount}</p>
+                      </td>
+                      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                        <p className="text-gray-900 whitespace-no-wrap">{new Date(order.orderDate).toLocaleDateString()}</p>
+                      </td>
+                    </tr>
+})}
                 </tbody>
               </table>
-            </div>
-            <div className="flex gap-3 mt-10 float-end">
-              <button
-                className="border border-richblack-700 text-white bg-[#d40511]  px-[12px] py-[8px] text-richblack-100 rounded-md  hover:bg-[#d40511] "
-                onClick={closeModal}
-              >
-                Cancel
-              </button>
+
+              <div className="flex justify-end mt-4">
+                <button
+                  className="bg-blue-500 text-white px-4 py-2 rounded-md"
+                  onClick={closeModal}
+                >
+                  Close
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      )}
-      {/* End of Modal */}
-    </body>
+        )}
+      </div>
+    </div>
   );
 };
 

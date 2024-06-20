@@ -17,7 +17,7 @@ const ManageDeliveryAddress = () => {
   }
 
   const handleCheckout=()=>{
-    dispatch(setStep(3))
+    dispatch(setStep(4))
   }
 
   useEffect(()=>{
@@ -32,19 +32,25 @@ const ManageDeliveryAddress = () => {
     setCheckoutPageAddress(true)
   }
 
+   const handleCancel = () => {
+    setViewAddress(true)
+    setAddAddress(false)
+    setCheckoutPageAddress(false)
+  }
+
   return (
     <div className='flex flex-col space-y-2 mt-7'>
     <div className='flex flex-col '>
 
       <div className='relative flex flex-row gap-x-4 h-12 items-center p-5 bg-gradient-to-b from-[#FF512F] to-[#F09819]'>
-        <span className='text-white'>2</span>
+        <span className='text-white'>3</span>
         <span className='text-white uppercase'>Delivery Address</span>
         <IoIosArrowDown className='text-white text-[25px] absolute right-10 cursor-pointer' onClick={toggleAccordion}/>
       </div>
 
       {
-        step>=2 && showAccordionData && addAddress && 
-        <ManageAddress checkoutPageAddress={checkoutPageAddress} setAddAddress={setAddAddress} setViewAddress={setViewAddress}/>
+        step>=3 && showAccordionData && addAddress && 
+        <ManageAddress checkoutPageAddress={checkoutPageAddress} setAddAddress={setAddAddress} setViewAddress={setViewAddress} handleCancel={handleCancel} />
       }
 
       {

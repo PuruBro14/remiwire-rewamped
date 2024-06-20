@@ -13,7 +13,7 @@ const LoginPage = () => {
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post('http://13.50.14.42:8100/api/admin/login', { username, password });
+      const response = await axios.post('http://localhost:8100/api/admin/login', { username, password });
       const { token, role } = response.data;
 
       localStorage.setItem('adminToken', JSON.stringify(token));
@@ -22,7 +22,7 @@ const LoginPage = () => {
       toast.success('Login successful!');
       dispatch(setAdminToken(response?.data?.token))
       dispatch(setRole("admin"))
-      navigate("/admin/*")
+      navigate("/admin/dashboard")
       console.log('------->runned');
     } catch (error) {
       console.log('error',error);

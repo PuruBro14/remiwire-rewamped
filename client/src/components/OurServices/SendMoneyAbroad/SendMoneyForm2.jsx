@@ -15,7 +15,7 @@ export default function SendMoneyForm2({
   const{token}=useSelector((state)=>state.auth)
   const [errors, setErrors] = useState({
     pancardNumber: "",
-    pancardimage: "",
+    pancardImage: "",
     remiterFirstName: "",
     remiterLastName: "",
     remiterAccountNo: "",
@@ -48,6 +48,7 @@ const handleSubmit = async (e) => {
 
 
   const {
+    educationLoan,
     purposeOfTransfer,
     remiterAccountNo,
     remiterIFSCCode,
@@ -74,8 +75,8 @@ const handleSubmit = async (e) => {
   if (!documentProof.passportImage) {
     newErrors.passportImage = "Document is required";
   }
-  if (!documentProof.pancardimage) {
-    newErrors.pancardimage = "PAN card image is required";
+  if (!documentProof.pancardImage) {
+    newErrors.pancardImage = "PAN card image is required";
   }
   if (!sendMoneyAboroadForms.remiterFirstName) {
     newErrors.remiterFirstName = "Remitter's first name is required";
@@ -100,13 +101,10 @@ const handleSubmit = async (e) => {
 
   if (Object.keys(newErrors).length === 0) {
     const fetchFxRatePromise = fetchFxRate(
-      transferFromState,
-      transferFromCity,
-      purposeOfTransfer,
-      transferToCountry,
       receivingAmountInEuro,
+      receivingCurrency,
       receivingAmountInINR,
-      receivingCurrency
+      educationLoan
     );
 
     const formData = new FormData();
@@ -124,7 +122,7 @@ const handleSubmit = async (e) => {
     formData.append("state", "madhya pradesh");
     formData.append("city", "gwalior");
     formData.append("bank_code", "3003");
-    formData.append("pancardimage", documentProof.pancardimage);
+    formData.append("pancardImage", documentProof.pancardImage);
     formData.append("passportImage", documentProof.passportImage);
 
     const registerRemitterPromise = registerRemitter(token,formData);
@@ -183,7 +181,7 @@ const handleSubmit = async (e) => {
 
 const fetchRemiiterDetails = async (token, dispatch, setGetRemiiterDetails) => {
   try {
-    const response = await apiConnector("GET", "http://13.50.14.42:8100/api/v1/remitters/prod_cf_rem_005", null, {
+    const response = await apiConnector("GET", "http://localhost:8100/api/v1/remitters/prod_cf_rem_005", null, {
       Authorization: `Bearer ${token}`,
     });
 
@@ -258,13 +256,13 @@ const fetchRemiiterDetails = async (token, dispatch, setGetRemiiterDetails) => {
                 id="file_input"
                 type="file"
                 onChange={(e) => {
-                  handleSubmitChangeFormDoc("pancardimage", e.target.files[0]);
-                  clearErrorDoc("pancardimage");
+                  handleSubmitChangeFormDoc("pancardImage", e.target.files[0]);
+                  clearErrorDoc("pancardImage");
                 }}
               />{" "}
-              {errors.pancardimage && (
+              {errors.pancardImage && (
                 <span className="text-[red] text-[11px] italic">
-                  {errors.pancardimage}
+                  {errors.pancardImage}
                 </span>
               )}
             </div>
@@ -323,6 +321,38 @@ const fetchRemiiterDetails = async (token, dispatch, setGetRemiiterDetails) => {
               )}
             </div>
           </div>
+
+          <div className="relative z-0 w-full mb-5 group">
+            <label
+              htmlFor="course_details"
+              className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+            >
+              Source Of Income
+            </label>
+            <select
+              className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+              placeholder=" "
+              onChange={(e) => {
+                handleInputChange("educationLoan", e.target.value);
+                clearError("educationLoan");
+              }}
+            >
+              <option value="">--Select Source Of Income--</option>
+              <option value="true">Education Loan</option>
+              <option value="false">Saving</option>
+              <option value="false">Salary</option>
+              <option value="false">Agriculture</option>
+              <option value="false">Property Sale</option>
+              <option value="false">Investments</option>
+            </select>
+
+            {errors.passportNumber && (
+              <span className="text-[red] text-[11px] italic">
+                {errors.passportNumber}
+              </span>
+            )}
+          </div>
+
           <div className="grid md:grid-cols-2 md:gap-6">
             <div className="relative z-0 w-full mb-5 group">
               <input

@@ -3,6 +3,7 @@ import { setLoading, setToken, setRole, setAdminToken } from "../../utils/authSl
 import { apiConnector } from "./apiconnector";
 import { bookOrderEndpoints, endpoints } from "../apis";
 import { setUser } from "../../utils/profileSlice";
+import axios from "axios";
 
 const { SIGNUP_API, LOGIN_API } = endpoints;
 
@@ -144,3 +145,45 @@ export const setConvert=(totalEntries)=>{
   }
 }
 
+export const sendOtp = (phoneNumber) => async (dispatch) => {
+  console.log('clicked-------------->');
+  const toastId = toast.loading("Loading...");
+  try {
+    const response = await axios.post("http://localhost:8100/send-otp", {
+      phoneNumber,
+    });
+    toast.success("OTP Sent Successfully");
+    return response.data;
+  } catch (error) {
+    console.log('error--------------------->',error);
+    return { success: false };
+  }finally{
+  toast.dismiss(toastId);
+  }
+};
+
+export const verifyOtp = (phoneNumber, otp, navigate) => async (dispatch) => {
+  console.log("clicked-------------->");
+   const toastId = toast.loading("Loading...");
+  try {
+    const response = await axios.post("http://localhost:8100/verify-otp", {
+      phoneNumber,
+      otp,
+    });
+    toast.success("OTP Verified");
+    if (response.data.success) {
+      dispatch(setUser(response.data.user));
+      navigate("/");
+      localStorage.setItem("token",1234);
+        localStorage.setItem("user",JSON.stringify({"username":"purusharma001"}))
+    } else {
+      dispatch(setLoginError("OTP verification failed"));
+    }
+  } catch (error) {
+  } finally {
+    toast.dismiss(toastId);
+  }
+};
+
+//{"username":"purusharma001"}
+// {"_id":"66349af8293fa499048702cb","username":"purusharma001","firstName":"goku90","lastName":"sharma","email":"puruwv02@gmail.com","additionalDetails":{"_id":"66349af8293fa499048702c9","gender":"","dateOfBirth":"","__v":0},"image":"https://api.dicebear.com/5.x/initials/svg?seed=purusharma001","address":["666d6fd31d72ef57d0aed27d","666d703390ab7d3d14ad18e7","666d70e4bdefe5a7156f4813"],"createdAt":"2024-05-03T08:06:16.344Z","updatedAt":"2024-06-19T09:01:24.950Z","__v":3,"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InB1cnV3djAyQGdtYWlsLmNvbSIsImlkIjoiNjYzNDlhZjgyOTNmYTQ5OTA0ODcwMmNiIiwiaWF0IjoxNzE4Nzg3Njg0LCJleHAiOjE3MTkwNDY4ODR9.mH502QofLvwal9rCehFn9diHdDZWRo4kVJE4v2Gzvko"}

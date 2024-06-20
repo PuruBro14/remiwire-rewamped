@@ -4,7 +4,7 @@ const {
   fetchAllOrders,
   fetchAllUsers,
 } = require("../controllers/admin/orders/getAllOrders.controller");
-const {getOrderById, getOrderByServiceType,updateOrderStatusById, getOrderOfForexCurrency}=require("../controllers/admin/orders/getOrderById.controller");
+const {getOrderById, getOrderByServiceType,updateOrderStatusById, getOrderOfForexCurrency, getSpecificUserOrders}=require("../controllers/admin/orders/getOrderById.controller");
 const adminRouter = express.Router();
 
 
@@ -14,6 +14,7 @@ adminRouter.get("/fetchOrderByServiceType/:serviceType", adminAuth, getOrderBySe
 adminRouter.get("/fetchOrderByForexType/:forexCurrency",adminAuth,getOrderOfForexCurrency);
 adminRouter.get("/fetchAllUsers", adminAuth, fetchAllUsers);
 adminRouter.put("/updateOrder/:id", adminAuth, updateOrderStatusById);
+adminRouter.get("/users/:userId/orders", getSpecificUserOrders);
 // adminRouter.delete("/deleteOrderById/:id", auth, isAdminRole, deleteOrderById);
 
 module.exports = adminRouter;

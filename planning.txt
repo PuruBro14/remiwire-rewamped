@@ -151,3 +151,18 @@ forex dropdown issue
 Overseas education loan api calls
 
 make tabs for cashfree service/our services
+
+//source of income(education loan) -- fixed
+//fxrate reciever -- fixed 
+//education,maintenance
+//Manage users download -- fixed
+//travel details after login before deliverey address
+
+//CNXQKDGVKHK2PW77DTWLAX3E
+
+Document name change in backend 
+Purpose on SendMoneyAbroad
+Remitter Details already exist
+Beneficiary already exist 
+admin orders tab wise
+

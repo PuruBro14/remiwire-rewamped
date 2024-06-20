@@ -35,7 +35,7 @@ export default function SendMoneyBifurcation({ setFormStep, documentProof, fxRat
 
   const getSessionId = async () => {
     try {
-      const res = await apiConnector('POST', 'http://13.50.14.42:8100/api/v1/payment', null,{
+      const res = await apiConnector('POST', 'http://localhost:8100/api/v1/payment', {amount:fxRate?.amount_to_pay.toFixed(2)},{
         Authorization: `Bearer ${token}`,
       });
       if (res.data) {
@@ -103,13 +103,14 @@ const verifyPayment = async (token) => {
   try {
     let res = await apiConnector(
       "POST",
-      "http://13.50.14.42:8100/api/v1/verify",
+      "http://localhost:8100/api/v1/verify",
       {
         orderId: orderId,
-        serviceType: "SendMoneyAbroad"
+        serviceType: "SendMoneyAbroad",
+        amount:fxRate?.amount_to_pay.toFixed(2)
       },
       {
-        Authorization: `Bearer ${token}` // Pass headers directly here
+        Authorization: `Bearer ${token}`
       },
     );
 
@@ -175,7 +176,7 @@ const verifyPayment = async (token) => {
                   </td>
                   <td>
                     GST on Charge
-                    <div className="font-bold">{fxRate?.gst}</div>
+                    <div className="font-bold">{fxRate?.gst.toFixed(2)}</div>
                   </td>
                   <td>
                     GST on Currency Conversion
@@ -185,7 +186,7 @@ const verifyPayment = async (token) => {
                 <tr>
                   <td>
                     TCS
-                    <div className="font-bold">{fxRate?.tcs}</div>
+                    <div className="font-bold">{fxRate?.tcs.toFixed(2)}</div>
                   </td>
                   <td>
                     TCS Flag
@@ -193,7 +194,7 @@ const verifyPayment = async (token) => {
                   </td>
                   <td>
                     Total of all Charges and Taxes
-                    <div className="font-bold">{fxRate?.amount_to_pay}</div>
+                    <div className="font-bold">{fxRate?.amount_to_pay.toFixed(2)}</div>
                   </td>
                 </tr>
               </tbody>

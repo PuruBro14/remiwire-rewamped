@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
+  educationLoan:false,
   transferFromCountry: "India",
   transferFromState: "",
   transferFromCity: "",
@@ -13,7 +14,7 @@ const initialState = {
   receivingAmountInINR: "",
   oneEurotoINR: "",
   pancardNumber: "",
-  pancardimage: "",
+  pancardImage: "",
   addressProof: "",
   passportImage: "",
   blockACSheetDoc: "",
@@ -44,6 +45,7 @@ const SendMoneySlice = createSlice({
   reducers: {
     setformValue: (state, action) => {
       const {
+        educationLoan,
         transferFromState,
         transferFromCity,
         transferToCountry,
@@ -53,7 +55,7 @@ const SendMoneySlice = createSlice({
         exchangeRate,
         receivingAmountInINR,
         pancardNumber,
-        pancardimage,
+        pancardImage,
         remiterFirstName,
         remiterLastName,
         remiterAccountNo,
@@ -77,6 +79,8 @@ const SendMoneySlice = createSlice({
         addressProof,
       } = action.payload;
 
+      state.educationLoan=
+      educationLoan!==undefined?educationLoan:state.educationLoan;
       state.addressProof =
         addressProof !== undefined ? addressProof : state.addressProof;
       state.transferFromState =
@@ -101,8 +105,8 @@ const SendMoneySlice = createSlice({
           : state.receivingAmountInINR;
       state.pancardNumber =
         pancardNumber !== undefined ? pancardNumber : state.pancardNumber;
-      state.pancardimage =
-        pancardimage !== undefined ? pancardimage : state.pancardimage;
+      state.pancardImage =
+        pancardImage !== undefined ? pancardImage : state.pancardImage;
       state.remiterFirstName =
         remiterFirstName !== undefined
           ? remiterFirstName
