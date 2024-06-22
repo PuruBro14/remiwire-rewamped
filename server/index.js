@@ -23,14 +23,9 @@ const phoneOTPRoutes=require('./routes/phoneOTPRoutes')
 const { cloudinaryConnect } = require("./config/cloudinary");
 const fileUpload = require("express-fileupload");
 const {Cashfree}=require('cashfree-pg');
-const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
 require('dotenv').config();
 const PORT = process.env.PORT || 4000;
-const twilio = require("twilio");
-const accountSid = "AC449cc28f34818c0b497ab36ad7af6c6b";
-const authToken = "06112bc41995a3d092526ae09169224a";  
-const client = new twilio(accountSid, authToken);
 
 database.connect();
 app.use(express.json());

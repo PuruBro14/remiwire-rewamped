@@ -95,7 +95,6 @@ exports.changePassword = async (req, res) => {
 
     const { oldPassword, newPassword, confirmPassword } = req.body;
 
-    // Check if the old password matches
     const isPasswordMatch = await bcrypt.compare(
       oldPassword,
       userDetails.password
@@ -107,7 +106,6 @@ exports.changePassword = async (req, res) => {
       });
     }
 
-    // Check if new password and confirm password match
     if (newPassword !== confirmPassword) {
       return res.status(401).json({
         success: false,
@@ -115,17 +113,14 @@ exports.changePassword = async (req, res) => {
       });
     }
 
-    // Encrypt the new password
     const encryptedPassword = await bcrypt.hash(newPassword, 10);
 
-    // Update the user's password
     const updatedUserDetails = await User.findByIdAndUpdate(
       req.user.id,
       { password: encryptedPassword },
       { new: true }
     );
 
-    // Send a confirmation email
     try {
       const emailResponse = await mailSender(
         updatedUserDetails.email,

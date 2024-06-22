@@ -3,7 +3,6 @@ const userSeaTemplate = require("../mail/templates/userOverseaTemplate");
 const SendMoney = require("../models/SendMoney");
 const { uploadImageToCloudinary } = require("../utils/imageUploader");
 const mailSender = require("../utils/mailSender");
-// const { uploadImageToCloudinary } = require("../utils/imageUploader");
 
 exports.createSendMoney = async (req, res) => {
   try {

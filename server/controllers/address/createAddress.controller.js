@@ -1,5 +1,5 @@
 const AddressModel = require("../../models/Address.model");
-const User = require("../../models/User"); // Adjust the path as needed
+const User = require("../../models/User");
 const Joi = require("joi");
 
 const addressValidation = Joi.object({
@@ -18,14 +18,12 @@ exports.createAddress = async (req, res) => {
   const userId = req.user.id;
   const { error, value } = addressValidation.validate(req.body);
   if (error) {
-    let allDetails = error.details.map((item) => item.message);
     return res.status(400).json({
       success: false,
       message: error.details[0].message,
     });
   }
   try {
-    // Create a new address document
     let createAddress = await AddressModel.create({
       fullName: value.fullName,
       address: value.address,
@@ -39,7 +37,6 @@ exports.createAddress = async (req, res) => {
       userId: userId,
     });
 
-    // Update the user's address field with the new address ObjectId
     let user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({
@@ -51,7 +48,6 @@ exports.createAddress = async (req, res) => {
     user.address.push(createAddress._id);
     await user.save();
 
-    // Populate the user's address field
     const populatedUser = await User.findById(userId).populate("address");
 
     return res.status(201).json({

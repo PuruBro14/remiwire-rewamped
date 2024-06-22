@@ -2,15 +2,13 @@ const axios = require("axios");
 const Order = require("../models/Order");
 
 const generateOrderId = (prefix) => {
-  const randomNumber = Math.floor(Math.random() * 10000); // Generate a random 4-digit number
-  const timestamp = Date.now(); // Get the current timestamp
+  const randomNumber = Math.floor(Math.random() * 10000);
+  const timestamp = Date.now();
   return `${prefix}${timestamp}${randomNumber}`;
 };
 
 exports.createPayment = async (req, res) => {
   const {amount}=req.body;
-  const userId = req.user.id;
-  const { serviceType } = req.body; ;
   console.log('amount',amount);
   try {
     const orderId = generateOrderId("TORID"); 

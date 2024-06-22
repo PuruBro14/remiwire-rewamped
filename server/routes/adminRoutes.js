@@ -15,7 +15,6 @@ adminRouter.get("/fetchOrderByForexType/:forexCurrency",adminAuth,getOrderOfFore
 adminRouter.get("/fetchAllUsers", adminAuth, fetchAllUsers);
 adminRouter.put("/updateOrder/:id", adminAuth, updateOrderStatusById);
 adminRouter.get("/users/:userId/orders", getSpecificUserOrders);
-// adminRouter.delete("/deleteOrderById/:id", auth, isAdminRole, deleteOrderById);
 
 module.exports = adminRouter;
 

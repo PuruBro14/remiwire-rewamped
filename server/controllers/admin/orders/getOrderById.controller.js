@@ -1,4 +1,3 @@
-const mongoose = require("mongoose");
 const Order = require("../../../models/Order");
 const { formatDate } = require("../../../utils/utility");
 const BookModel = require("../../../models/bookOrder.model");

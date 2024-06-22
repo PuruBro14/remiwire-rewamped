@@ -16,7 +16,7 @@ exports.createBookOrders = async (req, res) => {
     const customerId = req.body.customerId;
 
 
-    const orderId = uuidv4(); // Generate orderId here
+    const orderId = uuidv4();
 
     const createOrder = await BookModel.create({
       orderId: orderId,

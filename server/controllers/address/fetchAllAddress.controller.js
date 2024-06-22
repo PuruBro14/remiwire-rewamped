@@ -1,12 +1,10 @@
 const UserModel = require("../../models/User");
-const AddressModel = require("../../models/Address.model");
 
 exports.fetchAllAddress = async (req, res) => {
   try {
     const userId = req.user.id;
     console.log("userId", userId);
 
-    // Fetch user and populate address
     const user = await UserModel.findById(userId).populate("address");
 
     if (!user) {
@@ -16,7 +14,6 @@ exports.fetchAllAddress = async (req, res) => {
       });
     }
 
-    // Log the populated user address for debugging
     console.log("User with populated addresses:", user);
 
     res.status(200).json({

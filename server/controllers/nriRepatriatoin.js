@@ -3,7 +3,6 @@ const userSeaTemplate = require("../mail/templates/userOverseaTemplate");
 const NRIRepatriation = require("../models/nriRepatriation");
 const { uploadImageToCloudinary } = require("../utils/imageUploader");
 const mailSender = require("../utils/mailSender");
-// const { uploadImageToCloudinary } = require("../utils/imageUploader");
 
 exports.createNRIRepatriation = async (req, res) => {
   try {

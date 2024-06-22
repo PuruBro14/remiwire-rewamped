@@ -41,7 +41,6 @@ router.get("/remitterDetails/:remitterID", async (req, res) => {
       "binary"
     ).toString("base64");
 
-    // Update remitterData with Base64 image
     remitterData.pancardImage = base64Image;
     res.json({ success: true, data: remitterData });
   } catch (error) {
