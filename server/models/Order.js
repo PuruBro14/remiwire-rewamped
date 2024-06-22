@@ -55,6 +55,8 @@ const ordersSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    remitter: { type: mongoose.Schema.Types.ObjectId, ref: "Remitter" }, 
+    beneficiary: { type: mongoose.Schema.Types.ObjectId, ref: "Beneficiary" },
   },
   { timestamps: true }
 );

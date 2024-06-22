@@ -34,8 +34,8 @@ exports.fetchAllOrders = async (req, res, next) => {
           ],
         },
       },
-      { $skip: (pageNumber - 1) * limitNumber },
-      { $limit: limitNumber },
+      // { $skip: (pageNumber - 1) * limitNumber },
+      // { $limit: limitNumber }, 
     ];
 
     const orders = await OrderModel.aggregate(pipeline);

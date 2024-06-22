@@ -1,6 +1,8 @@
 const axios = require("axios");
 const { Cashfree } = require("cashfree-pg");
 const Order = require("../models/Order");
+const Remitter = require("../models/Remitter");
+const Beneficiary = require("../models/Beneficiary");
 
 Cashfree.XClientId = process.env.CLIENT_ID;
 Cashfree.XClientSecret = process.env.CLIENT_SECRET;
@@ -18,12 +20,16 @@ exports.verifyOrder = async (req, res) => {
       console.log("userId-dsssssssss------>", userId);
 
   try {
-    let { orderId, serviceType,amount } = req.body;
-    console.log("orderId", orderId,serviceType,customerId);
+    let { orderId, serviceType, amount } = req.body;
+    console.log("orderId", orderId, serviceType, customerId);
 
     const response = await Cashfree.PGOrderFetchPayments("2023-08-01", orderId);
 
-    console.log('userId------->',userId);
+    const remitter = await Remitter.findOne({})
+    const beneficiary = await Beneficiary.findOne({});
+    console.log("remitter", remitter, "beneficiary", beneficiary);
+
+    console.log("userId------->", userId);
 
     const newOrder = new Order({
       orderId: orderId,
@@ -31,7 +37,7 @@ exports.verifyOrder = async (req, res) => {
       user: userId,
       orderStatus: "Paid",
       orderDate: new Date(),
-      orderAmount: amount||1,
+      orderAmount: amount || 1,
       currency: "INR",
       paymentMethod: "Credit Card",
       shippingAddress: {
@@ -50,17 +56,18 @@ exports.verifyOrder = async (req, res) => {
       },
       orderNote: "Remiwire order1",
       serviceType: serviceType,
+      remitter: remitter._id,
+      beneficiary: beneficiary._id,
     });
 
     await newOrder.save();
 
-        const populatedOrder = await Order.findById(newOrder._id).populate(
-          "user",
-          "firstName lastName email contactNumber"
-        );
+    const populatedOrder = await Order.findById(newOrder._id)
+      .populate("user", "firstName lastName email contactNumber")
 
-            res.json(populatedOrder);
+    res.json(populatedOrder);
 
+    await Order.save();
   } catch (error) {
     console.error('erorrrrrrrrrrrrrrrrrrrr->',error.message);
     res

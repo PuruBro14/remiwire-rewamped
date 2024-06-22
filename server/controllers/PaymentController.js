@@ -9,11 +9,9 @@ const generateOrderId = (prefix) => {
 
 exports.createPayment = async (req, res) => {
   const {amount}=req.body;
-  console.log('amount',amount);
-  console.log('amount',amount);
   const userId = req.user.id;
-  const { serviceType } = req.body; 
-  console.log('req.body',req.body,serviceType);
+  const { serviceType } = req.body; ;
+  console.log('amount',amount);
   try {
     const orderId = generateOrderId("TORID"); 
     const customerId = generateOrderId("CID"); 
@@ -47,6 +45,8 @@ exports.createPayment = async (req, res) => {
     };
 
     const response = await axios.request(options);
+
+    console.log('responseeeeeee',response);
 
     return res.status(200).send(response.data);
   } catch (error) {

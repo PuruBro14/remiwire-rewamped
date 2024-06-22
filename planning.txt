@@ -160,9 +160,10 @@ make tabs for cashfree service/our services
 
 //CNXQKDGVKHK2PW77DTWLAX3E
 
-Document name change in backend 
-Purpose on SendMoneyAbroad
+Document name change in backend -- fixed
+if no cashfree service show dummy details -- fixed
 Remitter Details already exist
 Beneficiary already exist 
 admin orders tab wise
 
+order ke sath send remitter and beneficiary

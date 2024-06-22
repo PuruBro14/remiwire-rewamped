@@ -19,6 +19,7 @@ const statusRoutes = require("./routes/statusRoutes");
 const NRIRepatriationRoutes = require("./routes/nriRepatriatoin");
 const sendMoneyRoutes = require("./routes/sendMoney");
 const adminRoutes = require("./routes/adminRoutes");
+const phoneOTPRoutes=require('./routes/phoneOTPRoutes')
 const { cloudinaryConnect } = require("./config/cloudinary");
 const fileUpload = require("express-fileupload");
 const {Cashfree}=require('cashfree-pg');
@@ -72,6 +73,7 @@ app.use("/api/v1", paymentRoutes);
 app.use("/api/v1", verificationRoutes);
 app.use("/api/v1", statusRoutes);
 app.use("/api/v1", adminRoutes);
+app.use("/api/v1",phoneOTPRoutes)
 
 app.get("/", (req, res) => {
   return res.json({
@@ -101,63 +103,6 @@ app.post("/api/admin/login", (req, res) => {
   );
 
   res.json({ token, role: "admin" });
-});
-
-const formatPhoneNumber = (phoneNumber) => {
-  if (phoneNumber[0] !== "+") {
-    return "+" + phoneNumber;
-  }
-  return phoneNumber;
-};
-
-app.post("/send-otp", async (req, res) => {
-  const { phoneNumber } = req.body;
-  console.log(phoneNumber);
-  const formattedPhoneNumber = formatPhoneNumber(phoneNumber);
-  console.log("format", formattedPhoneNumber);
-  try {
-    
-     const verification = await client.verify.v2
-       .services("VAdc6cffe5a61b3e215da980f85445631f")
-       .verifications.create({ to: formattedPhoneNumber, channel: "sms" });
-
-     res
-       .status(200)
-       .send({ success: true, message: "OTP sent successfully", verification });
-  } catch (error) {
-    res
-      .status(500)
-      .send({ success: false, message: "Failed to send OTP", error });
-  }
-});
-
-app.post("/verify-otp", async (req, res) => {
-  const { phoneNumber, otp } = req.body;
-
-  try {
-    const verificationCheck = await client.verify.v2
-      .services("VAdc6cffe5a61b3e215da980f85445631f")
-      .verificationChecks.create({ to: phoneNumber, code: otp });
-
-      console.log('verficaitionCheck',verificationCheck);
-
-    if (verificationCheck.status === "approved") {
-      return res
-        .status(200)
-        .json({ success: true, message: "OTP verified successfully" });
-    } else {
-      return res.status(400).json({ success: false, message: "Invalid OTP" });
-    }
-  } catch (error) {
-    console.error("Error verifying OTP:", error);
-    return res
-      .status(500)
-      .json({
-        success: false,
-        message: "Failed to verify OTP",
-        error: error.message,
-      });
-  }
 });
 
 app.listen(PORT, () => {

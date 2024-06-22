@@ -10,10 +10,11 @@ export default function SendMoneyBifurcation({ setFormStep, documentProof, fxRat
   const [orderId, setOrderId] = useState("");
   const [customerId, setCustomerId] = useState("");
   const [isPaymentVerified, setIsPaymentVerified] = useState(false);
+  const [showBankDetails, setShowBankDetails] = useState(false);
   const params = useParams();
   const navigate = useNavigate();
   const isSessionId = params.sessionid;
-  const { oneEurotoINR, receivingAmountInEuro, receivingAmountInINR } = useSelector((state) => state.sendMoneyAboroadForms);
+  const { oneEurotoINR, receivingAmountInEuro, receivingAmountInINR,purposeOfTransfer } = useSelector((state) => state.sendMoneyAboroadForms);
   const { token } = useSelector((state) => state.auth);
 
   const [sessionId, setSessionId] = useState("");
@@ -35,7 +36,7 @@ export default function SendMoneyBifurcation({ setFormStep, documentProof, fxRat
 
   const getSessionId = async () => {
     try {
-      const res = await apiConnector('POST', 'http://13.50.14.42:8100/api/v1/payment', {amount:fxRate?.amount_to_pay.toFixed(2)},{
+      const res = await apiConnector('POST', 'http://localhost:8100/api/v1/payment', {amount:fxRate?.amount_to_pay.toFixed(2)},{
         Authorization: `Bearer ${token}`,
       });
       if (res.data) {
@@ -50,39 +51,73 @@ export default function SendMoneyBifurcation({ setFormStep, documentProof, fxRat
     }
   };
 
+  const completePayment = async () => {
+    try {
+      await verifyPayment(token);
+    } catch (error) {
+      toast.error("Failed to complete payment.");
+      console.log("Error completing payment:", error);
+    }
+  };
+
+
   const handlePayment = async (e) => {
     e?.preventDefault();
-    try {
-      if (!cashfree) {
-        console.error("Cashfree SDK not initialized");
-        return;
+    if (purposeOfTransfer !== "Gift" && purposeOfTransfer!=="Travel for medical treatment abroad" && purposeOfTransfer!=="Private visit to any foreign Country" && purposeOfTransfer!=="Emigration abroad, employment abroad" && purposeOfTransfer!=="Employment abroad") {
+      console.log('this runned');
+      try {
+        if (!cashfree) {
+          console.error("Cashfree SDK not initialized");
+          return;
+        }
+
+        let sessionId = await getSessionId();
+        console.log("sessionId", sessionId, cashfree);
+
+        let checkoutOptions = {
+          paymentSessionId: sessionId,
+          redirectTarget: "_modal",
+        };
+
+        cashfree.checkout(checkoutOptions).then((res) => {
+          console.log("Payment initialized");
+          if (res.error) {
+            console.log("result error", res.error.message);
+          }
+
+          console.log("res", res);
+
+          if (res) {
+            console.log("Redirection");
+            verifyPayment(token);
+            console.log("this done");
+            console.log("this not done end----->");
+          }
+        });
+      } catch (error) {
+        console.log("error", error);
       }
-
-      let sessionId = await getSessionId();
-      console.log("sessionId", sessionId, cashfree);
-
-      let checkoutOptions = {
-        paymentSessionId: sessionId,
-        redirectTarget: "_modal",
-      };
-
-      cashfree.checkout(checkoutOptions).then((res) => {
-        console.log("Payment initialized");
-        if (res.error) {
-          console.log("result error", res.error.message);
-        }
-
-        console.log("res", res);
-
-        if (res) {
-          console.log("Redirection");
-          verifyPayment(token);
-          console.log("this done");
-          console.log("this not done end----->");
-        }
+    } else {
+      console.log("Displaying dummy bank details");
+      setShowBankDetails(true);
+      toast.success("Please use the following bank details for payment.");
+      try {
+      const res = await apiConnector('POST', 'http://localhost:8100/api/v1/payment', {amount:fxRate?.amount_to_pay.toFixed(2)},{
+        Authorization: `Bearer ${token}`,
       });
+
+      if (res.data) {
+        toast.success("Payment completed successfully.");
+        setOrderId(res?.data?.order_id);
+         localStorage.setItem('orderId', res.data.order_id);
+        console.log('res',res.data);
+      } else {
+        toast.error("Failed to complete payment.");
+      }
     } catch (error) {
-      console.log("error", error);
+      toast.error("Failed to complete payment.");
+      console.log("Error completing payment:", error);
+    }
     }
   };
 
@@ -103,11 +138,11 @@ const verifyPayment = async (token) => {
   try {
     let res = await apiConnector(
       "POST",
-      "http://13.50.14.42:8100/api/v1/verify",
+      "http://localhost:8100/api/v1/verify",
       {
         orderId: orderId,
         serviceType: "SendMoneyAbroad",
-        amount:fxRate?.amount_to_pay.toFixed(2)
+        amount:fxRate?.amount_to_pay.toFixed(2)||25
       },
       {
         Authorization: `Bearer ${token}`
@@ -147,6 +182,25 @@ const verifyPayment = async (token) => {
             className="mt-4 text-blue-600 underline"
           >
             Go to My Orders to track your recent orders.
+          </button>
+        </div>
+      ) : showBankDetails ? (
+        <div className="bg-[#e7e7e7] mt-5 p-5">
+          <div className="text-[18px] font-bold mb-4">Dabloo Babloo Bank Account Details</div>
+          <table className="text-[12px] w-full">
+            <tbody>
+              <tr>
+                <td className="font-bold">Account Number:</td>
+                <td>123456789</td>
+              </tr>
+              <tr>
+                <td className="font-bold">IFSC Code:</td>
+                <td>ABCD0123456</td>
+              </tr>
+            </tbody>
+          </table>
+          <button onClick={completePayment} className="mt-4 text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+            Complete Payment
           </button>
         </div>
       ) : (

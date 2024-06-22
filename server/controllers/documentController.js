@@ -33,7 +33,7 @@ exports.uploadDocument = async (req, res) => {
     const fileData = fs.readFileSync(customerPassportImage.tempFilePath);
 
     const form = new FormData();
-    form.append("files", fileData, customerPassportImage.name);
+    form.append("files", fileData, "KYC_PASSPORT_STUDENT_1.jpeg");
 
     let response;
     try {
