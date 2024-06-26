@@ -29,23 +29,47 @@ import CookiePolicy from "./components/Legal/CookiePolicy";
 import PrivacyPolicy from "./components/Legal/PrivacyPolicy";
 import TermsOfUse from "./components/Legal/TermsOfUse";
 import AdminNavbar from "./pages/Admin/AdminNavbar";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import LoginPage from "./pages/AdminLoginPage";
 import AdminProtectedRoute from "./components/Auth/AdminProtectedRoute";
 import ProtectedRoute from "./components/Auth/ProtectedRoute";
 import AdminDashboard from "./pages/Admin/AdminDashboard";
 import ManageOrder from "./pages/Admin/ManageOrder";
 import ManageUsers from "./pages/Admin/ManageUsers";
+import { setScrollToComponentContact } from "./utils/scrollSlice";
+import { useEffect, useState } from "react";
+import Loader from './components/Loader';
+import './components/loader.css';
 
 function App() {
+  const dispatch=useDispatch();
   const {role,roleValue}=useSelector((state)=>state.auth)
   const { token } = useSelector((state) => state.auth);
   const {adminToken}=useSelector((state)=>state.auth)
   const location = useLocation();
+  const {scrollToComponentContact}=useSelector((state)=>state.scroll)
+  const [loading, setLoading] = useState(true);
+
 
     const isAdminPath = location.pathname.startsWith('/admin');
 
-    console.log('isAdminPath',isAdminPath);
+    useEffect(()=>{
+      const handlePageLoad=()=>{
+        setLoading(false);
+      }
+
+      setTimeout(handlePageLoad,100);
+
+      window.addEventListener('load',handlePageLoad);
+
+      return()=>{
+        window.removeEventListener('load',handlePageLoad)
+      }
+    },[])
+
+    if(loading){
+      return <Loader/>
+    }
 
   return (
     <div>

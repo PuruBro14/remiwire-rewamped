@@ -12,6 +12,5 @@ const scrollSlice = createSlice({
   },
 });
 
-export const { setScrollToComponentContact } =
-  scrollSlice.actions;
+export const { setScrollToComponentContact } =scrollSlice.actions;
 export default scrollSlice.reducer;

@@ -10,6 +10,7 @@ import HowTransferMoney from "../HowTransferMoney/HowTransferMoney";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import NewLandingVideo from '../../assets/images/NewLandingVideo.mp4'
+import OurAchivements from "../OurAchivements";
 const homeServices = [
   {
     id: 1,
@@ -30,9 +31,6 @@ const homeServices = [
 ];
 
 const Home = () => {
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
 
   return (
     <div className="overflow-x-hidden">
@@ -69,8 +67,12 @@ const Home = () => {
         <AboutUs />
       </div>
 
+      <div>
+        <OurAchivements/>
+      </div>
+
       <div className="bg-[#F5F7FE]">
-        <div className="lg:h-[10px] my-14"></div>
+        <div></div>
         <HowTransferMoney />
       </div>
 

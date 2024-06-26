@@ -68,7 +68,7 @@ app.use("/api/v1", paymentRoutes);
 app.use("/api/v1", verificationRoutes);
 app.use("/api/v1", statusRoutes);
 app.use("/api/v1", adminRoutes);
-app.use("/api/v1",phoneOTPRoutes)
+app.use("/api/v1",phoneOTPRoutes);
 
 app.get("/", (req, res) => {
   return res.json({

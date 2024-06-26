@@ -7,8 +7,6 @@ const initialState = {
   loading: false,
 };
 
-console.log(JSON.parse(localStorage.getItem("user")),initialState.user);
-
 const profileSlice = createSlice({
   name: "profile",
   initialState: initialState,

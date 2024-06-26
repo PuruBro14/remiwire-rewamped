@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { FaEye, FaEdit } from "react-icons/fa";
 import {toast} from 'react-hot-toast'
 import {useSelector} from 'react-redux'
@@ -50,6 +50,7 @@ const ManageOrder = () => {
   ];
 
   const fetchUserOrders = async () => {
+    console.log('calledddddddddddddd->');
     const toastId = toast.loading("Loading orders...");
     setLoading(true);
     try {
@@ -124,7 +125,6 @@ const ManageOrder = () => {
   }, [adminToken]);
 
     const fetchOrderByForexType = async () => {
-      console.log('clicked');
     setLoading(true);
     try {
       const response = await apiConnector("GET", `http://localhost:8100/api/v1/fetchOrderByForexType/forexCurrency`, null, {
@@ -150,8 +150,6 @@ const ManageOrder = () => {
     }
   }, [selectedServiceType, orders]);
 
-  console.log('selectedTabIndex',selectedTabIndex);
-
   const handleServiceTypeChange = (e) => {
     setSelectedServiceType(e.target.value);
   };
@@ -159,12 +157,10 @@ const ManageOrder = () => {
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
     setCurrentPage(1);
+    debouncingFetchedUserOrders();
   };
 
-  const filteredAndSearchedOrders = filteredOrders.filter(order => 
-    order.orderId.includes(searchQuery) ||
-    order.placedBy.includes(searchQuery)
-  );
+  const filteredAndSearchedOrders = filteredOrders
 
     const totalPages = Math.ceil(filteredAndSearchedOrders.length / itemsPerPage);
   const displayedOrders = filteredAndSearchedOrders.slice(
@@ -188,9 +184,6 @@ const ManageOrder = () => {
       },{
         Authorization: `Bearer ${adminToken}`,
       });
-
-      console.log('response',response);
-
       if (response.data.success) {
         alert('Order status updated successfully');
         closeModal();
@@ -206,7 +199,6 @@ const ManageOrder = () => {
 const fetchRemitterDetails = async (remitterId) => {
   try {
     const response = await apiConnector('GET', `http://localhost:8100/api/v1/remitterDetails/${remitterId}`);
-    console.log('response',response);
     if (response.data.success) {
       setUserOrder(response.data.data);
       setAttachments([response.data.data.pancardImage,response.data.data.passportImage])
@@ -558,7 +550,6 @@ const handleTabSelect = (index) => {
                   <tbody>
                     {
                       ourOrders?.map((currItem)=>{
-                        console.log('currItem',currItem);
                         return(
                         <tr>
                       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
@@ -737,7 +728,6 @@ const handleTabSelect = (index) => {
                 </p>
                 <div className="mt-5">
                 {attachments.map((attachment, index) => {
-                  console.log('attcacynnebt',attachment);
                   return <div key={index} className="flex items-center justify-between">
                     <a>
                       Attachment {index + 1}

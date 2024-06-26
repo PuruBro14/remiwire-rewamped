@@ -17,8 +17,8 @@ export default function Contactus() {
   });
   const sectionRef = useRef(null);
   const dispatch = useDispatch();
-  const { scrollToComponentContact } = useSelector((state) => state.scroll1);
-
+  const { scrollToComponentContact } = useSelector((state) => state.scroll);
+  const [contactUsReady, setContactUsReady] = useState(false);
 
   const { fullname, email, message } = formData;
 
@@ -28,15 +28,6 @@ export default function Contactus() {
       [e.target.name]: e.target.value,
     }));
   };
-
-  useEffect(() => {
-    if (scrollToComponentContact) {
-        console.log('scrollToComponentContact',scrollToComponentContact);
-      sectionRef.current.scrollIntoView({ behaviour: "smooth" });
-      dispatch(setScrollToComponentContact(false))
-    }
-  });
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -63,11 +54,26 @@ export default function Contactus() {
     toast.dismiss(toastId);
   };
 
-  console.log('scrollToComponentContact',scrollToComponentContact);
+  useEffect(() => {
+        if (scrollToComponentContact && contactUsReady) {
+          console.log('this runneddddddd',scrollToComponentContact);
+            const contactUsSection = document.getElementById('contactUs');
+            if (contactUsSection) {
+                contactUsSection.scrollIntoView({ behavior: 'smooth' });
+            }
+            dispatch(setScrollToComponentContact(false));
+        }
+    }, [scrollToComponentContact,contactUsReady]);
+
+    const handleContactUsReady = () => {
+        setContactUsReady(true);
+    };
+
+    console.log('scrollToComponentContact',scrollToComponentContact);
 
   return (
     <>
-      <div id="contactUs" ref={sectionRef}>
+      <div id="contactUs" ref={handleContactUsReady}>
         <div className="relative w-11/12 max-w-maxContent mx-auto shadow-md my-6 p-5">
           {/* 1st section  */}
           <div className="flex flex-col gap-5 py-8 px-10 text-sm">

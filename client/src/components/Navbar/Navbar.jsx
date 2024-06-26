@@ -80,13 +80,9 @@ const Navbar = ({}) => {
     };
   }, [window.innerWidth]);
 
-  const handleContactus = (e) => {
-    e.preventDefault();
-    if (location.pathname !== "/") {
-      navigate("/");
-    }
-    dispatch(setScrollToComponentContact(true));
-  };
+  const scrollToContactUs = () => {
+       dispatch(setScrollToComponentContact(true))
+      }
 
   return (
     <div className="flex h-20 items-center w-full justify-center transition-all duration-200">
@@ -132,11 +128,6 @@ const Navbar = ({}) => {
                           <Link to={ele?.title !== "Contact Us" ? ele?.path : ""}>
                             <p
                               className={`py-2 ${ele?.title==="Settings"?'relative bottom-3':''}`}
-                              onClick={(e) => {
-                                if (ele?.title === "Contact Us") {
-                                  handleContactus(e);
-                                }
-                              }}
                             >
                               {ele.title}
                             </p>
@@ -167,14 +158,9 @@ const Navbar = ({}) => {
                             </div>
                           </div>
                         ) : (
-                          <Link to={ele?.title !== "Contact Us" ? ele?.path : ""}>
+                          <Link to={ele?.title !== "Contact Us" ? ele?.path : ""} onClick={ele?.title==="Contact Us"?scrollToContactUs:''}>
                             <p
                               className="py-2"
-                              onClick={(e) => {
-                                if (ele?.title === "Contact Us") {
-                                  handleContactus(e);
-                                }
-                              }}
                             >
                               {ele.title}
                             </p>

@@ -12,7 +12,7 @@ const store = configureStore({
   reducer: {
     auth: authSlice,
     profile: profileSlice,
-    scroll1: scrollSlice,
+    scroll: scrollSlice,
     bookCurrency: bookCurrencySlice,
     blockeAccountForms: BlockedAccountSlice,
     gicAccountForms: GICAccountSlice,
