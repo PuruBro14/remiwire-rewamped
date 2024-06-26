@@ -53,21 +53,15 @@ function App() {
 
     const isAdminPath = location.pathname.startsWith('/admin');
 
-    useEffect(()=>{
-      const handlePageLoad=()=>{
-        setLoading(false);
-      }
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false); 
+    }, 100);
+  }, []);
 
-      setTimeout(handlePageLoad,100);
-
-      window.addEventListener('load',handlePageLoad);
-
-      return()=>{
-        window.removeEventListener('load',handlePageLoad)
-      }
-    },[])
 
     if(loading){
+      console.log('running-------->');
       return <Loader/>
     }
 
