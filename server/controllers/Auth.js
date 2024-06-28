@@ -7,7 +7,7 @@ require("dotenv").config();
 
 exports.signup = async (req, res) => {
   try {
-    const { username, firstName, lastName, phoneNo, email, password,confirmPassword } =
+    const { username, firstName, lastName, email, password,confirmPassword } =
       req.body;
     if (!username || !firstName || !lastName || !email || !contactNo || !password) {
       return res.status(400).send({
@@ -24,13 +24,6 @@ exports.signup = async (req, res) => {
     }
 
     const existingUser = await User.findOne({ email });
-    const existingMobileUser = await User.findOne({ phoneNo: contactNo });
-    if (existingUser || existingMobileUser) {
-      return res.status(400).json({
-        success: false,
-        message: "User already exists. Please sign in to continue.",
-      });
-    }
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
