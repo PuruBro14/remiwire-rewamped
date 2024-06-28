@@ -9,17 +9,10 @@ exports.signup = async (req, res) => {
   try {
     const { username, firstName, lastName, email, password,confirmPassword } =
       req.body;
-    if (!username || !firstName || !lastName || !email || !contactNo || !password) {
+    if (!username || !firstName || !lastName || !email || !password) {
       return res.status(400).send({
         success: false,
         message: "All Fields are required",
-      });
-    }
-
-    if(password!==confirmPassword){
-      return res.status(400).send({
-        success: false,
-        message: "Password and Confirm Password do not match",
       });
     }
 
