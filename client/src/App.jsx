@@ -54,10 +54,8 @@ function App() {
     const isAdminPath = location.pathname.startsWith('/admin');
 
   useEffect(() => {
-    setTimeout(() => {
       setLoading(false); 
-    }, 100);
-  }, []);
+  });
 
 
     if(loading){
