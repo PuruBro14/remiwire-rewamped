@@ -7,6 +7,14 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import styles from '../../pages/styles.module.css'
 
+const debounce=(func,wait)=>{
+  let timerId;
+  return(...args)=>{
+    clearTimeout(timerId);
+    timerId=setTimeout(()=>func(...args),wait)
+  }
+}
+
 const ManageOrder = () => {
   const {adminToken}=useSelector((state)=>state.auth)
   const [orders, setOrders] = useState([]);
@@ -50,11 +58,10 @@ const ManageOrder = () => {
   ];
 
   const fetchUserOrders = async () => {
-    console.log('calledddddddddddddd->');
     const toastId = toast.loading("Loading orders...");
     setLoading(true);
     try {
-      const response = await apiConnector("GET", 'http://13.50.14.42:8100/api/v1/fetchAllOrders', null, {
+      const response = await apiConnector("GET", 'http://localhost:8100/api/v1/fetchAllOrders', null, {
         Authorization: `Bearer ${adminToken}`,
       });
       setLoading(false);
@@ -71,11 +78,13 @@ const ManageOrder = () => {
     fetchUserOrders();
   }, [adminToken]);
 
+  const debouncingFetchedUserOrders=useMemo(()=>debounce(fetchUserOrders,300),[])
+
     const fetchOurServicesOrders = async () => {
     const toastId = toast.loading("Loading orders...");
     setLoading(true);
     try {
-      const response = await apiConnector("GET", 'http://13.50.14.42:8100/api/v1/fetchOrderByForexType/:forexCurrency', null, {
+      const response = await apiConnector("GET", 'http://localhost:8100/api/v1/fetchOrderByForexType/:forexCurrency', null, {
         Authorization: `Bearer ${adminToken}`,
       });
       setLoading(false);
@@ -95,7 +104,7 @@ const ManageOrder = () => {
   const fetchInvididualOrder = async (orderId) => {
     setLoading(true);
     try {
-      const response = await apiConnector("GET", `http://13.50.14.42:8100/api/v1/fetchOrderById/${orderId}`, null, {
+      const response = await apiConnector("GET", `http://localhost:8100/api/v1/fetchOrderById/${orderId}`, null, {
         Authorization: `Bearer ${adminToken}`,
       });
       setLoading(false);
@@ -109,7 +118,7 @@ const ManageOrder = () => {
   const fetchOrderByServiceType = async (serviceType) => {
     setLoading(true);
     try {
-      const response = await apiConnector("GET", `http://13.50.14.42:8100/api/v1/fetchOrderByServiceType/${serviceType}`, null, {
+      const response = await apiConnector("GET", `http://localhost:8100/api/v1/fetchOrderByServiceType/${serviceType}`, null, {
         Authorization: `Bearer ${adminToken}`,
       });
       setLoading(false);
@@ -125,9 +134,10 @@ const ManageOrder = () => {
   }, [adminToken]);
 
     const fetchOrderByForexType = async () => {
+      console.log('clicked');
     setLoading(true);
     try {
-      const response = await apiConnector("GET", `http://13.50.14.42:8100/api/v1/fetchOrderByForexType/forexCurrency`, null, {
+      const response = await apiConnector("GET", `http://localhost:8100/api/v1/fetchOrderByForexType/forexCurrency`, null, {
         Authorization: `Bearer ${adminToken}`,
       });
       setLoading(false);
@@ -150,6 +160,8 @@ const ManageOrder = () => {
     }
   }, [selectedServiceType, orders]);
 
+  console.log('selectedTabIndex',selectedTabIndex);
+
   const handleServiceTypeChange = (e) => {
     setSelectedServiceType(e.target.value);
   };
@@ -160,7 +172,12 @@ const ManageOrder = () => {
     debouncingFetchedUserOrders();
   };
 
-  const filteredAndSearchedOrders = filteredOrders
+  console.log('searchQuery',searchQuery);
+
+  const filteredAndSearchedOrders = filteredOrders.filter(order => 
+    order.orderId.includes(searchQuery) ||
+    order.placedBy.includes(searchQuery)
+  );
 
     const totalPages = Math.ceil(filteredAndSearchedOrders.length / itemsPerPage);
   const displayedOrders = filteredAndSearchedOrders.slice(
@@ -179,11 +196,14 @@ const ManageOrder = () => {
     }
 
     try {
-      const response = await apiConnector('PUT', `http://13.50.14.42:8100/api/v1/updateOrder/${selectedOrderId}`, {
+      const response = await apiConnector('PUT', `http://localhost:8100/api/v1/updateOrder/${selectedOrderId}`, {
         orderStatus: selectedStatus,
       },{
         Authorization: `Bearer ${adminToken}`,
       });
+
+      console.log('response',response);
+
       if (response.data.success) {
         alert('Order status updated successfully');
         closeModal();
@@ -198,7 +218,8 @@ const ManageOrder = () => {
 
 const fetchRemitterDetails = async (remitterId) => {
   try {
-    const response = await apiConnector('GET', `http://13.50.14.42:8100/api/v1/remitterDetails/${remitterId}`);
+    const response = await apiConnector('GET', `http://localhost:8100/api/v1/remitterDetails/${remitterId}`);
+    console.log('response',response);
     if (response.data.success) {
       setUserOrder(response.data.data);
       setAttachments([response.data.data.pancardImage,response.data.data.passportImage])
@@ -550,6 +571,7 @@ const handleTabSelect = (index) => {
                   <tbody>
                     {
                       ourOrders?.map((currItem)=>{
+                        console.log('currItem',currItem);
                         return(
                         <tr>
                       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
@@ -728,6 +750,7 @@ const handleTabSelect = (index) => {
                 </p>
                 <div className="mt-5">
                 {attachments.map((attachment, index) => {
+                  console.log('attcacynnebt',attachment);
                   return <div key={index} className="flex items-center justify-between">
                     <a>
                       Attachment {index + 1}

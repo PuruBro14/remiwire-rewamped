@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { setformValue } from "../../features/SendMoneySlice";
 import axios from "axios";
 import { uploadDocument } from "../../../services/operations/SendMoneyApi";
+import toast from "react-hot-toast";
 
 export default function SendMoneyForm2Customer({
   setFormStep,

@@ -149,7 +149,7 @@ export const sendOtp = (phoneNumber) => async (dispatch) => {
   console.log('clicked-------------->');
   const toastId = toast.loading("Loading...");
   try {
-    const response = await axios.post("http://13.50.14.42:8100/api/v1/send-otp", {
+    const response = await axios.post("http://localhost:8100/api/v1/send-otp", {
       phoneNumber,
     });
     toast.success("OTP Sent Successfully");
@@ -166,7 +166,7 @@ export const verifyOtp = (phoneNumber, otp, navigate) => async (dispatch) => {
   console.log("clicked-------------->");
    const toastId = toast.loading("Loading...");
   try {
-    const response = await axios.post("http://13.50.14.42:8100/api/v1/verify-otp", {
+    const response = await axios.post("http://localhost:8100/api/v1/verify-otp", {
       phoneNumber,
       otp,
     });
