@@ -56,6 +56,6 @@ exports.getFxRate = async (req, res) => {
     console.error("Error fetching FX rate details:", error);
     res
       .status(500)
-      .json({ error: "An error occurred while fetching FX rate details." });
+      .json({ error: "An error occurred while fetching FX rate details.",message:error });
   }
 };
