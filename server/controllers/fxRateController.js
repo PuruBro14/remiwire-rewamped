@@ -19,8 +19,7 @@ exports.getFxRate = async (req, res) => {
 
   const client_id = process.env.CLIENT_ID;
   const client_secret = process.env.CLIENT_SECRET;
-  const api_version = process.env.API_VERSION;
-
+  const api_version = "2023-03-01";
   console.log('runned till line 24',client_id,client_id,api_version);
 
   if (!client_id || !client_secret || !api_version) {
