@@ -8,7 +8,7 @@ exports.uploadDocument = async (req, res) => {
   const url = `https://sandbox.cashfree.com/pg/lrs/orders/documents/upload`;
   const client_id = process.env.CLIENT_ID;
   const client_secret = process.env.CLIENT_SECRET;
-  const api_version = process.env.API_VERSION;
+  const api_version = "2023-03-01";
 
   try {
     if (!req.files || !req.files.customerPassportImage) {
