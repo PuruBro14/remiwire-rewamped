@@ -21,12 +21,16 @@ exports.getFxRate = async (req, res) => {
   const client_secret = process.env.CLIENT_SECRET;
   const api_version = process.env.API_VERSION;
 
+  console.log('runned till line 24');
+
   if (!client_id || !client_secret || !api_version) {
     return res.status(500).json({
       error:
         "Server configuration error: Missing required environment variables.",
     });
   }
+
+  console.log('runned till line 33',client_id,client_secret,api_version);
 
   const fxRateData = {
     to_amount,
