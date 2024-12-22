@@ -79,7 +79,7 @@ const  AdminDashboard = () => {
     const fetchData = async () => {
       setLoading(true); 
       try {
-        const response = await apiConnector('GET', `import.meta.env.VITE_BACKEND_URL/api/v1/adminOrders?month=${new Date(Date.parse(selectedMonth + " 1, 2024")).getMonth() + 1}&year=${selectedYear}`, null, {
+        const response = await apiConnector('GET', `${import.meta.env.VITE_BACKEND_URL}/api/v1/adminOrders?month=${new Date(Date.parse(selectedMonth + " 1, 2024")).getMonth() + 1}&year=${selectedYear}`, null, {
           Authorization: `Bearer ${adminToken}`,
         });
         console.log('data', response);

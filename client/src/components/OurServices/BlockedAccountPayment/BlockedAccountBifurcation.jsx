@@ -108,7 +108,7 @@ const verifyPayment = async (token) => {
   try {
     let res = await apiConnector(
       "POST",
-      "import.meta.env.VITE_BACKEND_URL/api/v1/verify",
+      `${import.meta.env.VITE_BACKEND_URL}/api/v1/verify`,
       {
         orderId: orderId,
         serviceType: "BlockedAccountPayment"  

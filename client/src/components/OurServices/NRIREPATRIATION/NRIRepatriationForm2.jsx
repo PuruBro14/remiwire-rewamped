@@ -168,7 +168,7 @@ console.log('fxRateResult',fxRateResult);
 
   const fetchRemiiterDetails = async (token, dispatch, setGetRemiiterDetails) => {
   try {
-    const response = await apiConnector("GET", "import.meta.env.VITE_BACKEND_URL/api/v1/remitters/prod_cf_rem_005", null, {
+    const response = await apiConnector("GET", `${import.meta.env.VITE_BACKEND_URL}/api/v1/remitters/prod_cf_rem_005`, null, {
       Authorization: `Bearer ${token}`,
     });
 

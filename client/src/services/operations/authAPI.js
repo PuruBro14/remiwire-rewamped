@@ -149,7 +149,7 @@ export const sendOtp = (phoneNumber) => async (dispatch) => {
   console.log('clicked-------------->');
   const toastId = toast.loading("Loading...");
   try {
-    const response = await axios.post("import.meta.env.VITE_BACKEND_URL/api/v1/send-otp", {
+    const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/v1/send-otp`, {
       phoneNumber,
     });
     toast.success("OTP Sent Successfully");
@@ -166,7 +166,7 @@ export const verifyOtp = (phoneNumber, otp, navigate) => async (dispatch) => {
   console.log("clicked-------------->");
    const toastId = toast.loading("Loading...");
   try {
-    const response = await axios.post("import.meta.env.VITE_BACKEND_URL/api/v1/verify-otp", {
+    const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/v1/verify-otp`, {
       phoneNumber,
       otp,
     });

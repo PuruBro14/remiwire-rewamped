@@ -15,7 +15,7 @@ const LoginPage = () => {
     console.log('handleLogin');
     
     try {
-      const response = await axios.post('import.meta.env.VITE_BACKEND_URL/api/admin/login', { username, password });
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/admin/login`, { username, password });
       console.log('response--',response);
       
       const { token, role } = response.data;

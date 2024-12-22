@@ -50,7 +50,7 @@ const MyOrders = () => {
     try {
       const response = await apiConnector(
         "GET",
-        "import.meta.env.VITE_BACKEND_URL/api/v1/fetchAllBookOrders",
+        `${import.meta.env.VITE_BACKEND_URL}/api/v1/fetchAllBookOrders`,
         null,
         {
           Authorization: `Bearer ${token}`,

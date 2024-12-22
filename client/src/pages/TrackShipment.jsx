@@ -22,7 +22,7 @@ const TrackShipment = () => {
 
       const response = await apiConnector(
         "GET",
-        `import.meta.env.VITE_BACKEND_URL/api/v1/trackingorder?orderId=${trackingNumber}`,
+        `${import.meta.env.VITE_BACKEND_URL}/api/v1/trackingorder?orderId=${trackingNumber}`,
         null,
         headers
       );

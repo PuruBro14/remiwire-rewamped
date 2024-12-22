@@ -38,7 +38,7 @@ export default function GicAccountBifurcation({ setFormStep, documentProof, fxRa
     try {
       const res = await apiConnector(
         "POST",
-        "import.meta.env.VITE_BACKEND_URL/api/v1/payment",
+        `${import.meta.env.VITE_BACKEND_URL}/api/v1/payment`,
         null,
         {
           Authorization: `Bearer ${token}`,
@@ -106,7 +106,7 @@ export default function GicAccountBifurcation({ setFormStep, documentProof, fxRa
   try {
     let res = await apiConnector(
       "POST",
-      "import.meta.env.VITE_BACKEND_URL/api/v1/verify",
+      `${import.meta.env.VITE_BACKEND_URL}/api/v1/verify`,
       {
         orderId: orderId,
         serviceType: "GICAccountPayment"
