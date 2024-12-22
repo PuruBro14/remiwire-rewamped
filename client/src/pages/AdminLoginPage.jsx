@@ -12,8 +12,12 @@ const LoginPage = () => {
   const [password, setPassword] = useState('');
 
   const handleLogin = async () => {
+    console.log('handleLogin');
+    
     try {
-      const response = await axios.post('http://13.50.14.42:8100/api/admin/login', { username, password });
+      const response = await axios.post('import.meta.env.VITE_BACKEND_URL/api/admin/login', { username, password });
+      console.log('response--',response);
+      
       const { token, role } = response.data;
 
       localStorage.setItem('adminToken', JSON.stringify(token));
@@ -26,7 +30,7 @@ const LoginPage = () => {
       console.log('------->runned');
     } catch (error) {
       console.log('error',error);
-      toast.error('Invalid username or password on client side');
+      toast.error('Invalid username or password on client sideeeeee');
     }
   };
 

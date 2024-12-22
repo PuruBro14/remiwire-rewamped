@@ -61,7 +61,7 @@ const ManageOrder = () => {
     const toastId = toast.loading("Loading orders...");
     setLoading(true);
     try {
-      const response = await apiConnector("GET", 'http://13.50.14.42:8100/api/v1/fetchAllOrders', null, {
+      const response = await apiConnector("GET", 'import.meta.env.VITE_BACKEND_URL/api/v1/fetchAllOrders', null, {
         Authorization: `Bearer ${adminToken}`,
       });
       setLoading(false);
@@ -84,7 +84,7 @@ const ManageOrder = () => {
     const toastId = toast.loading("Loading orders...");
     setLoading(true);
     try {
-      const response = await apiConnector("GET", 'http://13.50.14.42:8100/api/v1/fetchOrderByForexType/:forexCurrency', null, {
+      const response = await apiConnector("GET", 'import.meta.env.VITE_BACKEND_URL/api/v1/fetchOrderByForexType/:forexCurrency', null, {
         Authorization: `Bearer ${adminToken}`,
       });
       setLoading(false);
@@ -104,7 +104,7 @@ const ManageOrder = () => {
   const fetchInvididualOrder = async (orderId) => {
     setLoading(true);
     try {
-      const response = await apiConnector("GET", `http://13.50.14.42:8100/api/v1/fetchOrderById/${orderId}`, null, {
+      const response = await apiConnector("GET", `import.meta.env.VITE_BACKEND_URL/api/v1/fetchOrderById/${orderId}`, null, {
         Authorization: `Bearer ${adminToken}`,
       });
       setLoading(false);
@@ -118,7 +118,7 @@ const ManageOrder = () => {
   const fetchOrderByServiceType = async (serviceType) => {
     setLoading(true);
     try {
-      const response = await apiConnector("GET", `http://13.50.14.42:8100/api/v1/fetchOrderByServiceType/${serviceType}`, null, {
+      const response = await apiConnector("GET", `import.meta.env.VITE_BACKEND_URL/api/v1/fetchOrderByServiceType/${serviceType}`, null, {
         Authorization: `Bearer ${adminToken}`,
       });
       setLoading(false);
@@ -137,7 +137,7 @@ const ManageOrder = () => {
       console.log('clicked');
     setLoading(true);
     try {
-      const response = await apiConnector("GET", `http://13.50.14.42:8100/api/v1/fetchOrderByForexType/forexCurrency`, null, {
+      const response = await apiConnector("GET", `import.meta.env.VITE_BACKEND_URL/api/v1/fetchOrderByForexType/forexCurrency`, null, {
         Authorization: `Bearer ${adminToken}`,
       });
       setLoading(false);
@@ -196,7 +196,7 @@ const ManageOrder = () => {
     }
 
     try {
-      const response = await apiConnector('PUT', `http://13.50.14.42:8100/api/v1/updateOrder/${selectedOrderId}`, {
+      const response = await apiConnector('PUT', `import.meta.env.VITE_BACKEND_URL/api/v1/updateOrder/${selectedOrderId}`, {
         orderStatus: selectedStatus,
       },{
         Authorization: `Bearer ${adminToken}`,
@@ -218,7 +218,7 @@ const ManageOrder = () => {
 
 const fetchRemitterDetails = async (remitterId) => {
   try {
-    const response = await apiConnector('GET', `http://13.50.14.42:8100/api/v1/remitterDetails/${remitterId}`);
+    const response = await apiConnector('GET', `import.meta.env.VITE_BACKEND_URL/api/v1/remitterDetails/${remitterId}`);
     console.log('response',response);
     if (response.data.success) {
       setUserOrder(response.data.data);

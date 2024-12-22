@@ -169,7 +169,7 @@ export default function GICAccountForm2({
 
   const fetchRemiiterDetails = async (token, dispatch, setGetRemiiterDetails) => {
   try {
-    const response = await apiConnector("GET", "http://13.50.14.42:8100/api/v1/remitters/prod_cf_rem_005", null, {
+    const response = await apiConnector("GET", "import.meta.env.VITE_BACKEND_URL/api/v1/remitters/prod_cf_rem_005", null, {
       Authorization: `Bearer ${token}`,
     });
 

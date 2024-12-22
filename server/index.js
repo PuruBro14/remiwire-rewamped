@@ -85,6 +85,9 @@ const adminUser = {
 app.post("/api/admin/login", (req, res) => {
   const { username, password } = req.body;
 
+  console.log('admin api runned');
+  
+
   if (username !== adminUser.username || password !== adminUser.password) {
     return res.status(401).json({ message: "Invalid username or password" });
   }

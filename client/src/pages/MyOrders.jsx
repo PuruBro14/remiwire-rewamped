@@ -28,7 +28,7 @@ const MyOrders = () => {
     try {
       const response = await apiConnector(
         "GET",
-        "http://13.50.14.42:8100/api/v1/userOrders",
+        `${import.meta.env.VITE_BACKEND_URL}/api/v1/userOrders`,
         null,
         {
           Authorization: `Bearer ${token}`,
@@ -50,7 +50,7 @@ const MyOrders = () => {
     try {
       const response = await apiConnector(
         "GET",
-        "http://13.50.14.42:8100/api/v1/fetchAllBookOrders",
+        "import.meta.env.VITE_BACKEND_URL/api/v1/fetchAllBookOrders",
         null,
         {
           Authorization: `Bearer ${token}`,

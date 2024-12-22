@@ -27,7 +27,7 @@ const ManageUsers = () => {
     const toastId = toast.loading("Loading Users...");
     setLoading(true);
     try {
-      const response = await apiConnector("GET", 'http://13.50.14.42:8100/api/v1/fetchAllUsers', null, {
+      const response = await apiConnector("GET", 'import.meta.env.VITE_BACKEND_URL/api/v1/fetchAllUsers', null, {
         Authorization: `Bearer ${adminToken}`,
       });
       setLoading(false);
@@ -61,7 +61,7 @@ const ManageUsers = () => {
     const toastId = toast.loading("Loading orders...");
     setLoading(true);
     try {
-      const response = await apiConnector("GET", `http://13.50.14.42:8100/api/v1/users/${userId}/orders`, null, {
+      const response = await apiConnector("GET", `import.meta.env.VITE_BACKEND_URL/api/v1/users/${userId}/orders`, null, {
         Authorization: `Bearer ${adminToken}`,
       });
       setLoading(false);

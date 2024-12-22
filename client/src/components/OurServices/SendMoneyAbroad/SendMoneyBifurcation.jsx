@@ -36,7 +36,7 @@ export default function SendMoneyBifurcation({ setFormStep, documentProof, fxRat
 
   const getSessionId = async () => {
     try {
-      const res = await apiConnector('POST', 'http://13.50.14.42:8100/api/v1/payment', {amount:fxRate?.amount_to_pay.toFixed(2)},{
+      const res = await apiConnector('POST', 'import.meta.env.VITE_BACKEND_URL/api/v1/payment', {amount:fxRate?.amount_to_pay.toFixed(2)},{
         Authorization: `Bearer ${token}`,
       });
       if (res.data) {
@@ -102,7 +102,7 @@ export default function SendMoneyBifurcation({ setFormStep, documentProof, fxRat
       setShowBankDetails(true);
       toast.success("Please use the following bank details for payment.");
       try {
-      const res = await apiConnector('POST', 'http://13.50.14.42:8100/api/v1/payment', {amount:fxRate?.amount_to_pay.toFixed(2)},{
+      const res = await apiConnector('POST', 'import.meta.env.VITE_BACKEND_URL/api/v1/payment', {amount:fxRate?.amount_to_pay.toFixed(2)},{
         Authorization: `Bearer ${token}`,
       });
 
@@ -138,7 +138,7 @@ const verifyPayment = async (token) => {
   try {
     let res = await apiConnector(
       "POST",
-      "http://13.50.14.42:8100/api/v1/verify",
+      "import.meta.env.VITE_BACKEND_URL/api/v1/verify",
       {
         orderId: orderId,
         serviceType: "SendMoneyAbroad",
