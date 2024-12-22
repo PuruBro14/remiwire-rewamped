@@ -90,7 +90,7 @@
     right: 100%;
   }
   #timeline .demo-card:nth-child(even) .head::before {
-    right: 507px;
+    right: 489.5px;
   }
   #timeline .demo-card:nth-child(2) {
     margin-top: 180px;
