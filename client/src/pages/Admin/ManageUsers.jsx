@@ -50,7 +50,7 @@ const ManageUsers = () => {
     order.username.includes(searchQuery)
   );
 
-  const totalPages = Math.ceil(filteredOrders.length / itemsPerPage);
+  const totalPages = Math.ceil(filteredOrders?.length / itemsPerPage);
   const displayedOrders = filteredOrders.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
@@ -223,7 +223,7 @@ const ManageUsers = () => {
               </table>
               <div className="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between">
                 <span className="text-xs xs:text-sm text-gray-900">
-                  Showing {currentPage} to {totalPages} of {orders.length} Entries
+                  Showing {currentPage} to {totalPages} of {orders?.length} Entries
                 </span>
                 <div className="inline-flex mt-2 xs:mt-0">
                   <button
