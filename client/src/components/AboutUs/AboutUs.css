@@ -1,0 +1,73 @@
+.about-us-container {
+   
+    margin: 50px auto;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  /* Styling about us content */
+  .about-us-content {
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    padding: 30px;
+  }
+  
+  /* Styling about us heading */
+  .about-us-content h2 {
+  
+    margin-top:30%;
+    font-size: 3rem;
+    text-transform: uppercase;
+    font-weight: 100;
+    letter-spacing: 8px;
+    
+    
+  }
+  
+  /* Styling about us paragraphs */
+  .about-us-content p {
+    color: #666;
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 15px;
+    text-align: left;
+  }
+
+  .socialicons{
+    
+    margin-top: 20px;
+    cursor: pointer;
+    
+  }
+
+  .paragraph {
+    max-width: 70%;
+    margin: 0 auto;
+    font-size: 16px;
+    line-height: 1.8;
+    color: #333;
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: justify;
+    font-family: 'Arial', sans-serif;
+  }
+
+  .paragraph::before {
+    content: "✨";
+    display: block;
+    text-align: center;
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: #6c63ff;
+  }
+
+  .paragraph::after {
+    content: "🚀";
+    display: block;
+    text-align: center;
+    font-size: 20px;
+    margin-top: 10px;
+    color: #6c63ff;
+  }

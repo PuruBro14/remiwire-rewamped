@@ -37,7 +37,7 @@ const Footer = () => {
               </h1>
 
               <div className="flex flex-col gap-2 mt-2">
-                <Link to="/termsofuse">Terms Of Use</Link>
+                <Link to="/termsofuse">Terms And Conditions</Link>
                 <Link to="/privacypolicy">Privacy Policy</Link>
                 <Link to="/cookie">Cookies Policy</Link>
               </div>

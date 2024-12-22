@@ -1,0 +1,62 @@
+.terms-of-use-container .container {
+    font-family: 'Arial', sans-serif;
+    color: #333;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom:20px;
+}
+
+.terms-of-use-container h2 {
+    font-size: 2.5rem;
+    color: #6c63ff;
+    border-bottom: 3px solid #6c63ff;
+    padding-bottom: 10px;
+    margin-bottom: 30px;
+}
+
+.terms-of-use-container .grid {
+    align-items: center;
+}
+
+.terms-of-use-container .grid .p-4 {
+    padding: 20px;
+}
+
+.terms-of-use-container .grid img {
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.terms-of-use-container .terms-text {
+    line-height: 1.8;
+    font-size: 1rem;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.terms-of-use-container .terms-text ul {
+    list-style: disc;
+    padding-left: 20px;
+}
+
+.terms-of-use-container .terms-text ul li {
+    margin-bottom: 10px;
+}
+
+.terms-of-use-container .terms-text ul li span {
+    font-weight: bold;
+    color: #6c63ff;
+}
+
+.terms-of-use-container img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    border-radius: 8px; 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
