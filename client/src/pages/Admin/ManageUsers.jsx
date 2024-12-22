@@ -45,7 +45,7 @@ const ManageUsers = () => {
     fetchUsers();
   }, [adminToken]);
 
-  const filteredOrders = orders.filter(order => 
+  const filteredOrders = orders?.filter(order => 
     order.username.includes(searchQuery) ||
     order.username.includes(searchQuery)
   );

@@ -174,7 +174,7 @@ const ManageOrder = () => {
 
   console.log('searchQuery',searchQuery);
 
-  const filteredAndSearchedOrders = filteredOrders.filter(order => 
+  const filteredAndSearchedOrders = filteredOrders?.filter(order => 
     order.orderId.includes(searchQuery) ||
     order.placedBy.includes(searchQuery)
   );
