@@ -198,7 +198,7 @@ const Navbar = ({}) => {
                     className="border border-richblack-700 text-white bg-[#d40511] px-[12px] py-[8px] rounded-md hover:bg-[#b3050f]"
                     onClick={closeNavbar}
                   >
-                    Sign up
+                    Sign Up
                 </button>
                 </Link>
               )}
