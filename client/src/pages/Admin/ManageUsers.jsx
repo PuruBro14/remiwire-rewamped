@@ -27,7 +27,7 @@ const ManageUsers = () => {
     const toastId = toast.loading("Loading Users...");
     setLoading(true);
     try {
-      const response = await apiConnector("GET", 'import.meta.env.VITE_BACKEND_URL/api/v1/fetchAllUsers', null, {
+      const response = await apiConnector("GET", `${import.meta.env.VITE_BACKEND_URL}/api/v1/fetchAllUsers`, null, {
         Authorization: `Bearer ${adminToken}`,
       });
       setLoading(false);
@@ -51,7 +51,7 @@ const ManageUsers = () => {
   );
 
   const totalPages = Math.ceil(filteredOrders?.length / itemsPerPage);
-  const displayedOrders = filteredOrders.slice(
+  const displayedOrders = filteredOrders?.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
@@ -82,7 +82,7 @@ const ManageUsers = () => {
   };
 
   const downloadCSV = () => {
-    const filteredOrders = orders.map(order => ({
+    const filteredOrders = orders?.map(order => ({
       username: order.username,
       firstName: order.firstName,
       lastName: order.lastName,
@@ -183,7 +183,7 @@ const ManageUsers = () => {
                 </thead>
                 <tbody>
                   {
-                    displayedOrders.map((currItem) => (
+                    displayedOrders?.map((currItem) => (
                       <tr key={currItem._id}>
                         <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                           <div className="flex items-center">
@@ -295,7 +295,7 @@ const ManageUsers = () => {
                   {
                   userOrders?.length===0 && <h2 className="mt-5 font-bold">No Orders Found For This User</h2>
                 }
-                  {userOrders.map((order) => {
+                  {userOrders?.map((order) => {
                     console.log('order------->',order);
                    return <tr key={order._id}>
                       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">

@@ -61,7 +61,7 @@ const ManageOrder = () => {
     const toastId = toast.loading("Loading orders...");
     setLoading(true);
     try {
-      const response = await apiConnector("GET", '${import.meta.env.VITE_BACKEND_URL}/api/v1/fetchAllOrders', null, {
+      const response = await apiConnector("GET", `${import.meta.env.VITE_BACKEND_URL}/api/v1/fetchAllOrders`, null, {
         Authorization: `Bearer ${adminToken}`,
       });
       setLoading(false);
@@ -84,7 +84,7 @@ const ManageOrder = () => {
     const toastId = toast.loading("Loading orders...");
     setLoading(true);
     try {
-      const response = await apiConnector("GET", '${import.meta.env.VITE_BACKEND_URL}/api/v1/fetchOrderByForexType/:forexCurrency', null, {
+      const response = await apiConnector("GET", `${import.meta.env.VITE_BACKEND_URL}/api/v1/fetchOrderByForexType/:forexCurrency`, null, {
         Authorization: `Bearer ${adminToken}`,
       });
       setLoading(false);
@@ -180,7 +180,7 @@ const ManageOrder = () => {
   );
 
     const totalPages = Math.ceil(filteredAndSearchedOrders?.length / itemsPerPage);
-  const displayedOrders = filteredAndSearchedOrders.slice(
+  const displayedOrders = filteredAndSearchedOrders?.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
@@ -196,7 +196,7 @@ const ManageOrder = () => {
     }
 
     try {
-      const response = await apiConnector('PUT', `import.meta.env.VITE_BACKEND_URL/api/v1/updateOrder/${selectedOrderId}`, {
+      const response = await apiConnector('PUT', `${import.meta.env.VITE_BACKEND_URL}/api/v1/updateOrder/${selectedOrderId}`, {
         orderStatus: selectedStatus,
       },{
         Authorization: `Bearer ${adminToken}`,
@@ -686,7 +686,7 @@ const handleTabSelect = (index) => {
               onChange={handleStatusChange}
                 >
                    <option value="">Select status</option>
-                  {statusList.map((statusItem) => (
+                  {statusList?.map((statusItem) => (
                     <option key={statusItem} value={statusItem}>
                       {statusItem}
                     </option>
@@ -749,7 +749,7 @@ const handleTabSelect = (index) => {
                   <span className="font-bold">Order Amount</span> {userOrder?.orderAmount}
                 </p>
                 <div className="mt-5">
-                {attachments.map((attachment, index) => {
+                {attachments?.map((attachment, index) => {
                   console.log('attcacynnebt',attachment);
                   return <div key={index} className="flex items-center justify-between">
                     <a>
