@@ -1,0 +1,158 @@
+@media (max-width: 767px) {
+  .navbar-drawer {
+    position: fixed;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100vh;
+    background-color: #f5f5f5;
+    transition: left 0.3s ease-in-out;
+    z-index: 50;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: scroll;
+  }
+}
+
+.navbar-drawer.open {
+  left: 0;
+}
+
+.drawer-header {
+  background-color: #f5f5f5;
+  border-bottom: 1px solid #e5e5e5;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+}
+
+@media (min-width: 768px) {
+  .navbar-drawer {
+    position: static;
+    height: auto;
+    background-color: transparent;
+    transition: none;
+    box-shadow: none;
+    left: 0;
+    width: auto;
+  }
+
+  .drawer-header {
+    display: none;
+  }
+}
+
+.navbar-drawer ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.navbar-drawer li {
+  margin-bottom: 15px;
+}
+
+.navbar-drawer a {
+  color: black;
+  text-decoration: none;
+  display: block;
+  padding: 5px 10px;
+  /* border-radius: 4px; */
+  transition: background-color 0.3s ease;
+}
+
+.navbar-drawer a:hover {
+  background-color: #d40511;
+  color: white;
+}
+
+.navbar-drawer a.active {
+  background-color: #10122b;
+  color: white;
+}
+
+.profile-dropdown,
+.logout-button {
+  background-color: #10122b;
+  color: #fff;
+  border-radius: 5px;
+  padding: 8px 12px;
+  text-align: center;
+}
+
+.profile-dropdown:hover,
+.logout-button:hover {
+  background-color: #d40511;
+  color: #fff;
+}
+
+.navbar-drawer .menu-button {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .navbar-drawer .menu-button {
+    display: block;
+  }
+}
+
+.navbar-desktop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 1rem 2rem;
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-desktop .logo {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-desktop .logo img {
+  max-height: 40px;
+}
+
+.navbar-desktop nav {
+  display: flex;
+  gap: 2rem;
+}
+
+.navbar-desktop nav a {
+  color: black;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.navbar-desktop .user-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.navbar-desktop .user-info p {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.navbar-desktop .user-info .logout-button {
+  background-color: #10122b;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.navbar-desktop .user-info .logout-button:hover {
+  background-color: #d40511;
+}
+
+.showHam {
+  border: 5px solid red;
+  display: none;
+}

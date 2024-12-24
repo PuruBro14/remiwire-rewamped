@@ -1,0 +1,100 @@
+
+.faq-section {
+    background: linear-gradient(135deg, #f3e8ff, #e5e5ff);
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .faq-container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 1rem;
+  }
+  
+  .faq-header h2 {
+    font-size: 2.5rem;
+    text-align: center;
+    color: #4a4a8a;
+    margin-bottom: 2rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .faq-list {
+    max-width: 800px; 
+    margin: 0 auto; 
+    padding: 0;
+  }
+  
+  .faq-item {
+    background: #ffffff;
+    border: 1px solid #e4e4f1;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    color:black;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-bottom: 1rem;
+    padding: 0.75rem 1rem;
+  }
+  
+  .faq-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.15);
+  }
+  
+  .faq-item.active {
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
+  }
+  
+  .faq-item button {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 1.25rem;
+    background: none;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+    color: #4a4a8a;
+    font-size: 1.25rem;
+    font-weight: 500;
+    transition: color 0.3s ease;
+  }
+  
+  .faq-item button:hover {
+    color: #8a4a8a;
+  }
+  
+  .faq-content {
+    padding: 1rem 1.25rem;
+    font-size: 0.95rem;
+    color: #4a4a8a;
+    line-height: 1.6;
+    border-top: 1px solid #e4e4f1;
+    animation: fadeIn 0.3s ease;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .faq-icon {
+    transition: transform 0.3s ease;
+  }
+  
+  .faq-icon.rotate {
+    transform: rotate(180deg);
+  }
+  
+  

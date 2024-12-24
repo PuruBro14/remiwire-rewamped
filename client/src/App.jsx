@@ -40,6 +40,7 @@ import { setScrollToComponentContact } from "./utils/scrollSlice";
 import { useEffect, useState } from "react";
 import Loader from './components/Loader';
 import './components/loader.css';
+import FaqPage from "./components/FAQ/FaqPage";
 
 function App() {
   const dispatch=useDispatch();
@@ -146,7 +147,11 @@ function App() {
           />
 
           <Route path="/userprofile/edit-profile" element={<Settings />} />
+
         </Route>
+
+        <Route path="/faq" element={<FaqPage />} />
+
 
         <Route path="/admin/login" element={<LoginPage />} />
         

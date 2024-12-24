@@ -2,12 +2,17 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { NavbarLinks } from "../../data/NavbarLinks";
 import { useLocation } from "react-router-dom";
-import { IoIosArrowDropdownCircle, IoMdClose } from "react-icons/io";
+import {
+  IoIosArrowDropdownCircle,
+  IoMdClose,
+  IoMdHelpCircle,
+} from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import ProfileDropDown from "../ProfileDropDown";
 import { logout } from "../../services/operations/authAPI";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { setScrollToComponentContact } from "../../utils/scrollSlice";
+import './Navbar.css'
 
 const subLinksData = [
   {
@@ -50,10 +55,10 @@ const Navbar = ({}) => {
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
-  const token  = localStorage.getItem("token");
-  const adminToken= localStorage.getItem("adminToken")
+  const token = localStorage.getItem("token");
+  const adminToken = localStorage.getItem("adminToken");
 
-  console.log('hahahhahaha',document.getElementById("contactUs"));
+  console.log("hahahhahaha", document.getElementById("contactUs"));
 
   const toggleNavbar = () => {
     setIsOpen(!isOpen);
@@ -81,8 +86,8 @@ const Navbar = ({}) => {
   }, [window.innerWidth]);
 
   const scrollToContactUs = () => {
-       dispatch(setScrollToComponentContact(true))
-      }
+    dispatch(setScrollToComponentContact(true));
+  };
 
   return (
     <div className="flex h-20 items-center w-full justify-center transition-all duration-200">
@@ -125,9 +130,15 @@ const Navbar = ({}) => {
                         {ele?.title === "Services" ? (
                           <div className="showHam"></div>
                         ) : (
-                          <Link to={ele?.title !== "Contact Us" ? ele?.path : ""}>
+                          <Link
+                            to={ele?.title !== "Contact Us" ? ele?.path : ""}
+                          >
                             <p
-                              className={`py-2 ${ele?.title==="Settings"?'relative bottom-3':''}`}
+                              className={`py-2 ${
+                                ele?.title === "Settings"
+                                  ? "relative bottom-3"
+                                  : ""
+                              }`}
                             >
                               {ele.title}
                             </p>
@@ -140,16 +151,17 @@ const Navbar = ({}) => {
                       <li key={index} onClick={closeNavbar}>
                         {ele?.title === "Services" ? (
                           <div className="relative flex flex-row gap-2 items-center group">
-                            <p>{ele?.title}</p>
-                            <IoIosArrowDropdownCircle />
+                            <p className="cursor-pointer">{ele?.title}</p>
+                            <IoIosArrowDropdownCircle className="cursor-pointer" />
                             <div className="absolute invisible left-1/2 transform -translate-x-1/2 top-full mt-2 flex flex-col rounded-md bg-richblack-5 p-4 text-richblack-900 transition-all duration-200 group-hover:visible group-hover:opacity-100 lg:w-[300px]">
                               <div className="absolute left-[60%] transform -translate-x-1/2 -translate-y-1/2 top-0 h-6 w-6 rotate-45 bg-richblack-5"></div>
                               {subLinksData?.map((ele, index) => {
                                 return (
                                   <Link
-                                    className="p-2 border-b-2 no-underline hover:no-underline"
+                                    className="border-b-2 border-r-0 no-underline hover:no-underline mt-2"
                                     to={ele?.link}
                                     key={index}
+                                    style={{ padding: 10 }}
                                   >
                                     <p>{ele?.title}</p>
                                   </Link>
@@ -158,12 +170,15 @@ const Navbar = ({}) => {
                             </div>
                           </div>
                         ) : (
-                          <Link to={ele?.title !== "Contact Us" ? ele?.path : ""} onClick={ele?.title==="Contact Us"?scrollToContactUs:''}>
-                            <p
-                              className="py-2"
-                            >
-                              {ele.title}
-                            </p>
+                          <Link
+                            to={ele?.title !== "Contact Us" ? ele?.path : ""}
+                            onClick={
+                              ele?.title === "Contact Us"
+                                ? scrollToContactUs
+                                : ""
+                            }
+                          >
+                            <p className="py-2">{ele.title}</p>
                           </Link>
                         )}
                       </li>
@@ -183,25 +198,39 @@ const Navbar = ({}) => {
 
             <div className="flex flex-col gap-y-2 md:flex-row md:gap-y-0 mb-2 gap-x-1 lg:gap-x-3 items-center">
               {token === null && (
-                <Link to="/login">
-                  <button
-                    className="border border-richblack-700 text-white bg-[#d40511] px-[12px] py-[8px] rounded-md hover:bg-[#b3050f]"
-                    onClick={closeNavbar}
-                  >
-                    Log in
-                  </button>
-                </Link>
+                <button
+                  className="border border-richblack-700 text-white bg-[#d40511] px-[12px] py-[8px] rounded-md hover:bg-[#b3050f]"
+                  onClick={() => {
+                    navigate("/login");
+                    closeNavbar();
+                  }}
+                >
+                  Log in
+                </button>
               )}
               {token === null && (
-                <Link to="/signup">
-                  <button
-                    className="border border-richblack-700 text-white bg-[#d40511] px-[12px] py-[8px] rounded-md hover:bg-[#b3050f]"
-                    onClick={closeNavbar}
-                  >
-                    Sign Up
+                <button
+                  className="border border-richblack-700 text-white bg-[#d40511] px-[12px] py-[8px] rounded-md hover:bg-[#b3050f]"
+                  onClick={() => {
+                    navigate("/signup");
+                    closeNavbar();
+                  }}
+                >
+                  Sign Up
                 </button>
-                </Link>
               )}
+              
+              <Link
+                to="/faq"
+                className="border border-richblack-700 !bg-[#d40511] px-[12px] py-[8px] rounded-md !hover:bg-[#b3050f] !text-white"
+                title="Frequently asked questions."
+              >
+                <span className="flex gap-1 items-center">
+                  FAQ
+                  <IoMdHelpCircle />
+                </span>
+              </Link>
+              
               {token !== null && <ProfileDropDown closeNavbar={closeNavbar} />}
               {token !== null && (
                 <button
